@@ -8,7 +8,12 @@ EffectivePolls::Engine.routes.draw do
   end
 
   namespace :admin do
-    resources :polls
+    resources :polls do
+      get :report, on: :collection
+
+      post :approve, on: :member
+      post :decline, on: :member
+    end
   end
 
 end
