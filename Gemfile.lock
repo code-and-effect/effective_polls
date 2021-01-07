@@ -5,7 +5,7 @@ PATH
       effective_bootstrap
       effective_datatables (>= 4.0.0)
       effective_resources
-      rails (>= 3.2.0)
+      rails (>= 6.0.0)
       sass
 
 GEM

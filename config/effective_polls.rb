@@ -30,7 +30,14 @@ EffectivePolls.setup do |config|
     admin: 'admin'
   }
 
-  # Display a file upload field when the admin creates a new poll to collect a poll image
-  config.use_active_storage = true
+  # Audience Scope Collection
+  #
+  # When creating a new poll, an Array of User scopes can be provided
+  # The User model must respond to these
+  #
+  # config.audience_user_scopes = [:all, :registered]
+  # config.audience_user_scopes = [['All Users', :all], ['Registered Users', :registered]]
+  #
+  config.audience_user_scopes = [['All Users', :all]]
 
 end

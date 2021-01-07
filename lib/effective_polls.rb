@@ -11,7 +11,7 @@ module EffectivePolls
 
   mattr_accessor :layout
 
-  mattr_accessor :use_active_storage
+  mattr_accessor :audience_user_scopes
 
   def self.setup
     yield self
