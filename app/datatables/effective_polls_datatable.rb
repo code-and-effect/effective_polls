@@ -6,15 +6,13 @@ class EffectivePollsDatatable < Effective::Datatable
 
     col :start_at
     col :end_at
-    col :draft
-
-    col :title
-    col :body
+    col :secret
+    col :audience
 
     actions_col
   end
 
   collection do
-    Effective::Poll.all
+    Effective::Poll.deep
   end
 end

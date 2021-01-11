@@ -3,18 +3,22 @@ class Admin::EffectivePollsDatatable < Effective::Datatable
     order :start_at, :desc
 
     col :id, visible: false
+    col :created_at, visible: false
+    col :updated_at, visible: false
+
+    col :title
+    col :body, visible: false
 
     col :start_at
     col :end_at
-    col :draft
 
-    col :title
-    col :body
+    col :secret
+    col :audience
 
     actions_col
   end
 
   collection do
-    Effective::Poll.all
+    Effective::Poll.deep
   end
 end

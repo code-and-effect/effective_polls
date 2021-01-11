@@ -2,6 +2,9 @@ module Effective
   class Poll < ActiveRecord::Base
     has_rich_text :body
 
+    has_many :poll_questions, -> { order(:position) }, inverse_of: :poll, dependent: :destroy
+    accepts_nested_attributes_for :poll_questions, allow_destroy: true
+
     AUDIENCES = ['All Users', 'Individual Users', 'Selected Users']
 
     effective_resource do
@@ -21,6 +24,9 @@ module Effective
     serialize :audience_scope, Array
 
     scope :deep, -> { with_rich_text_body_and_embeds }
+
+    scope :started, -> { where('start_at >= ?', Time.zone.now) }
+    scope :editable, -> { where('start_at < ?', Time.zone.now) }
 
     validates :title, presence: true
     validates :start_at, presence: true

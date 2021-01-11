@@ -12,6 +12,25 @@
 
 ActiveRecord::Schema.define(version: 2) do
 
+  create_table "poll_question_options", force: :cascade do |t|
+    t.integer "poll_question_id"
+    t.string "title"
+    t.integer "position"
+    t.datetime "updated_at"
+    t.datetime "created_at"
+    t.index ["poll_question_id"], name: "index_poll_question_options_on_poll_question_id"
+  end
+
+  create_table "poll_questions", force: :cascade do |t|
+    t.integer "poll_id"
+    t.string "title"
+    t.string "category"
+    t.integer "position"
+    t.datetime "updated_at"
+    t.datetime "created_at"
+    t.index ["poll_id"], name: "index_poll_questions_on_poll_id"
+  end
+
   create_table "polls", force: :cascade do |t|
     t.string "title"
     t.datetime "start_at"

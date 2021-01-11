@@ -1,0 +1,39 @@
+= effective_form_with(model: [:admin, poll], engine: true) do |f|
+  = f.text_field :title, hint: 'The title of your poll.'
+  = f.check_box :secret, label: 'Secret ballot', hint: 'A secret ballot will have its results anonymized'
+
+  = f.datetime_field :start_at, input_js: { minDate: [f.object.start_at.presence, Time.zone.now].compact.min.strftime('%F') }
+  = f.datetime_field :end_at
+
+  .alert.alert-warning
+    Once the start date has passed, this poll will become read only and you will be unable to make changes.
+
+  = f.rich_text_area :body
+
+  -# Audience
+  = f.radios :audience, Effective::Poll::AUDIENCES
+
+  = f.show_if :audience, 'All Users' do
+    .card
+      .card-body
+        %h5 All Users
+        %p All users may complete this poll
+
+  = f.show_if :audience, 'Individual Users' do
+    .card
+      .card-body
+        %h5 Individual Users
+        %p Only the following individual users may complete this poll
+
+        - user_ids = User.respond_to?(:sorted) ? User.sorted : User.all
+        = f.select :audience_scope, user_ids, multiple: true, label: false
+
+  = f.show_if :audience, 'Selected Users' do
+    .card
+      .card-body
+        %h5 Selected Users
+        %p Users within any of the following groups may complete this poll
+        = f.checks :audience_scope, effective_polls_audience_scope_collection(), multiple: true, label: false
+
+
+  = effective_submit(f)
