@@ -10,7 +10,7 @@ module Effective
     end
 
     before_validation(if: -> { poll_question.present? }) do
-      self.position ||= (poll_questions.poll_question_options.map { |obj| obj.position }.compact!.max || -1) + 1
+      self.position ||= (poll_question.poll_question_options.map { |obj| obj.position }.compact.max || -1) + 1
     end
 
     scope :sorted, -> { order(:position) }

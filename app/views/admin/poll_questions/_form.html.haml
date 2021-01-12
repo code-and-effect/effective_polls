@@ -4,8 +4,11 @@
   - else
     = f.select :poll_id, Effective::Poll.sorted.editable.all
 
-  = f.text_field :title, hint: 'The title of your question.'
-  = f.rich_text_area :body, hint: 'optional content'
+  = f.text_field :title, label: 'Question Title'
+
+  .mb-4
+    = collapse('Include additional content...', show: f.object.body.present?) do
+      = f.rich_text_area :body, label: false, hint: 'optional body content'
 
   = f.select :category, Effective::PollQuestion::CATEGORIES
 
@@ -13,7 +16,7 @@
     .card
       .card-body
         %h5 Choose one
-        %p Display radio buttons to choose one
+        %p Display radio buttons to choose one option
 
   = f.show_if :category, 'Select all that apply' do
     .card
@@ -24,32 +27,44 @@
   = f.show_if :category, 'Select upto 1' do
     .card
       .card-body
-        %h5 Select upto 1
+        %h5 Select upto 1 (one)
         %p Display checkboxes to select upto 1 option
 
   = f.show_if :category, 'Select upto 2' do
     .card
       .card-body
-        %h5 Select upto 2
+        %h5 Select upto 2 (two)
         %p Display checkboxes to select upto 2 options
 
   = f.show_if :category, 'Select upto 3' do
     .card
       .card-body
-        %h5 Select upto 2
+        %h5 Select upto 3 (three)
         %p Display checkboxes to select upto 3 options
 
   = f.show_if :category, 'Select upto 4' do
     .card
       .card-body
-        %h5 Select upto 2
+        %h5 Select upto 4 (four)
         %p Display checkboxes to select upto 4 options
 
   = f.show_if :category, 'Select upto 5' do
     .card
       .card-body
-        %h5 Select upto 2
+        %h5 Select upto 5 (five)
         %p Display checkboxes to select upto 5 options
+
+  = f.show_if :category, 'Short Answer' do
+    .card
+      .card-body
+        %h5 Short Answer
+        %p Display a text field to enter a short text answer
+
+  = f.show_if :category, 'Long Answer' do
+    .card
+      .card-body
+        %h5 Long Answer
+        %p Display a textarea to enter a long text answer
 
   = f.show_if :category, 'Date' do
     .card
@@ -63,28 +78,25 @@
         %h5 Email
         %p Display an email field to enter an email
 
-  = f.show_if :category, 'Integer' do
+  = f.show_if :category, 'Number' do
     .card
       .card-body
-        %h5 Integer
+        %h5 Number
         %p Display a number field to enter an integer number
-
-  = f.show_if :category, 'Long Answer' do
-    .card
-      .card-body
-        %h5 Long Answer
-        %p Display a textarea to enter a long text answer
-
-  = f.show_if :category, 'Short Answer' do
-    .card
-      .card-body
-        %h5 Short Answer
-        %p Display a text field to enter a short text answer
 
   = f.show_if :category, 'Upload File' do
     .card
       .card-body
         %h5 Upload File
         %p Display a file field to upload a file
+
+  = f.show_if_any :category, Effective::PollQuestion::WITH_OPTIONS_CATEGORIES do
+    .mt-3.card
+      .card-body
+        %h5 Options
+        %p Display the following options:
+
+        = f.has_many :poll_question_options, class: 'tight' do |fa|
+          = fa.text_field :title, label: false
 
   = effective_submit(f)
