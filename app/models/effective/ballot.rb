@@ -5,6 +5,8 @@ module Effective
     belongs_to :poll, class_name: 'Effective::Poll'
     belongs_to :user
 
+    acts_as_tokened
+
     acts_as_wizard(
       start: 'Start',
       vote: 'Ballot',
@@ -13,11 +15,14 @@ module Effective
     )
 
     effective_resource do
+      # Acts as tokened
+      token                  :string, permitted: false
+
       # Acts as Wizard
       wizard_steps           :text, permitted: false
 
       # More fields
-      completed_at           :datetime
+      completed_at           :datetime, permitted: false
 
       timestamps
     end
@@ -26,7 +31,7 @@ module Effective
     scope :sorted, -> { order(:id) }
 
     validates :user_id, uniqueness: {
-      scope: :poll_id, allow_blank: true, message: 'a ballot already exists for this poll and user'
+      scope: :poll_id, allow_blank: true, message: 'your ballot already exists for this poll'
     }
 
     before_validation(if: -> { new_record? }) do

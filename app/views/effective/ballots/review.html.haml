@@ -1,0 +1,9 @@
+= render_wizard_sidebar(resource) do
+  %h1= @page_title
+
+  %p This is where you review the submissions
+
+  = effective_form_with(model: resource, url: wizard_path(step), method: :put) do |f|
+    = f.hidden_field :id
+
+    = f.submit 'Save and Continue'

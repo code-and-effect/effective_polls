@@ -5,6 +5,8 @@ module Effective
     has_many :poll_questions, -> { order(:position) }, inverse_of: :poll, dependent: :destroy
     accepts_nested_attributes_for :poll_questions, allow_destroy: true
 
+    has_many :ballots
+
     AUDIENCES = ['All Users', 'Individual Users', 'Selected Users']
 
     effective_resource do
