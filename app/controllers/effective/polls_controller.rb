@@ -4,5 +4,6 @@ module Effective
 
     before_action(:authenticate_user!) if defined?(Devise)
     include Effective::CrudController
+
   end
 end

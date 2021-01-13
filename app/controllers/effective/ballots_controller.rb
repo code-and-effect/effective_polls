@@ -6,7 +6,8 @@ module Effective
     include Effective::WizardController
 
     resource_scope do
-      Effective::Ballot.where(poll: params[:poll_id], user: current_user)
+      poll = Effective::Poll.find(params[:poll_id])
+      Effective::Ballot.where(poll: poll, user: current_user)
     end
 
   end
