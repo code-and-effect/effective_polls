@@ -10,7 +10,7 @@ module EffectivePollsHelper
     # Makes sure the User model responds to all values
     scopes.each do |_, scope|
       unless defined?(User) && User.respond_to?(scope)
-        raise("invalid effective_polls config.audience_user_scopes value. Your user model must respond to the scope User.#{scope}")
+        raise("invalid effective_polls config.audience_user_scopes value. The user model must respond to the scope User.#{scope}")
       end
     end
 

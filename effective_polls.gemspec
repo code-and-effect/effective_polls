@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
       "public gem pushes."
   end
 
-  spec.files = Dir["{app,config,db,lib}/**/*", 'MIT-LICENSE', 'Rakefile', 'README.md']
+  spec.files = Dir["{app,config,db,lib}/**/*"] + ['MIT-LICENSE', 'Rakefile', 'README.md']
 
   spec.add_dependency 'rails', '>= 6.0.0'
   spec.add_dependency 'sass'
@@ -31,5 +31,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'effective_datatables', '>= 4.0.0'
   spec.add_dependency 'effective_resources'
 
-  spec.add_development_dependency "sqlite3"
+  spec.add_development_dependency 'sqlite3'
 end

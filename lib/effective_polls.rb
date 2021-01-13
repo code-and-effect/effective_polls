@@ -1,5 +1,5 @@
-require 'effective_datatables'
 require 'effective_resources'
+require 'effective_datatables'
 require 'effective_polls/engine'
 require 'effective_polls/version'
 
@@ -7,6 +7,7 @@ module EffectivePolls
   mattr_accessor :polls_table_name
   mattr_accessor :poll_questions_table_name
   mattr_accessor :poll_question_options_table_name
+  mattr_accessor :ballots_table_name
 
   mattr_accessor :authorization_method
   mattr_accessor :permitted_params
