@@ -1,5 +1,5 @@
 module Effective
-  class Ballot < ApplicationRecord
+  class Ballot < ActiveRecord::Base
     attr_accessor :current_user
 
     belongs_to :poll, class_name: 'Effective::Poll'
