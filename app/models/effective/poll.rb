@@ -6,6 +6,7 @@ module Effective
     accepts_nested_attributes_for :poll_questions, allow_destroy: true
 
     has_many :ballots
+    has_many :ballot_responses
 
     AUDIENCES = ['All Users', 'Individual Users', 'Selected Users']
 

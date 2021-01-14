@@ -8,6 +8,7 @@ module EffectivePolls
   mattr_accessor :poll_questions_table_name
   mattr_accessor :poll_question_options_table_name
   mattr_accessor :ballots_table_name
+  mattr_accessor :ballot_responses_table_name
 
   mattr_accessor :authorization_method
   mattr_accessor :permitted_params

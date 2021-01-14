@@ -2,8 +2,11 @@ module Effective
   class Ballot < ActiveRecord::Base
     attr_accessor :current_user
 
-    belongs_to :poll, class_name: 'Effective::Poll'
+    belongs_to :poll
     belongs_to :user
+
+    has_many :ballot_responses, -> { order(:id) }, inverse_of: :ballot, dependent: :delete_all
+    accepts_nested_attributes_for :ballot_responses
 
     acts_as_tokened
 

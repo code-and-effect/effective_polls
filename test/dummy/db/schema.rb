@@ -12,6 +12,36 @@
 
 ActiveRecord::Schema.define(version: 2) do
 
+  create_table "ballot_responses", force: :cascade do |t|
+    t.integer "ballot_id"
+    t.integer "poll_id"
+    t.integer "poll_question_id"
+    t.integer "poll_question_option_id"
+    t.date "date"
+    t.string "email"
+    t.integer "number"
+    t.text "long_answer"
+    t.text "short_answer"
+    t.datetime "updated_at"
+    t.datetime "created_at"
+    t.index ["ballot_id"], name: "index_ballot_responses_on_ballot_id"
+    t.index ["poll_id"], name: "index_ballot_responses_on_poll_id"
+    t.index ["poll_question_id"], name: "index_ballot_responses_on_poll_question_id"
+    t.index ["poll_question_option_id"], name: "index_ballot_responses_on_poll_question_option_id"
+  end
+
+  create_table "ballots", force: :cascade do |t|
+    t.integer "poll_id"
+    t.integer "user_id"
+    t.string "token"
+    t.text "wizard_steps"
+    t.datetime "completed_at"
+    t.datetime "updated_at"
+    t.datetime "created_at"
+    t.index ["poll_id"], name: "index_ballots_on_poll_id"
+    t.index ["user_id"], name: "index_ballots_on_user_id"
+  end
+
   create_table "poll_question_options", force: :cascade do |t|
     t.integer "poll_question_id"
     t.string "title"
