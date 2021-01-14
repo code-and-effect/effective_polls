@@ -5,10 +5,7 @@
     = f.select :poll_id, Effective::Poll.sorted.editable.all
 
   = f.text_field :title, label: 'Question Title'
-
-  .mb-4
-    = collapse('Include additional content...', show: f.object.body.present?) do
-      = f.rich_text_area :body, label: false, hint: 'optional body content'
+  = f.rich_text_area :body, label: 'Question Body (optional)'
 
   = f.select :category, Effective::PollQuestion::CATEGORIES
 

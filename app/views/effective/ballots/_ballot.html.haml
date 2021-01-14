@@ -1,0 +1,14 @@
+.effective-ballot
+  %table.table.table-hover
+    %thead
+      %tr
+        %th Poll Question
+        %th Ballot Response
+
+    %tbody
+      - ballot.poll.poll_questions.each_with_index do |poll_question, index|
+        - ballot_response = ballot.ballot_response(poll_question)
+
+        %tr
+          %td= poll_question
+          %td= render(ballot_response)

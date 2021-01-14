@@ -1,0 +1,5 @@
+- ballot_response.response.each do |poll_question_option|
+  %div= poll_question_option.title
+
+- if ballot_response.response.blank?
+  = '-'

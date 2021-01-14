@@ -3,7 +3,9 @@ require 'test_helper'
 class PollsTest < ActiveSupport::TestCase
   test 'create a valid poll' do
     poll = build_effective_poll()
+
     assert poll.valid?
+    assert_equal Effective::PollQuestion::CATEGORIES, poll.poll_questions.map(&:category)
   end
 
   test 'a poll is started? once the start date has passed' do

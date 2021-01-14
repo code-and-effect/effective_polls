@@ -17,7 +17,7 @@ module Effective
       'Select upto 5',
       'Date',         # Date Field
       'Email',        # Email Field
-      'Integer',      # Numeric Field
+      'Number',       # Numeric Field
       'Long Answer',  # Text Area
       'Short Answer', # Text Field
       'Upload File'   # File field
@@ -52,10 +52,19 @@ module Effective
     validates :title, presence: true
     validates :category, presence: true, inclusion: { in: CATEGORIES }
     validates :position, presence: true
-    validates :poll_question_options, presence: true, if: -> { WITH_OPTIONS_CATEGORIES.include?(category) }
+    validates :poll_question_options, presence: true, if: -> { poll_question_option? }
+
+    # Create choose_one? and select_all_that_apply? methods for each category
+    CATEGORIES.each do |category|
+      define_method(category.parameterize.underscore + '?') { self.category == category }
+    end
 
     def to_s
       title.presence || 'New Poll Question'
+    end
+
+    def poll_question_option?
+      WITH_OPTIONS_CATEGORIES.include?(category)
     end
 
   end

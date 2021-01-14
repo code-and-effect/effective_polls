@@ -1,11 +1,12 @@
 module Effective
   class Ballot < ActiveRecord::Base
     attr_accessor :current_user
+    attr_accessor :current_step
 
     belongs_to :poll
     belongs_to :user
 
-    has_many :ballot_responses, -> { order(:id) }, inverse_of: :ballot, dependent: :delete_all
+    has_many :ballot_responses, dependent: :destroy
     accepts_nested_attributes_for :ballot_responses
 
     acts_as_tokened
@@ -27,22 +28,32 @@ module Effective
       # More fields
       completed_at           :datetime, permitted: false
 
+      current_step           permitted: true
       timestamps
     end
 
-    scope :deep, -> { includes(:poll, :user) }
+    scope :deep, -> { includes(:poll, :user, ballot_responses: [:poll, :poll_question, :poll_question_options]) }
     scope :sorted, -> { order(:id) }
-
-    validates :user_id, uniqueness: {
-      scope: :poll_id, allow_blank: true, message: 'your ballot already exists for this poll'
-    }
 
     before_validation(if: -> { new_record? }) do
       self.user ||= current_user
     end
 
+    validates :user_id, uniqueness: {
+      scope: :poll_id, allow_blank: true, message: 'your ballot already exists for this poll'
+    }
+
+    # I seem to need this even tho I accept_nested_attributes
+    validates :ballot_responses, associated: true
+
     def to_s
-      persisted? ? "Ballot ##{id}" : 'New Ballot'
+      persisted? ? 'ballot' : 'New Ballot'
+    end
+
+    # Find or build
+    def ballot_response(poll_question)
+      ballot_response = ballot_responses.find { |br| br.poll_question_id == poll_question.id }
+      ballot_response ||= ballot_responses.build(poll: poll_question.poll, poll_question: poll_question)
     end
 
   end

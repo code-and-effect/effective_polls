@@ -1,9 +1,11 @@
 = render_wizard_sidebar(resource) do
-  %h1= @page_title
-
-  %p This is where you review the submissions
+  %h1 Review: #{resource.poll}
 
   = effective_form_with(model: resource, url: wizard_path(step), method: :put) do |f|
-    = f.hidden_field :id
+    = f.hidden_field :current_step
 
-    = f.submit 'Save and Continue'
+    = render(resource)
+
+    = f.submit(center: true) do
+      = link_to 'Change Ballot', wizard_path(:vote), class: 'btn btn-secondary'
+      = f.save 'Submit Ballot'

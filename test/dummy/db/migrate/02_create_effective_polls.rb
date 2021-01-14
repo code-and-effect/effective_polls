@@ -52,13 +52,20 @@ class CreateEffectivePolls < ActiveRecord::Migration[6.0]
       t.references :ballot
       t.references :poll
       t.references :poll_question
-      t.references :poll_question_option
 
       t.date :date
       t.string :email
       t.integer :number
       t.text :long_answer
       t.text :short_answer
+
+      t.datetime :updated_at
+      t.datetime :created_at
+    end
+
+    create_table :ballot_response_options do |t|
+      t.references :ballot_response
+      t.references :poll_question_option
 
       t.datetime :updated_at
       t.datetime :created_at

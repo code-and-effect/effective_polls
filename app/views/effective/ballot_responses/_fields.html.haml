@@ -1,0 +1,15 @@
+.row
+  .col
+    %h3= poll_question
+    %p.text-muted.mb-2= poll_question.category
+
+    - if poll_question.body.present?
+      = poll_question.body
+
+    = f.hidden_field :poll_id
+    = f.hidden_field :poll_question_id
+
+    - ballot_response = f.object
+    - partial = 'effective/ballot_responses/fields/' + ballot_response.response_partial
+
+    = render(partial, f: f, ballot_response: ballot_response, poll_question: poll_question)

@@ -26,7 +26,7 @@ module Effective
 
     serialize :audience_scope, Array
 
-    scope :deep, -> { with_rich_text_body_and_embeds }
+    scope :deep, -> { with_rich_text_body_and_embeds.includes(poll_questions: :poll_question_options) }
 
     scope :started, -> { where('start_at >= ?', Time.zone.now) }
     scope :editable, -> { where('start_at < ?', Time.zone.now) }

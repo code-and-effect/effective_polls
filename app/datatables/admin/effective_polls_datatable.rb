@@ -15,6 +15,8 @@ class Admin::EffectivePollsDatatable < Effective::Datatable
     col :secret
     col :audience
 
+    col :poll_questions, visible: false
+
     actions_col
   end
 

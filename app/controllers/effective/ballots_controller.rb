@@ -7,7 +7,7 @@ module Effective
 
     resource_scope do
       poll = Effective::Poll.find(params[:poll_id])
-      Effective::Ballot.where(poll: poll, user: current_user)
+      Effective::Ballot.deep.where(poll: poll, user: current_user)
     end
 
   end
