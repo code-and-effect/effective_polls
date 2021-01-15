@@ -5,6 +5,21 @@ module Effective
     before_action(:authenticate_user!) if defined?(Devise)
     include Effective::WizardController
 
+    # Redirect to their in-progress ballot or root path when they click an incorrect poll link
+    before_action(only: [:show, :new]) do
+      existing = Effective::Ballot.where(poll: params[:poll_id]).where.not(id: resource).first
+
+      if existing&.completed?
+        flash[:danger] = 'You have already completed a ballot for this poll.'
+        redirect_to(root_path)
+      elsif existing.present?
+        next_step = Effective::Ballot::WIZARD_STEPS.keys.reverse.find { |step| existing.can_visit_step?(step) } || :start
+        flash[:success] = "You have been redirected to the #{resource_wizard_step_title(next_step)} step."
+
+        redirect_to effective_polls.poll_ballot_build_path(existing.poll, existing, next_step)
+      end
+    end
+
     resource_scope do
       poll = Effective::Poll.find(params[:poll_id])
       Effective::Ballot.deep.where(poll: poll, user: current_user)

@@ -1,6 +1,10 @@
 module Effective
   class Poll < ActiveRecord::Base
-    has_rich_text :body
+    has_rich_text :all_steps_content
+    has_rich_text :start_content
+    has_rich_text :vote_content
+    has_rich_text :submit_content
+    has_rich_text :complete_content
 
     has_many :poll_questions, -> { order(:position) }, inverse_of: :poll, dependent: :destroy
     accepts_nested_attributes_for :poll_questions, allow_destroy: true
@@ -26,7 +30,14 @@ module Effective
 
     serialize :audience_scope, Array
 
-    scope :deep, -> { with_rich_text_body_and_embeds.includes(poll_questions: :poll_question_options) }
+    scope :deep, -> {
+      includes(poll_questions: :poll_question_options)
+      .with_rich_text_all_steps_content
+      .with_rich_text_start_content
+      .with_rich_text_vote_content
+      .with_rich_text_submit_content
+      .with_rich_text_complete_content
+    }
 
     scope :started, -> { where('start_at >= ?', Time.zone.now) }
     scope :editable, -> { where('start_at < ?', Time.zone.now) }

@@ -6,8 +6,11 @@
       This is a <strong>Secret Ballot</strong>.
       Only you will know what you have submitted and no one has access to individual ballots.
 
-  - if resource.poll.body.present?
-    = resource.poll.body
+  - if resource.poll.all_steps_content.present?
+    .mb-2= resource.poll.all_steps_content
+
+  - if resource.poll.start_content.present?
+    .mb-2= resource.poll.start_content
 
   = effective_form_with(model: resource, url: wizard_path(step), method: :put) do |f|
     = f.hidden_field :current_step

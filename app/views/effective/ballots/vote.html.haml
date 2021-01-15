@@ -1,6 +1,12 @@
 = render_wizard_sidebar(resource) do
   %h1 Ballot: #{resource.poll}
 
+  - if resource.poll.all_steps_content.present?
+    .mb-2= resource.poll.all_steps_content
+
+  - if resource.poll.vote_content.present?
+    .mb-2= resource.poll.vote_content
+
   = effective_form_with(model: resource, url: wizard_path(step), method: :put) do |f|
     = f.hidden_field :current_step
 

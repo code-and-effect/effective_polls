@@ -3,6 +3,9 @@
     = render 'admin/polls/form_poll', poll: poll
 
   - if poll.persisted?
+    = tab 'Content' do
+      = render 'admin/polls/form_content', poll: poll
+
     = tab 'Questions' do
       - datatable = Admin::EffectivePollQuestionsDatatable.new(poll_id: poll.id)
       = render_datatable(datatable, inline: true, simple: true)
