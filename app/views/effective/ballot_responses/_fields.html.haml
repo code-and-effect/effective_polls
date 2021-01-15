@@ -4,7 +4,7 @@
     %p.text-muted.mb-2= poll_question.category
 
     - if poll_question.body.present?
-      = poll_question.body
+      .mb-3= poll_question.body
 
     = f.hidden_field :poll_id
     = f.hidden_field :poll_question_id

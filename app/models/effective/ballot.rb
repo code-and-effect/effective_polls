@@ -14,7 +14,7 @@ module Effective
     acts_as_wizard(
       start: 'Start',
       vote: 'Ballot',
-      review: 'Review',
+      submit: 'Review',     # They submit on this step
       complete: 'Complete'
     )
 
@@ -40,20 +40,28 @@ module Effective
     end
 
     validates :user_id, uniqueness: {
-      scope: :poll_id, allow_blank: true, message: 'your ballot already exists for this poll'
+      scope: :poll_id, allow_blank: true, message: 'ballot already exists for this poll'
     }
 
     # I seem to need this even tho I accept_nested_attributes
     validates :ballot_responses, associated: true
 
     def to_s
-      persisted? ? 'ballot' : 'New Ballot'
+      'ballot'
     end
 
     # Find or build
     def ballot_response(poll_question)
       ballot_response = ballot_responses.find { |br| br.poll_question_id == poll_question.id }
       ballot_response ||= ballot_responses.build(poll: poll_question.poll, poll_question: poll_question)
+    end
+
+    # This is the review step where they click Submit Ballot
+    def submit!
+      wizard_steps[:complete] ||= Time.zone.now
+      self.completed_at ||= Time.zone.now
+
+      save!
     end
 
   end

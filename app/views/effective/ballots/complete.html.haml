@@ -3,6 +3,5 @@
 
   %p You're Complete!
 
-  = effective_form_with(model: resource, url: wizard_path(step), method: :put) do |f|
-    = f.hidden_field :current_step
-    = f.submit 'Save and Continue'
+  .text-center
+    %p= link_to 'Home', root_path, class: 'btn btn-primary'

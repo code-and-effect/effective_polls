@@ -1,5 +1,5 @@
 = render_wizard_sidebar(resource) do
-  %h1 Poll #{resource.poll}
+  %h1 Poll: #{resource.poll}
 
   - if resource.poll.secret?
     .alert.alert-warning
