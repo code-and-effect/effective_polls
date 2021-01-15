@@ -23,6 +23,8 @@ module Effective
       poll = create_effective_poll!
       user = sign_in()
 
+      assert poll.available_for?(user)
+
       get effective_polls.poll_ballot_build_path(poll, :new, :start)
 
       assert_response :success

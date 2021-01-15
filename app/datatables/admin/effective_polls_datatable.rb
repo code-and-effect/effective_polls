@@ -1,4 +1,11 @@
 class Admin::EffectivePollsDatatable < Effective::Datatable
+  filters do
+    scope :upcoming
+    scope :available
+    scope :completed
+    scope :all
+  end
+
   datatable do
     order :start_at, :desc
 

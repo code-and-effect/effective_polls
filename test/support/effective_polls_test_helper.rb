@@ -7,10 +7,11 @@ module EffectivePollsTestHelper
   def build_effective_poll
     poll = Effective::Poll.new(
       title: 'Effective Poll',
-      start_at: (Time.zone.now + 1.day).beginning_of_day,
-      end_at: (Time.zone.now + 1.day).end_of_day,
+      start_at: Time.zone.now,
+      end_at: Time.zone.now.end_of_day,
       secret: false,
-      audience: 'All Users'
+      audience: 'All Users',
+      skip_started_validation: true
     )
 
     build_poll_question(poll, Effective::PollQuestion::CATEGORIES)

@@ -4,6 +4,7 @@ EffectivePolls.setup do |config|
   config.poll_question_options_table_name = :poll_question_options
   config.ballots_table_name = :ballots
   config.ballot_responses_table_name = :ballot_responses
+  config.ballot_response_options_table_name = :ballot_response_options
 
   # Authorization Method
   #

@@ -1,5 +1,7 @@
 module Effective
   class Poll < ActiveRecord::Base
+    attr_accessor :skip_started_validation
+
     has_rich_text :all_steps_content
     has_rich_text :start_content
     has_rich_text :vote_content
@@ -39,21 +41,21 @@ module Effective
       .with_rich_text_complete_content
     }
 
-    scope :started, -> { where('start_at >= ?', Time.zone.now) }
-    scope :editable, -> { where('start_at < ?', Time.zone.now) }
+    scope :upcoming, -> { where('start_at > ?', Time.zone.now) }
+    scope :available, -> { where('start_at <= ? AND (end_at > ? OR end_at IS NULL)', Time.zone.now, Time.zone.now) }
+    scope :completed, -> { where('end_at < ?', Time.zone.now) }
 
     validates :title, presence: true
     validates :start_at, presence: true
-    validates :end_at, presence: true
 
     validates :audience, inclusion: { in: AUDIENCES }
     validates :audience_scope, presence: true, unless: -> { audience == 'All Users' }
 
-    validate(if: -> { started? }) do
+    validate(if: -> { started? }, unless: -> { skip_started_validation }) do
       self.errors.add(:base, 'has already started. a poll cannot be changed after it has started.')
     end
 
-    validate(if: -> { start_at.present? && !started? }) do
+    validate(if: -> { start_at.present? && !started? }, unless: -> { skip_started_validation }) do
       self.errors.add(:start_at, 'must be a future date') if start_at < Time.zone.now
     end
 
@@ -65,13 +67,40 @@ module Effective
       title.presence || 'New Poll'
     end
 
+    def available_for?(user)
+      raise('expected a user') unless user.kind_of?(User)
+      available? && users.include?(user)
+    end
+
+    def users
+      case audience
+      when 'All Users'
+        User.all
+      when 'Individual Users'
+        User.where(id: audience_scope)
+      when 'Selected Users'
+        collection = User.none
+        audience_scope.each { |scope| collection = collection.or(User.send(scope)) }
+        collection
+      else
+        raise('unexpected audience')
+      end
+    end
+
+    def available?
+      started? && !ended?
+    end
+
     def started?
       start_at_was.present? && Time.zone.now > start_at_was
+    end
+
+    def ended?
+      end_at.present? && end_at < Time.zone.now
     end
 
     def audience_scope
       Array(super) - [nil, '']
     end
-
   end
 end
