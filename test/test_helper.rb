@@ -20,7 +20,18 @@ end
 
 # Custom Test Helpers
 require 'support/effective_polls_test_helper'
+require 'pry-byebug'
 
 class ActiveSupport::TestCase
+  include Warden::Test::Helpers
   include EffectivePollsTestHelper
+
+  def sign_in(user = create_user!)
+    login_as(user, scope: :user); user
+  end
+
+  def as_user(user, &block)
+    sign_in(user); yield; logout(:user)
+  end
+
 end

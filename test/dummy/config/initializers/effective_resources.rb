@@ -1,6 +1,4 @@
-EffectivePolls.setup do |config|
-  config.polls_table_name = :polls
-
+EffectiveResources.setup do |config|
   # Authorization Method
   #
   # This method is called by all controller actions with the appropriate action and resource
@@ -23,21 +21,11 @@ EffectivePolls.setup do |config|
   # end
   config.authorization_method = Proc.new { |controller, action, resource| authorize!(action, resource) }
 
-  # Layout Settings
-  # Configure the Layout per controller, or all at once
-  config.layout = {
-    polls: 'application',
-    admin: 'admin'
-  }
-
-  # Audience Scope Collection
+  # These default submit actions will be added to each controller
+  # and rendered when calling effective_submit(f)
+  # based on the controller, and its `submits` if any.
   #
-  # When creating a new poll, an Array of User scopes can be provided
-  # The User model must respond to these
-  #
-  # config.audience_user_scopes = [:all, :registered]
-  # config.audience_user_scopes = [['All Users', :all], ['Registered Users', :registered]]
-  #
-  config.audience_user_scopes = [['All Users', :all]]
+  # Supported values: 'Save', 'Continue', and 'Add New'
+  config.default_submits = ['Save', 'Continue', 'Add New']
 
 end

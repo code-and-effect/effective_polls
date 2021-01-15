@@ -33,5 +33,7 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency 'sqlite3'
   spec.add_development_dependency 'devise'
+  spec.add_development_dependency 'haml-rails'
   spec.add_development_dependency 'wicked'
+  spec.add_development_dependency 'pry-byebug'
 end

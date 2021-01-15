@@ -1,7 +1,7 @@
 module EffectivePollsTestHelper
 
   def create_effective_poll!
-    build_effective_poll.tap { |poll| poll.save! }
+    build_effective_poll.tap(&:save!)
   end
 
   def build_effective_poll
@@ -31,11 +31,15 @@ module EffectivePollsTestHelper
     questions.length == 1 ? questions.first : questions
   end
 
+  def create_user!
+    build_user.tap(&:save!)
+  end
+
   def build_user
     @user_index ||= 0
     @user_index += 1
 
-    User.create!(
+    User.new(
       email: "user#{@user_index}@example.com",
       password: 'rubicon2020',
       password_confirmation: 'rubicon2020',

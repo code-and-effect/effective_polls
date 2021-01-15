@@ -1,1 +1,1 @@
-//= link_directory ../stylesheets/effective_polls .css
+//= link_directory ../stylesheets .css

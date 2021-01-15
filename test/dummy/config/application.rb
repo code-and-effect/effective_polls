@@ -3,7 +3,11 @@ require_relative 'boot'
 require 'rails/all'
 
 Bundler.require(*Rails.groups)
-require "effective_polls"
+
+require 'devise'
+require 'haml-rails'
+require 'wicked'
+require 'effective_polls'
 
 module Dummy
   class Application < Rails::Application
@@ -16,4 +20,3 @@ module Dummy
     # the framework and any gems in your application.
   end
 end
-
