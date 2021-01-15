@@ -1,5 +1,9 @@
 module EffectivePollsTestHelper
 
+  def create_effective_poll!
+    build_effective_poll.tap { |poll| poll.save! }
+  end
+
   def build_effective_poll
     poll = Effective::Poll.new(
       title: 'Effective Poll',
@@ -10,8 +14,6 @@ module EffectivePollsTestHelper
     )
 
     build_poll_question(poll, Effective::PollQuestion::CATEGORIES)
-
-    poll.save!
     poll
   end
 

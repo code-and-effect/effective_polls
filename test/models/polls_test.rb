@@ -9,13 +9,13 @@ class PollsTest < ActiveSupport::TestCase
   end
 
   test 'a poll is started? once the start date has passed' do
-    poll = build_effective_poll()
+    poll = create_effective_poll!
     poll.update_column(:start_at, Time.zone.now)
     assert poll.started?
   end
 
   test 'a poll is read only after started' do
-    poll = build_effective_poll()
+    poll = create_effective_poll!
     poll.update_column(:start_at, Time.zone.now)
     assert poll.started?
 
