@@ -92,7 +92,7 @@ module Effective
     end
 
     def started?
-      start_at_was.present? && Time.zone.now > start_at_was
+      start_at_was.present? && Time.zone.now >= start_at_was
     end
 
     def ended?

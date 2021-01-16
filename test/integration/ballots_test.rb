@@ -19,7 +19,31 @@ module Effective
       assert_redirected_to @controller.wizard_path(:start, ballot_id: :new)
     end
 
-    test 'first step' do
+    test 'unavailable poll redirects to root path' do
+      poll = create_effective_poll!
+      poll.update_column(:end_at, Time.zone.now - 1.minute)
+
+      user = sign_in()
+      refute poll.available_for?(user)
+
+      get effective_polls.poll_ballot_build_path(poll, :new, :start)
+      assert_redirected_to root_path
+      assert_equal 'This poll has ended', @controller.view_context.flash[:danger]
+    end
+
+    test 'existing ballot redirects' do
+      poll = create_effective_poll!
+      user = sign_in()
+
+      ballot = create_effective_ballot!(poll: poll, user: user)
+      ballot.wizard_steps[:start] = Time.zone.now
+      ballot.save!
+
+      get effective_polls.new_poll_ballot_path(poll)
+      assert_redirected_to effective_polls.poll_ballot_build_path(poll, ballot, :vote)
+    end
+
+    test 'start step' do
       poll = create_effective_poll!
       user = sign_in()
 
@@ -45,6 +69,7 @@ module Effective
 
       assert_equal :start, @controller.resource.current_step
     end
+
 
   end
 end

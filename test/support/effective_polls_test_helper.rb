@@ -32,6 +32,17 @@ module EffectivePollsTestHelper
     questions.length == 1 ? questions.first : questions
   end
 
+  def create_effective_ballot!(poll: nil, user: nil)
+    build_effective_ballot(poll: poll, user: user).tap(&:save!)
+  end
+
+  def build_effective_ballot(poll: nil, user: nil)
+    poll ||= create_effective_poll!
+    user ||= create_user!
+
+    ballot = Effective::Ballot.new(poll: poll, user: user)
+  end
+
   def create_user!
     build_user.tap(&:save!)
   end

@@ -44,6 +44,8 @@ module Effective
       end
     end
 
+    private
+
     def permitted_params
       case step
       when :start

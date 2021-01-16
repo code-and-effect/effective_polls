@@ -14,11 +14,8 @@ class Admin::EffectivePollsDatatable < Effective::Datatable
     col :updated_at, visible: false
 
     col :title
-    col :body, visible: false
-
     col :start_at
     col :end_at
-
     col :secret
     col :audience
 
@@ -28,6 +25,6 @@ class Admin::EffectivePollsDatatable < Effective::Datatable
   end
 
   collection do
-    Effective::Poll.deep
+    Effective::Poll.all.deep
   end
 end
