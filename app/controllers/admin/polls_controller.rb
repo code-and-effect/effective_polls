@@ -11,5 +11,13 @@ module Admin
       params.require(:effective_poll).permit!
     end
 
+    def results
+      @poll = Effective::Poll.find(params[:id])
+      EffectivePolls.authorize!(self, :results, @poll)
+
+      @datatable = Admin::EffectivePollResultsDatatable.new(poll_id: @poll.id)
+      @page_title = "#{@poll} Results"
+    end
+
   end
 end

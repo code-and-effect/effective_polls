@@ -80,5 +80,4 @@ class PollsTest < ActiveSupport::TestCase
     refute poll.users.include?(user)
   end
 
-
 end

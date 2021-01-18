@@ -34,6 +34,7 @@ module Effective
 
     scope :deep, -> { includes(:poll, :user, ballot_responses: [:poll, :poll_question, :poll_question_options]) }
     scope :sorted, -> { order(:id) }
+    scope :completed, -> { where.not(completed_at: nil) }
 
     before_validation(if: -> { new_record? }) do
       self.user ||= current_user

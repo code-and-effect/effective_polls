@@ -1,0 +1,2 @@
+- ballot_responses.select { |br| br.email.present? }.each do |ballot_response|
+  .poll-result-email= mail_to(ballot_response.response)

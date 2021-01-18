@@ -1,0 +1,34 @@
+.card.mb-3
+  .card-body
+    %h5.card-title Results
+
+    %p #{poll} was available from #{poll.available_date}.
+
+    %p
+      %strong
+        = pluralize(poll.completed_ballots.count, 'users')
+        completed
+      ballots from an audience of
+      = succeed('.') do
+        %strong= pluralize(poll.users.count, 'total users')
+
+.card.mb-3
+  .card-body
+    %h5.card-title Question Results
+
+    .effective-ballot
+      %table.table.table-hover
+        %thead
+          %tr
+            %th Poll Question
+            %th Results
+
+        %tbody
+          - ballots = poll.ballots
+
+          - poll.poll_questions.each_with_index do |poll_question, index|
+            - ballot_responses = poll.poll_results(poll_question: poll_question)
+
+            %tr
+              %td= poll_question
+              %td= render('effective/poll_results/poll_result', poll_question: poll_question, ballot_responses: ballot_responses)

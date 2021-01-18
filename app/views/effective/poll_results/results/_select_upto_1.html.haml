@@ -1,0 +1,11 @@
+- poll_question.poll_question_options.each do |poll_question_option|
+  - responses = ballot_responses.select { |br| br.response == poll_question_option }
+  - percent = ((responses.length * 100.0) / ballot_responses.length).round
+
+  .poll-result-option.mb-3
+    .d-flex
+      .mr-auto= poll_question_option
+      .text-muted #{responses.length} (#{percent}%)
+
+    .progress
+      .progress-bar{role: 'progressbar', 'aria-valuenow': responses.length, 'aria-valuemin': 0, 'aria-valuemax': ballot_responses.length, style: "width: #{percent}%"}

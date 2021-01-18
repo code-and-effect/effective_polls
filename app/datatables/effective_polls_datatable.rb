@@ -1,12 +1,13 @@
+# Displays available polls that the current_user may complete
+
 class EffectivePollsDatatable < Effective::Datatable
   datatable do
     order :start_at
 
+    col :start_at, visible: false
+
     col :title
-    col :start_at
-    col :end_at
-    col :secret
-    col :audience
+    col :available_date, label: 'Date'
 
     actions_col(actions: []) do |poll|
       ballot = poll.ballots.where(user: current_user).first

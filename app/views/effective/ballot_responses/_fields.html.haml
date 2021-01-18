@@ -10,6 +10,5 @@
     = f.hidden_field :poll_question_id
 
     - ballot_response = f.object
-    - partial = 'effective/ballot_responses/fields/' + ballot_response.response_partial
-
+    - partial = 'effective/ballot_responses/fields/' + poll_question.category_partial
     = render(partial, f: f, ballot_response: ballot_response, poll_question: poll_question)

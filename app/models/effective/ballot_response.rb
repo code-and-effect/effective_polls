@@ -80,8 +80,8 @@ module Effective
       raise('unknown response for unexpected poll question category')
     end
 
-    def response_partial
-      poll_question&.category.to_s.parameterize.underscore
+    def category_partial
+      poll_question&.category_partial
     end
 
   end

@@ -67,5 +67,9 @@ module Effective
       WITH_OPTIONS_CATEGORIES.include?(category)
     end
 
+    def category_partial
+      category.to_s.parameterize.underscore
+    end
+
   end
 end

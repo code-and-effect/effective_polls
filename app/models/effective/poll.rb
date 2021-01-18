@@ -14,6 +14,10 @@ module Effective
     has_many :ballots
     has_many :ballot_responses
 
+    # For the poll_results screens
+    has_many :completed_ballots, -> { Effective::Ballot.completed }, class_name: 'Effective::Ballot'
+    has_many :completed_ballot_responses, -> { where(ballot: Effective::Ballot.completed) }, class_name: 'Effective::BallotResponse'
+
     AUDIENCES = ['All Users', 'Individual Users', 'Selected Users']
 
     effective_resource do
@@ -40,6 +44,14 @@ module Effective
       .with_rich_text_submit_content
       .with_rich_text_complete_content
     }
+
+    scope :deep_results, -> {
+      includes(poll_questions: :poll_question_options)
+      .includes(ballots: [ballot_responses: [:poll, :poll_question, :poll_question_options]])
+    }
+
+    scope :sorted, -> { order(:start_at) }
+    scope :editable, -> { upcoming }
 
     scope :upcoming, -> { where('start_at > ?', Time.zone.now) }
     scope :available, -> { where('start_at <= ? AND (end_at > ? OR end_at IS NULL)', Time.zone.now, Time.zone.now) }
@@ -99,8 +111,25 @@ module Effective
       end_at.present? && end_at < Time.zone.now
     end
 
+    def available_date
+      if start_at && end_at && start_at.to_date == end_at.to_date
+        "#{start_at.strftime('%F at %H:%M')} to #{end_at.strftime('%H:%M')}"
+      elsif start_at && end_at
+        "#{start_at.strftime('%F at %H:%M')} to #{end_at.strftime('%F %H:%M')}"
+      elsif start_at
+        "#{start_at.strftime('%F at %H:%M')}"
+      end
+    end
+
     def audience_scope
       Array(super) - [nil, '']
     end
+
+    # Returns all completed_ballot_responses
+    def poll_results(poll_question: nil)
+      return completed_ballot_responses if poll_question.nil?
+      completed_ballot_responses.select { |br| br.poll_question_id == poll_question.id }
+    end
+
   end
 end

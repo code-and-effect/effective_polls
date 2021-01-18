@@ -24,4 +24,24 @@ class BallotsTest < ActiveSupport::TestCase
     assert ballot.completed?
   end
 
+  test 'cannot revisit previous steps once completed' do
+    ballot = build_effective_ballot
+    assert ballot.can_visit_step?(:start)
+
+    ballot.wizard_steps[:start] = Time.zone.now
+    assert ballot.can_visit_step?(:start)
+    assert ballot.can_visit_step?(:vote)
+
+    ballot.wizard_steps[:vote] = Time.zone.now
+    assert ballot.can_visit_step?(:start)
+    assert ballot.can_visit_step?(:vote)
+    assert ballot.can_visit_step?(:submit)
+
+    ballot.submit!
+    refute ballot.can_visit_step?(:start)
+    refute ballot.can_visit_step?(:vote)
+    refute ballot.can_visit_step?(:submit)
+    assert ballot.can_visit_step?(:complete)
+  end
+
 end

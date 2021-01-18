@@ -43,6 +43,17 @@ module Effective
       assert_redirected_to effective_polls.poll_ballot_build_path(poll, ballot, :vote)
     end
 
+    test 'completed ballot redirects' do
+      poll = create_effective_poll!
+      user = sign_in()
+
+      ballot = create_effective_ballot!(poll: poll, user: user)
+      ballot.submit!
+
+      get effective_polls.poll_ballot_build_path(poll, ballot, :vote)
+      assert_redirected_to effective_polls.poll_ballot_build_path(poll, ballot, :complete)
+    end
+
     test 'start step' do
       poll = create_effective_poll!
       user = sign_in()
@@ -70,6 +81,38 @@ module Effective
       assert_equal :start, @controller.resource.current_step
     end
 
+    test 'save step valid' do
+      poll = create_effective_poll!
+      user = sign_in()
+
+      assert poll.available_for?(user)
+      put effective_polls.poll_ballot_build_path(poll, :new, :start), params: { effective_ballot: { current_step: 'start'} }
+
+      assert_redirected_to effective_polls.poll_ballot_build_path(poll, Effective::Ballot.last, :vote)
+      assert_equal 'Successfully saved ballot', flash[:success]
+
+      assert @controller.resource.kind_of?(Effective::Ballot)
+      assert @controller.resource.persisted?
+    end
+
+    test 'save step invalid' do
+      poll = create_effective_poll!
+      user = sign_in()
+      assert poll.available_for?(user)
+
+      # Create a duplicate
+      ballot = create_effective_ballot!(poll: poll, user: user)
+      put effective_polls.poll_ballot_build_path(poll, :new, :start), params: { effective_ballot: { current_step: 'start'} }
+
+      assert_response :success
+      assert_equal "Unable to save ballot: user ballot already exists for this poll", flash[:danger]
+      assert_match "<form", @response.body
+
+      assert @controller.resource.kind_of?(Effective::Ballot)
+      assert @controller.view_context.assigns['ballot'].kind_of?(Effective::Ballot)
+      assert @controller.view_context.assigns['ballot'].errors.present?
+      assert_equal :start, @controller.resource.current_step
+    end
 
   end
 end

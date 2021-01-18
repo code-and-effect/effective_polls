@@ -1,0 +1,2 @@
+- ballot_responses.select { |br| br.date.present? }.each do |ballot_response|
+  .poll-result-date= ballot_response.response.strftime('%F')

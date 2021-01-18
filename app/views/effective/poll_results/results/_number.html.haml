@@ -1,0 +1,2 @@
+- ballot_responses.select { |br| br.number.present? }.each do |ballot_response|
+  .poll-result-number= ballot_response.response
