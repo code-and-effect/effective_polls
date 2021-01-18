@@ -1,36 +1,42 @@
 class Admin::EffectivePollResultsDatatable < Effective::Datatable
   datatable do
-    length :all
+    col :ballot, search: poll.completed_ballots.order(:token).pluck(:token)
 
-    #order :position
+    col :position, visible: false
+    col :category, search: Effective::PollQuestion::CATEGORIES, visible: false
 
-    # col :id, visible: false
-
-    # col :position do |poll_question|
-    #   poll_question.position.to_i + 1
-    # end
-
-    col :position
-    col :question_title
-    col :option_value
-
-    col :category, label: 'Type'
-    # col :poll_question_options, label: 'Options'
-
+    col :poll_question, search: poll.poll_questions.pluck(:title)
+    col :responses
   end
 
   collection do
-    results = poll.poll_questions.sorted.flat_map do |poll_question|
-      options = poll_question.poll_question_options.sorted.map do |poll_question_option|
-        poll_question_option.title
-      end.presence || ['']
+    ballot_responses = Effective::BallotResponse.completed.deep.where(poll: poll)
 
-      options.map do |option|
-        [poll_question.position, poll_question.title, option]
+    ballot_responses.flat_map do |br|
+      rows = if br.poll_question.poll_question_option?
+        br.poll_question_options.map do |response|
+          [
+            br.ballot.token,
+            br.poll_question.position,
+            br.poll_question.category,
+            br.poll_question.to_s,
+            response.to_s
+          ]
+        end
+      elsif br.response.present?
+        [
+          [
+            br.ballot.token,
+            br.poll_question.position,
+            br.poll_question.category,
+            br.poll_question.to_s,
+            br.response.to_s
+          ]
+        ]
+      else
+        []
       end
     end
-
-    results
 
   end
 

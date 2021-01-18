@@ -1,2 +1,14 @@
-- ballot_responses.select { |br| br.email.present? }.each do |ballot_response|
-  .poll-result-email= mail_to(ballot_response.response)
+- sorted = ballot_responses.sort { |a, b| (a.email || '') <=> (b.email || '') }
+
+- sorted.group_by { |br| br.response }.each do |response, responses|
+  - count = responses.length
+  - total = ballot_responses.length
+  - percent = ((count * 100.0) / total).round
+
+  .poll-result-option
+    .d-flex
+      .mr-auto= response.blank? ? 'None of the Above' : response
+      .text-muted #{count} (#{percent}%)
+
+    .progress.mb-3
+      .progress-bar{role: 'progressbar', 'aria-valuenow': count, 'aria-valuemin': 0, 'aria-valuemax': total, style: "width: #{percent}%"}

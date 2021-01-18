@@ -11,6 +11,8 @@ module Effective
     has_many :poll_questions, -> { order(:position) }, inverse_of: :poll, dependent: :destroy
     accepts_nested_attributes_for :poll_questions, allow_destroy: true
 
+    has_many :poll_question_options, through: :poll_questions
+
     has_many :ballots
     has_many :ballot_responses
 

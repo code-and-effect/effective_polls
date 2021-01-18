@@ -30,5 +30,5 @@
             - ballot_responses = poll.poll_results(poll_question: poll_question)
 
             %tr
-              %td= poll_question
+              %td #{poll_question.position + 1}. #{poll_question}
               %td= render('effective/poll_results/poll_result', poll_question: poll_question, ballot_responses: ballot_responses)

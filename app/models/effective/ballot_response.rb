@@ -21,6 +21,9 @@ module Effective
       timestamps
     end
 
+    scope :completed, -> { where(ballot: Effective::Ballot.completed) }
+    scope :deep, -> { includes(:ballot, :poll, :poll_question, :poll_question_options) }
+
     validates :poll, presence: true
     validates :ballot, presence: true
     validates :poll_question, presence: true
@@ -34,12 +37,12 @@ module Effective
       self.errors.add(:poll_question, 'must match poll') unless poll_question.poll_id == poll.id
     end
 
-    validates :date, presence: true, if: -> { poll_question&.date? }
-    validates :email, presence: true, email: true, if: -> { poll_question&.email? }
-    validates :number, presence: true, if: -> { poll_question&.number? }
-    validates :long_answer, presence: true, if: -> { poll_question&.long_answer? }
-    validates :short_answer, presence: true, if: -> { poll_question&.short_answer? }
-    validates :upload_file, presence: true, if: -> { poll_question&.upload_file? }
+    # validates :date, presence: true, if: -> { poll_question&.date? }
+    # validates :email, presence: true, email: true, if: -> { poll_question&.email? }
+    # validates :number, presence: true, if: -> { poll_question&.number? }
+    # validates :long_answer, presence: true, if: -> { poll_question&.long_answer? }
+    # validates :short_answer, presence: true, if: -> { poll_question&.short_answer? }
+    # validates :upload_file, presence: true, if: -> { poll_question&.upload_file? }
 
     validates :poll_question_option_ids, if: -> { poll_question&.choose_one? },
       length: { maximum: 1, message: 'please choose 1 option only' }
