@@ -31,6 +31,16 @@ module EffectivePolls
         migration_template ('../' * 3) + 'db/migrate/01_create_effective_polls.rb.erb', 'db/migrate/create_effective_polls.rb'
       end
 
+      def copy_mailer_preview
+        mailer_preview_path = (Rails.application.config.action_mailer.preview_path rescue nil)
+
+        if mailer_preview_path.present?
+          template 'effective_polls_mailer_preview.rb', File.join(mailer_preview_path, 'effective_polls_mailer_preview.rb')
+        else
+          puts "couldn't find action_mailer.preview_path. Skipping effective_polls_mailer_preview."
+        end
+      end
+
     end
   end
 end

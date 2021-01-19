@@ -2,9 +2,9 @@ module Effective
   class PollNotification < ActiveRecord::Base
     belongs_to :poll
 
-    CATEGORIES = ['When poll starts', 'When poll ends', 'Reminder']
+    CATEGORIES = ['Upcoming reminder', 'When poll starts', 'Reminder', 'When poll ends']
 
-    REMINDERS = {
+    UPCOMING_REMINDERS = {
       '1 hour before' => 1.hours.to_i,
       '3 hours before' => 3.hours.to_i,
       '6 hours before' => 6.hours.to_i,
@@ -17,7 +17,25 @@ module Effective
       '6 days before' => 6.days.to_i,
       '1 week before' => 1.weeks.to_i,
       '2 weeks before' => 2.weeks.to_i,
+      '3 weeks before' => 3.weeks.to_i,
       '1 month before' => 1.month.to_i
+    }
+
+    REMINDERS = {
+      '1 hour after' => 1.hours.to_i,
+      '3 hours after' => 3.hours.to_i,
+      '6 hours after' => 6.hours.to_i,
+      '12 hours after' => 12.hours.to_i,
+      '1 day after' => 1.days.to_i,
+      '2 days after' => 2.days.to_i,
+      '3 days after' => 3.days.to_i,
+      '4 days after' => 4.days.to_i,
+      '5 days after' => 5.days.to_i,
+      '6 days after' => 6.days.to_i,
+      '1 week after' => 1.weeks.to_i,
+      '2 weeks after' => 2.weeks.to_i,
+      '3 weeks after' => 3.weeks.to_i,
+      '1 month after' => 1.month.to_i
     }
 
     effective_resource do
@@ -41,26 +59,84 @@ module Effective
     scope :started, -> { where.not(started_at: nil) }
     scope :completed, -> { where.not(completed_at: nil) }
 
+    # Called by the poll_notifier rake task
+    scope :notifiable, -> { where(started_at: nil, completed_at: nil) }
+
     validates :poll, presence: true
     validates :category, presence: true, inclusion: { in: CATEGORIES }
-    validates :reminder, presence: true, if: -> { reminder? }, uniqueness: { scope: [:poll_id], message: 'already exists' }
     validates :subject, presence: true
     validates :body, presence: true
 
+    validates :reminder, if: -> { reminder? || upcoming_reminder? },
+      presence: true, uniqueness: { scope: [:poll_id, :category], message: 'already exists' }
+
     def to_s
       'poll notification'
+    end
+
+    def upcoming_reminder?
+      category == 'Upcoming reminder'
     end
 
     def poll_start?
       category == 'When poll starts'
     end
 
+    def reminder?
+      category == 'Reminder'
+    end
+
     def poll_end?
       category == 'When poll ends'
     end
 
-    def reminder?
-      category == 'Reminder'
+    def notifiable?
+      started_at.blank? && completed_at.blank?
+    end
+
+    def notify_now?
+      return false unless notifiable?
+
+      case category
+      when 'When poll starts'
+        poll.started?
+      when 'When poll ends'
+        poll.ended?
+      when 'Upcoming Reminder'
+        !poll.started? && poll.start_at < (Time.zone.now + reminder)
+      when 'Reminder'
+        poll.available? && Time.zone.now < (poll.start_at + reminder)
+      else
+        raise('unexpected category')
+      end
+    end
+
+    def notify!
+      return false unless notify_now?
+
+      emails = poll.users.pluck(:email)
+      return false unless emails.present?
+
+      update_column(:started_at, Time.zone.now)
+
+      emails.in_groups_of(250, false).each do |emails|
+        mail = case category
+        when 'When poll starts'
+          Effective::PollsMailer.poll_start(self, emails)
+        when 'When poll ends'
+          Effective::PollsMailer.poll_end(self, emails)
+        when 'Upcoming Reminder'
+          Effective::PollsMailer.poll_upcoming_reminder(self, emails)
+        when 'Reminder'
+          Effective::PollsMailer.poll_reminder(self, emails)
+        else
+          raise('unexpected category')
+        end
+
+        mail.deliver_now
+      end
+
+      update_column(:completed_at, Time.zone.now)
     end
 
   end

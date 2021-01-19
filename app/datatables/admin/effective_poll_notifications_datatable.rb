@@ -19,6 +19,8 @@ class Admin::EffectivePollNotificationsDatatable < Effective::Datatable
         poll_notification.poll.start_at&.strftime('%F %H:%M')
       when 'When poll ends'
         poll_notification.poll.end_at&.strftime('%F %H:%M')
+      when 'Upcoming reminder'
+        Effective::PollNotification::UPCOMING_REMINDERS.invert[poll_notification.reminder]
       when 'Reminder'
         Effective::PollNotification::REMINDERS.invert[poll_notification.reminder]
       else

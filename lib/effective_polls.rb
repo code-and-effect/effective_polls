@@ -19,6 +19,9 @@ module EffectivePolls
 
   mattr_accessor :audience_user_scopes
 
+  # Hashes of configs
+  mattr_accessor :mailer
+
   def self.setup
     yield self
   end

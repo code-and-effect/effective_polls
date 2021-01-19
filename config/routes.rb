@@ -4,7 +4,7 @@ end
 
 EffectivePolls::Engine.routes.draw do
   scope module: 'effective' do
-    resources :polls, only: [] do
+    resources :polls, only: [:show] do
       resources :ballots, only: [:new, :show] do
         resources :build, controller: :ballots, only: [:show, :update]
       end

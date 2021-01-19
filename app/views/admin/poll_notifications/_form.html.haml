@@ -7,11 +7,49 @@
   = f.select :category, Effective::PollNotification::CATEGORIES,
     label: 'Send an email notification'
 
-  = f.show_if :category, 'Reminder' do
-    = f.select :reminder, Effective::PollNotification::REMINDERS, label: false,
-      hint: "before the poll starts at #{f.object.poll&.start_at&.strftime('%F %H:%M')}."
+  = f.show_if :category, 'Upcoming reminder' do
 
-  = f.text_field :subject
-  = f.text_area :body
+    = f.select :reminder, Effective::PollNotification::UPCOMING_REMINDERS, label: false,
+      hint: "before the poll starts on #{f.object.poll&.start_at&.strftime('%F')}."
+
+    .alert.alert-warning
+      %strong Upcoming Reminders
+      are sent to the entire audience before the poll starts.
+      %br
+      Use upcoming reminders to advertise, prepare, or communicate to your audience before the poll begins.
+
+  = f.show_if :category, 'When poll starts' do
+    .alert.alert-warning
+      %strong When poll starts
+      notifications will be sent within 10 minutes of the poll start time.
+
+  = f.show_if :category, 'Reminder' do
+
+    = f.select :reminder, Effective::PollNotification::REMINDERS, label: false,
+      hint: "after the poll starts on #{f.object.poll&.start_at&.strftime('%F')}."
+
+    .alert.alert-warning
+      %strong Reminders
+      are sent to users in the audience who have not yet completed their ballot.
+      %br
+      Use reminders to boost your audience participation and remind people to vote.
+
+  = f.show_if :category, 'When poll ends' do
+    .alert.alert-warning
+      %strong When poll ends
+      notifications will be sent within 10 minutes of the poll end time.
+
+  = f.text_field :subject, label: 'Email Subject'
+  = f.text_area :body, label: 'Email Body'
+
+  .alert.alert-warning
+    Email content must not contain any personal details.
+    %br
+    This content will be sent in a mass email with hundreds of bcc'd recipients.
+
+    - if poll_notification.poll.present?
+      %br
+      The url for this poll will be:
+      = effective_polls.poll_url(poll_notification.poll)
 
   = effective_submit(f)

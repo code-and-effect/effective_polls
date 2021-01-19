@@ -46,4 +46,14 @@ EffectivePolls.setup do |config|
   #
   config.audience_user_scopes = [['All Users', :all]]
 
+  # Notifications Mailer Settings
+  #
+  # Schedule rake effective_polls:notify to run every 10 minutes
+  # to send out email poll notifications
+  #
+  config.mailer = {
+    layout: 'effective_polls_mailer_layout',
+    default_from: 'info@example.com'
+  }
+
 end
