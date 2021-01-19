@@ -49,11 +49,21 @@ module EffectivePollsTestHelper
     ballot
   end
 
+  def create_effective_poll_notification!(category: nil, poll: nil)
+    build_effective_poll_notification(category: category, poll: poll).tap(&:save!)
+  end
+
   def build_effective_poll_notification(category: nil, poll: nil)
     poll ||= create_effective_poll!
     category ||= 'Reminder'
 
-    Effective::PollNotification.new(poll: poll, category: category)
+    Effective::PollNotification.new(
+      category: category,
+      poll: poll,
+      reminder: 1.day.to_i,
+      subject: "#{category} subject",
+      body: "#{category} body"
+    )
   end
 
   def create_user!
@@ -71,6 +81,14 @@ module EffectivePollsTestHelper
       first_name: 'Test',
       last_name: 'User'
     )
+  end
+
+  def assert_email(count: 1, &block)
+    before = ActionMailer::Base.deliveries.length
+    yield
+    after = ActionMailer::Base.deliveries.length
+
+    assert (after - before == count), "expected one email to have been delivered"
   end
 
 end

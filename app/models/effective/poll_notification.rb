@@ -2,6 +2,7 @@ module Effective
   class PollNotification < ActiveRecord::Base
     belongs_to :poll
 
+    BATCHSIZE = (Rails.env.test? ? 3 : 250)
     CATEGORIES = ['Upcoming reminder', 'When poll starts', 'Reminder', 'When poll ends']
 
     UPCOMING_REMINDERS = {
@@ -114,12 +115,12 @@ module Effective
     def notify!
       return false unless notify_now?
 
-      emails = poll.users.pluck(:email)
-      return false unless emails.present?
+      # We send to all email addresses, except for the 'Reminder' that exclude completed users
+      emails = poll.emails(exclude_completed: (category == 'Reminder'))
 
       update_column(:started_at, Time.zone.now)
 
-      emails.in_groups_of(250, false).each do |emails|
+      emails.in_groups_of(BATCHSIZE, false).each do |emails|
         mail = case category
         when 'When poll starts'
           Effective::PollsMailer.poll_start(self, emails)

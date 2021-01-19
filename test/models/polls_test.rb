@@ -80,4 +80,19 @@ class PollsTest < ActiveSupport::TestCase
     refute poll.users.include?(user)
   end
 
+  test 'audience emails' do
+    poll = create_effective_poll!
+    users = [create_user!, create_user!, create_user!]
+    assert_equal users.map(&:email), poll.emails(exclude_completed: false)
+    assert_equal users.map(&:email), poll.emails(exclude_completed: true)
+
+    ballot = create_effective_ballot!(poll: poll, user: users.first)
+    assert_equal users.map(&:email), poll.emails(exclude_completed: false)
+    assert_equal users.map(&:email), poll.emails(exclude_completed: true)
+
+    ballot.submit!
+    assert_equal users.map(&:email), poll.emails(exclude_completed: false)
+    assert_equal users.last(2).map(&:email), poll.emails(exclude_completed: true)
+  end
+
 end

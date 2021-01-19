@@ -105,6 +105,14 @@ module Effective
       end
     end
 
+    def emails(exclude_completed: false)
+      if exclude_completed
+        users.where.not(id: completed_ballots.select('user_id as id')).pluck(:email)
+      else
+        users.pluck(:email)
+      end
+    end
+
     def available?
       started? && !ended?
     end
