@@ -106,7 +106,7 @@ module Effective
       when 'Upcoming reminder'
         !poll.started? && poll.start_at < (Time.zone.now + reminder)
       when 'Reminder'
-        poll.available? && (poll.start_at + reminder) < Time.zone.now
+        !poll.ended? && poll.start_at < (Time.zone.now - reminder)
       else
         raise('unexpected category')
       end

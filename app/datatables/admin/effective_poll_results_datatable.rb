@@ -42,8 +42,8 @@ class Admin::EffectivePollResultsDatatable < Effective::Datatable
 
   def poll
     @poll ||= begin
-      raise('expected a poll_id') unless attributes[:poll_id]
-      Effective::Poll.deep_results.find(attributes[:poll_id])
+      raise('expected datatable poll_token attribute') unless attributes[:poll_token]
+      Effective::Poll.deep_results.find(attributes[:poll_token])
     end
   end
 
