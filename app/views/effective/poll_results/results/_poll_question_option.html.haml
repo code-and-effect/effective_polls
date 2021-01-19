@@ -4,7 +4,7 @@
 
   - count = responses.length
   - total = ballot_responses.length
-  - percent = ((count * 100.0) / total).round
+  - percent = (total.zero? ? 0 : ((count * 100.0) / total).round)
 
   - next if poll_question_option.blank? && count == 0
 

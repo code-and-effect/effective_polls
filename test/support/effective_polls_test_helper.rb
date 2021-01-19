@@ -9,7 +9,6 @@ module EffectivePollsTestHelper
       title: 'Effective Poll',
       start_at: Time.zone.now,
       end_at: Time.zone.now.end_of_day,
-      secret: false,
       audience: 'All Users',
       skip_started_validation: true
     )

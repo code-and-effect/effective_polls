@@ -1,5 +1,6 @@
 EffectivePolls.setup do |config|
   config.polls_table_name = :polls
+  config.poll_notifications_table_name = :poll_notifications
   config.poll_questions_table_name = :poll_questions
   config.poll_question_options_table_name = :poll_question_options
   config.ballots_table_name = :ballots

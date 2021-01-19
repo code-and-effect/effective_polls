@@ -16,7 +16,6 @@ class Admin::EffectivePollsDatatable < Effective::Datatable
     col :title
     col :start_at
     col :end_at
-    col :secret
     col :audience
 
     col :poll_questions, visible: false

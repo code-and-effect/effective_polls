@@ -8,10 +8,11 @@ module Effective
     has_rich_text :submit_content
     has_rich_text :complete_content
 
+    has_many :poll_notifications, -> { order(:id) }, inverse_of: :poll, dependent: :destroy
+    accepts_nested_attributes_for :poll_notifications, allow_destroy: true
+
     has_many :poll_questions, -> { order(:position) }, inverse_of: :poll, dependent: :destroy
     accepts_nested_attributes_for :poll_questions, allow_destroy: true
-
-    has_many :poll_question_options, through: :poll_questions
 
     has_many :ballots
     has_many :ballot_responses
@@ -27,8 +28,6 @@ module Effective
 
       start_at      :datetime
       end_at        :datetime
-
-      secret        :boolean
 
       audience            :string
       audience_scope      :text       # An Array of user_ids or named scopes on the User model

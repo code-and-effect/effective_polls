@@ -1,10 +1,9 @@
 = render_wizard_sidebar(resource) do
   %h1 Poll: #{resource.poll}
 
-  - if resource.poll.secret?
-    .alert.alert-warning
-      This is a <strong>Secret Ballot</strong>.
-      Only you will know what you have submitted and no one has access to individual ballots.
+  .alert.alert-warning
+    This is a <strong>Secret Ballot</strong>.
+    Only you will know what you have submitted and no one has access to individual ballots.
 
   - if resource.poll.all_steps_content.present?
     .mb-2= resource.poll.all_steps_content

@@ -22,6 +22,7 @@ module EffectivePolls
       def create_migration_file
         @polls_table_name = ':' + EffectivePolls.polls_table_name.to_s
         @poll_questions_table_name = ':' + EffectivePolls.poll_questions_table_name.to_s
+        @poll_notifications_table_name = ':' + EffectivePolls.poll_notifications_table_name.to_s
         @poll_question_options_table_name = ':' + EffectivePolls.poll_question_options_table_name.to_s
         @ballots_table_name = ':' + EffectivePolls.ballots_table_name.to_s
         @ballot_responses_table_name  = ':' + EffectivePolls.ballot_responses_table_name.to_s

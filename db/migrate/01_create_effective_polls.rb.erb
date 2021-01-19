@@ -6,10 +6,24 @@ class CreateEffectivePolls < ActiveRecord::Migration[6.0]
       t.datetime :start_at
       t.datetime :end_at
 
-      t.boolean :secret, default: false
-
       t.string :audience
       t.text :audience_scope
+
+      t.datetime :updated_at
+      t.datetime :created_at
+    end
+
+    create_table <%= @poll_notifications_table_name %> do |t|
+      t.references :poll
+
+      t.string :category
+      t.integer :reminder
+
+      t.string :subject
+      t.text :body
+
+      t.datetime :started_at
+      t.datetime :completed_at
 
       t.datetime :updated_at
       t.datetime :created_at
@@ -20,6 +34,8 @@ class CreateEffectivePolls < ActiveRecord::Migration[6.0]
 
       t.string :title
       t.string :category
+      t.boolean :required, default: true
+
       t.integer :position
 
       t.datetime :updated_at

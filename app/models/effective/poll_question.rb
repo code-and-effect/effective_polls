@@ -36,6 +36,7 @@ module Effective
     effective_resource do
       title         :string
       category      :string
+      required      :boolean
 
       position      :integer
 

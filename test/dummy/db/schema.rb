@@ -59,6 +59,19 @@ ActiveRecord::Schema.define(version: 3) do
     t.index ["user_id"], name: "index_ballots_on_user_id"
   end
 
+  create_table "poll_notifications", force: :cascade do |t|
+    t.integer "poll_id"
+    t.string "category"
+    t.integer "reminder"
+    t.string "subject"
+    t.text "body"
+    t.datetime "started_at"
+    t.datetime "completed_at"
+    t.datetime "updated_at"
+    t.datetime "created_at"
+    t.index ["poll_id"], name: "index_poll_notifications_on_poll_id"
+  end
+
   create_table "poll_question_options", force: :cascade do |t|
     t.integer "poll_question_id"
     t.string "title"
@@ -72,6 +85,7 @@ ActiveRecord::Schema.define(version: 3) do
     t.integer "poll_id"
     t.string "title"
     t.string "category"
+    t.boolean "required"
     t.integer "position"
     t.datetime "updated_at"
     t.datetime "created_at"
@@ -82,7 +96,6 @@ ActiveRecord::Schema.define(version: 3) do
     t.string "title"
     t.datetime "start_at"
     t.datetime "end_at"
-    t.boolean "secret", default: false
     t.string "audience"
     t.text "audience_scope"
     t.datetime "updated_at"

@@ -6,7 +6,6 @@ def build_effective_poll
     title: 'Effective Poll',
     start_at: (Time.zone.now + 1.day).beginning_of_day,
     end_at: (Time.zone.now + 1.day).end_of_day,
-    secret: false,
     audience: 'All Users'
   )
 

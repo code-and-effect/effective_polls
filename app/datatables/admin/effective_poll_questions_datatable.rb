@@ -14,6 +14,7 @@ class Admin::EffectivePollQuestionsDatatable < Effective::Datatable
 
     col :title
     col :body
+    col :required
 
     col :category, label: 'Type'
     col :poll_question_options, label: 'Options'

@@ -37,12 +37,13 @@ module Effective
       self.errors.add(:poll_question, 'must match poll') unless poll_question.poll_id == poll.id
     end
 
-    # validates :date, presence: true, if: -> { poll_question&.date? }
-    # validates :email, presence: true, email: true, if: -> { poll_question&.email? }
-    # validates :number, presence: true, if: -> { poll_question&.number? }
-    # validates :long_answer, presence: true, if: -> { poll_question&.long_answer? }
-    # validates :short_answer, presence: true, if: -> { poll_question&.short_answer? }
-    # validates :upload_file, presence: true, if: -> { poll_question&.upload_file? }
+    validates :date, presence: true, if: -> { poll_question&.required? && poll_question.date? }
+    validates :email, presence: true, email: true, if: -> { poll_question&.required? && poll_question.email? }
+    validates :number, presence: true, if: -> { poll_question&.required? && poll_question.number? }
+    validates :long_answer, presence: true, if: -> { poll_question&.required? && poll_question.long_answer? }
+    validates :short_answer, presence: true, if: -> { poll_question&.required? && poll_question.short_answer? }
+    validates :upload_file, presence: true, if: -> { poll_question&.required? && poll_question.upload_file? }
+    validates :poll_question_option_ids, presence: true, if: -> { poll_question&.required? && poll_question.poll_question_option? }
 
     validates :poll_question_option_ids, if: -> { poll_question&.choose_one? },
       length: { maximum: 1, message: 'please choose 1 option only' }
