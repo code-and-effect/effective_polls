@@ -102,10 +102,10 @@ module Effective
         poll.started?
       when 'When poll ends'
         poll.ended?
-      when 'Upcoming Reminder'
+      when 'Upcoming reminder'
         !poll.started? && poll.start_at < (Time.zone.now + reminder)
       when 'Reminder'
-        poll.available? && Time.zone.now < (poll.start_at + reminder)
+        poll.available? && (poll.start_at + reminder) < Time.zone.now
       else
         raise('unexpected category')
       end
@@ -125,7 +125,7 @@ module Effective
           Effective::PollsMailer.poll_start(self, emails)
         when 'When poll ends'
           Effective::PollsMailer.poll_end(self, emails)
-        when 'Upcoming Reminder'
+        when 'Upcoming reminder'
           Effective::PollsMailer.poll_upcoming_reminder(self, emails)
         when 'Reminder'
           Effective::PollsMailer.poll_reminder(self, emails)

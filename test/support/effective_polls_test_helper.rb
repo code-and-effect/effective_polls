@@ -49,6 +49,13 @@ module EffectivePollsTestHelper
     ballot
   end
 
+  def build_effective_poll_notification(category: nil, poll: nil)
+    poll ||= create_effective_poll!
+    category ||= 'Reminder'
+
+    Effective::PollNotification.new(poll: poll, category: category)
+  end
+
   def create_user!
     build_user.tap(&:save!)
   end
