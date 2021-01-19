@@ -13,7 +13,7 @@ class EffectivePollsDatatable < Effective::Datatable
       ballot = poll.ballots.where(user: current_user).first
 
       if ballot.blank?
-        dropdown_link_to('Start', effective_polls.new_poll_ballot_path(poll))
+        dropdown_link_to('Start', effective_polls.poll_ballot_build_path(poll, :new, :start))
       elsif ballot.completed?
         'Complete'
       else

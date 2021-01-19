@@ -2,6 +2,7 @@ class CreateEffectivePolls < ActiveRecord::Migration[6.0]
   def change
     create_table :polls do |t|
       t.string :title
+      t.string :token
 
       t.datetime :start_at
       t.datetime :end_at

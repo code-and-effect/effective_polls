@@ -12,7 +12,8 @@ module Effective
 
     # Enforce one ballot per user. Redirect them to an existing ballot for this poll.
     before_action(only: [:new, :show]) do
-      existing = Effective::Ballot.where(poll: params[:poll_id], user: current_user).where.not(id: resource).first
+      poll = Effective::Poll.find(params[:poll_id])
+      existing = Effective::Ballot.where(poll: poll, user: current_user).where.not(id: resource).first
 
       if existing&.completed?
         flash[:danger] = 'You have already completed a ballot for this poll.'

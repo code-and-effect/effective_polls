@@ -94,6 +94,7 @@ ActiveRecord::Schema.define(version: 3) do
 
   create_table "polls", force: :cascade do |t|
     t.string "title"
+    t.string "token"
     t.datetime "start_at"
     t.datetime "end_at"
     t.string "audience"

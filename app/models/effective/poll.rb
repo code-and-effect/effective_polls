@@ -21,9 +21,14 @@ module Effective
     has_many :completed_ballots, -> { Effective::Ballot.completed }, class_name: 'Effective::Ballot'
     has_many :completed_ballot_responses, -> { where(ballot: Effective::Ballot.completed) }, class_name: 'Effective::BallotResponse'
 
+    acts_as_tokened
+
     AUDIENCES = ['All Users', 'Individual Users', 'Selected Users']
 
     effective_resource do
+      # Acts as tokened
+      token                  :string, permitted: false
+
       title         :string
 
       start_at      :datetime
