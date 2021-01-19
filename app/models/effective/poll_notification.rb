@@ -99,7 +99,7 @@ module Effective
 
       case category
       when 'When poll starts'
-        poll.started?
+        poll.available?
       when 'When poll ends'
         poll.ended?
       when 'Upcoming reminder'

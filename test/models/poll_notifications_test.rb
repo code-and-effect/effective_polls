@@ -1,37 +1,41 @@
 require 'test_helper'
 
 class PollNotificationsTest < ActiveSupport::TestCase
-  # test 'is notifiable when start_at blank and completed_at blank' do
-  #   notification = build_effective_poll_notification
-  #   assert notification.notifiable?
+  test 'is notifiable when start_at blank and completed_at blank' do
+    notification = build_effective_poll_notification
+    assert notification.notifiable?
 
-  #   notification.assign_attributes(started_at: Time.zone.now)
-  #   refute notification.notifiable?
-  # end
+    notification.assign_attributes(started_at: Time.zone.now)
+    refute notification.notifiable?
+  end
 
-  # test 'notify_now? when poll starts' do
-  #   poll = create_effective_poll!
-  #   notification = build_effective_poll_notification(poll: poll, category: 'When poll starts')
+  test 'notify_now? when poll starts' do
+    poll = create_effective_poll!
+    notification = build_effective_poll_notification(poll: poll, category: 'When poll starts')
 
-  #   assert poll.started?
-  #   assert notification.notify_now?
+    assert poll.started?
+    assert notification.notify_now?
 
-  #   poll.update!(start_at: Time.zone.now + 1.minute)
-  #   refute poll.started?
-  #   refute notification.notify_now?
-  # end
+    poll.update!(start_at: Time.zone.now + 1.minute)
+    refute poll.started?
+    refute notification.notify_now?
 
-  # test 'notify_now? when poll ends' do
-  #   poll = create_effective_poll!
-  #   notification = build_effective_poll_notification(poll: poll, category: 'When poll ends')
+    poll.update!(start_at: Time.zone.now - 1.minute, end_at: Time.zone.now)
+    refute poll.available?
+    refute notification.notify_now?
+  end
 
-  #   refute poll.ended?
-  #   refute notification.notify_now?
+  test 'notify_now? when poll ends' do
+    poll = create_effective_poll!
+    notification = build_effective_poll_notification(poll: poll, category: 'When poll ends')
 
-  #   poll.update!(end_at: Time.zone.now)
-  #   assert poll.ended?
-  #   assert notification.notify_now?
-  # end
+    refute poll.ended?
+    refute notification.notify_now?
+
+    poll.update!(end_at: Time.zone.now)
+    assert poll.ended?
+    assert notification.notify_now?
+  end
 
   test 'notify_now? upcoming reminder' do
     poll = create_effective_poll!
@@ -57,6 +61,10 @@ class PollNotificationsTest < ActiveSupport::TestCase
     poll.update!(start_at: Time.zone.now + 1.day - 10.minute)
     refute poll.started?
     assert notification.notify_now?
+
+    poll.update!(start_at: Time.zone.now - 1.minute, end_at: Time.zone.now)
+    assert poll.ended?
+    refute notification.notify_now?
   end
 
   test 'notify_now? reminder' do
@@ -84,6 +92,10 @@ class PollNotificationsTest < ActiveSupport::TestCase
     poll.update!(start_at: Time.zone.now - 1.day - 10.minute)
     assert poll.available?
     assert notification.notify_now?
+
+    poll.update!(start_at: Time.zone.now - 1.minute, end_at: Time.zone.now)
+    refute poll.available?
+    refute notification.notify_now?
   end
 
 
