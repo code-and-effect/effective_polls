@@ -5,13 +5,19 @@ module Effective
     CATEGORIES = ['When poll starts', 'When poll ends', 'Reminder']
 
     REMINDERS = {
-      '1 day' => 1.days.to_i,
-      '2 days' => 2.days.to_i,
-      '3 days' => 3.days.to_i,
-      '4 days' => 4.days.to_i,
-      '5 days' => 5.days.to_i,
-      '6 days' => 6.days.to_i,
-      '1 week' => 1.weeks.to_i
+      '1 hour before' => 1.hours.to_i,
+      '3 hours before' => 3.hours.to_i,
+      '6 hours before' => 6.hours.to_i,
+      '12 hours before' => 12.hours.to_i,
+      '1 day before' => 1.days.to_i,
+      '2 days before' => 2.days.to_i,
+      '3 days before' => 3.days.to_i,
+      '4 days before' => 4.days.to_i,
+      '5 days before' => 5.days.to_i,
+      '6 days before' => 6.days.to_i,
+      '1 week before' => 1.weeks.to_i,
+      '2 weeks before' => 2.weeks.to_i,
+      '1 month before' => 1.month.to_i
     }
 
     effective_resource do
@@ -37,7 +43,7 @@ module Effective
 
     validates :poll, presence: true
     validates :category, presence: true, inclusion: { in: CATEGORIES }
-    validates :reminder, presence: true, if: -> { reminder? }
+    validates :reminder, presence: true, if: -> { reminder? }, uniqueness: { scope: [:poll_id], message: 'already exists' }
     validates :subject, presence: true
     validates :body, presence: true
 

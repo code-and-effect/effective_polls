@@ -16,6 +16,7 @@ EffectivePolls::Engine.routes.draw do
       get :results, on: :member
     end
 
+    resources :poll_notifications, except: [:show]
     resources :poll_questions, except: [:show]
   end
 

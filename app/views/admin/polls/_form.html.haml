@@ -11,4 +11,10 @@
       = render_datatable(datatable, inline: true, simple: true)
 
     = tab 'Notifications' do
-      %p Notifications
+      %p
+        The following email notification will be sent to all
+        = pluralize(poll.users.count, 'users')
+        in the audience.
+
+      - datatable = Admin::EffectivePollNotificationsDatatable.new(poll_id: poll.id)
+      = render_datatable(datatable, inline: true, simple: true)

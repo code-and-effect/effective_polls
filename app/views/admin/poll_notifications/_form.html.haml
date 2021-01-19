@@ -1,0 +1,17 @@
+= effective_form_with(model: [:admin, poll_notification], engine: true) do |f|
+  - if inline_datatable?
+    = f.hidden_field :poll_id
+  - else
+    = f.select :poll_id, Effective::Poll.sorted.editable.all
+
+  = f.select :category, Effective::PollNotification::CATEGORIES,
+    label: 'Send an email notification'
+
+  = f.show_if :category, 'Reminder' do
+    = f.select :reminder, Effective::PollNotification::REMINDERS, label: false,
+      hint: "before the poll starts at #{f.object.poll&.start_at&.strftime('%F %H:%M')}."
+
+  = f.text_field :subject
+  = f.text_area :body
+
+  = effective_submit(f)

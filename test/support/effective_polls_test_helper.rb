@@ -40,6 +40,13 @@ module EffectivePollsTestHelper
     user ||= create_user!
 
     ballot = Effective::Ballot.new(poll: poll, user: user)
+
+    # Build a response for each poll question
+    poll.poll_questions.each do |poll_question|
+      ballot.ballot_response(poll_question)
+    end
+
+    ballot
   end
 
   def create_user!

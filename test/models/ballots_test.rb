@@ -24,6 +24,18 @@ class BallotsTest < ActiveSupport::TestCase
     assert ballot.completed?
   end
 
+  test 'response is required when question is required' do
+    poll = create_effective_poll!
+    poll_question = poll.poll_questions.first
+    poll_question.update!(required: true)
+
+    ballot = build_effective_ballot(poll: poll)
+    refute ballot.valid?
+
+    ballot_response = ballot.ballot_response(poll_question)
+    assert ballot_response.errors.present?
+  end
+
   test 'cannot revisit previous steps once completed' do
     ballot = build_effective_ballot
     assert ballot.can_visit_step?(:start)

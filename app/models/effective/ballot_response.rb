@@ -64,7 +64,7 @@ module Effective
       length: { maximum: 5, message: 'please select 5 options or fewer' }
 
     def to_s
-      persisted? ? 'ballot reponse' : 'New Ballot Response'
+      'ballot reponse'
     end
 
     def response
