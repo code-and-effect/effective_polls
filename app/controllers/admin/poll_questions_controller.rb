@@ -1,6 +1,6 @@
 module Admin
   class PollQuestionsController < ApplicationController
-    layout (EffectivePolls.layout.kind_of?(Hash) ? EffectivePolls.layout[:admin] : EffectivePolls.layout)
+    layout EffectivePolls.layout[:admin]
 
     before_action(:authenticate_user!) if defined?(Devise)
     before_action { EffectivePolls.authorize!(self, :admin, :effective_polls) }

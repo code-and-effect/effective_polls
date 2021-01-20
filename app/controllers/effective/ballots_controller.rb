@@ -1,6 +1,6 @@
 module Effective
   class BallotsController < ApplicationController
-    layout (EffectivePolls.layout.kind_of?(Hash) ? EffectivePolls.layout[:polls] : EffectivePolls.layout)
+    layout EffectivePolls.layout[:polls]
 
     before_action(:authenticate_user!) if defined?(Devise)
     include Effective::WizardController

@@ -2,8 +2,9 @@
 
 class EffectivePollsMailerPreview < ActionMailer::Preview
 
-  def poll_upcoming_reminder(poll_notification, bcc)
-    mail(bcc: bcc, body: poll_notification.body, subject: poll_notification.subject)
+  def poll_upcoming_reminder
+    poll_notification = build_poll_notification('The poll will start soon')
+    Effective::PollsMailer.poll_upcoming_reminder(poll_notification, bccs)
   end
 
   def poll_start
@@ -12,7 +13,7 @@ class EffectivePollsMailerPreview < ActionMailer::Preview
   end
 
   def poll_reminder
-    poll_notification = build_poll_notification('This is a reminder')
+    poll_notification = build_poll_notification('The poll started already and you have not participated')
     Effective::PollsMailer.poll_reminder(poll_notification, bccs)
   end
 
