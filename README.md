@@ -2,21 +2,24 @@
 
 Online polls and user voting.
 
-An admin creates polls with one or more poll_questions. The poll can be assigned to users through a poll_ballot.
+An admin creates polls with one or more poll_questions. The poll can be assigned to all users, individual users or selected users (a scope) and those users complete a 4-step wizard to submit a poll.
 
-The user can complete the poll_ballot and anonymously vote for each option.
+All results are anonymized such that the user cannot be identified from the results.
 
-Some reports to display results.
+Works with action_text for content bodies, and active_storage for file uploads.
 
 ## Getting Started
 
+This requires Rails 6+ and Twitter Bootstrap 4 and just works with Devise.
+
 Please first install the [effective_datatables](https://github.com/code-and-effect/effective_datatables) gem.
 
-Please download and install [Twitter Bootstrap4](http://getbootstrap.com)
+Please download and install the [Twitter Bootstrap4](http://getbootstrap.com)
 
 Add to your Gemfile:
 
 ```ruby
+gem 'haml-rails' # or try using gem 'hamlit-rails'
 gem 'effective_polls'
 ```
 
@@ -34,7 +37,7 @@ rails generate effective_polls:install
 
 The generator will install an initializer which describes all configuration options and creates a database migration.
 
-If you want to tweak the table name (to use something other than the default 'polls'), manually adjust both the configuration file and the migration now.
+If you want to tweak the table names, manually adjust both the configuration file and the migration now.
 
 Then migrate the database:
 
@@ -42,9 +45,56 @@ Then migrate the database:
 rake db:migrate
 ```
 
-## Polls
+Render the "available polls for current_user" datatable on your user dashboard:
 
-TODO
+```haml
+%h2 Polls
+%p You may submit a ballot for the following polls.
+= render_datatable(EffectivePollsDatatable.new, simple: true)
+```
+
+Add a link to the admin menu:
+
+```haml
+- if can? :admin, :effective_polls
+  = link_to 'Polls', effective_polls.admin_polls_path
+```
+
+Set up your permissions:
+
+```ruby
+# Regular signed up user. Guest users not supported.
+if user.persisted?
+  can [:show, :update], Effective::Ballot, user_id: user.id
+  can :show, Effective::Poll
+  can :index, EffectivePollsDatatable
+end
+
+if user.admin?
+  can :admin, :effective_polls
+
+  can :manage, Effective::Poll
+  can :manage, Effective::PollNotification
+
+  can :index, Effective::PollQuestion
+  can :index, Admin::EffectivePollResultsDatatable
+
+  can([:new, :create, :edit, :update, :destroy], Effective::PollQuestion) do |pq|
+    pq.poll.present? && !pq.poll.started?
+  end
+
+end
+```
+
+And, if you want to use poll notifications, schedule the rake task to run every 10 minutes, or faster:
+
+```rake
+rake effective_polls:notify
+```
+
+## Usage
+
+You can render the results with `render('effective/poll_results/results', poll: poll)`.
 
 ## Authorization
 
@@ -94,19 +144,6 @@ rescue_from Effective::AccessDenied do |exception|
     format.html { render 'static_pages/access_denied', status: 403 }
     format.any { render text: 'Access Denied', status: 403 }
   end
-end
-```
-
-### Permissions
-
-The permissions you actually want to define are as follows (using CanCan):
-
-```ruby
-can [:index, :show], Effective::Poll
-
-if user.admin?
-  can :manage, Effective::Poll
-  can :admin, :effective_polls
 end
 ```
 
