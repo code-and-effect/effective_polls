@@ -23,6 +23,10 @@ module Effective
 
     acts_as_tokened
 
+    if respond_to?(:log_changes)
+      log_changes(except: [:ballots, :ballot_responses, :completed_ballots, :completed_ballot_responses])
+    end
+
     AUDIENCES = ['All Users', 'Individual Users', 'Selected Users']
 
     effective_resource do

@@ -1,6 +1,7 @@
 module Effective
   class PollNotification < ActiveRecord::Base
     belongs_to :poll
+    log_changes(to: :poll) if respond_to?(:log_changes)
 
     BATCHSIZE = (Rails.env.test? ? 3 : 250)
     CATEGORIES = ['Upcoming reminder', 'When poll starts', 'Reminder', 'When poll ends']

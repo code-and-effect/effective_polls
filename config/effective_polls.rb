@@ -53,7 +53,7 @@ EffectivePolls.setup do |config|
   #
   config.mailer = {
     layout: 'effective_polls_mailer_layout',
-    default_from: 'info@example.com'
+    default_from: 'no-reply@example.com'
   }
 
 end

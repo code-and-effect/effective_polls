@@ -26,7 +26,7 @@ module EffectivePolls
         @poll_question_options_table_name = ':' + EffectivePolls.poll_question_options_table_name.to_s
         @ballots_table_name = ':' + EffectivePolls.ballots_table_name.to_s
         @ballot_responses_table_name  = ':' + EffectivePolls.ballot_responses_table_name.to_s
-        @ballot_response_options_table_name  = ':' + EffectivePolls.ballot_responses_table_name.to_s
+        @ballot_response_options_table_name  = ':' + EffectivePolls.ballot_response_options_table_name.to_s
 
         migration_template ('../' * 3) + 'db/migrate/01_create_effective_polls.rb.erb', 'db/migrate/create_effective_polls.rb'
       end

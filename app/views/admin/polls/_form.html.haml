@@ -18,3 +18,7 @@
 
       - datatable = Admin::EffectivePollNotificationsDatatable.new(poll_id: poll.id)
       = render_datatable(datatable, inline: true, simple: true)
+
+    - if poll.respond_to?(:log_changes_datatable)
+      = tab 'Logs' do
+        = render_datatable(poll.log_changes_datatable)

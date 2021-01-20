@@ -6,6 +6,7 @@ module Effective
     accepts_nested_attributes_for :poll_question_options, reject_if: :all_blank, allow_destroy: true
 
     has_rich_text :body
+    log_changes(to: :poll) if respond_to?(:log_changes)
 
     CATEGORIES = [
       'Choose one',   # Radios
