@@ -14,19 +14,6 @@ class PollsTest < ActiveSupport::TestCase
     assert poll.started?
   end
 
-  test 'a poll is read only after started' do
-    poll = build_effective_poll
-    poll.skip_started_validation = false
-    poll.start_at = Time.zone.now + 1.minute
-    poll.save!
-
-    poll.update_column(:start_at, Time.zone.now)
-    assert poll.started?
-
-    refute poll.update(title: 'Something else')
-    assert poll.errors[:base].first.include?('has already started')
-  end
-
   test 'available?' do
     poll = create_effective_poll!
 

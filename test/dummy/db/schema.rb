@@ -63,6 +63,7 @@ ActiveRecord::Schema.define(version: 3) do
     t.integer "poll_id"
     t.string "category"
     t.integer "reminder"
+    t.string "from"
     t.string "subject"
     t.text "body"
     t.datetime "started_at"

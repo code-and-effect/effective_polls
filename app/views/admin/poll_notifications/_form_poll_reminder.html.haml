@@ -1,0 +1,8 @@
+= f.select :reminder, Effective::PollNotification::REMINDERS, label: false,
+  hint: "after the poll starts on #{f.object.poll&.start_at&.strftime('%F')}."
+
+.alert.alert-warning
+  %strong Reminders
+  are sent to users in the audience who have not yet completed their ballot.
+  %br
+  Use reminders to boost your audience participation and remind people to vote.

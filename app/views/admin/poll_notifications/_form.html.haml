@@ -7,49 +7,34 @@
   = f.select :category, Effective::PollNotification::CATEGORIES,
     label: 'Send an email notification'
 
-  = f.show_if :category, 'Upcoming reminder' do
+  - Effective::PollNotification::CATEGORIES.each do |category|
+    - template = 'poll_' + category.parameterize.underscore
 
-    = f.select :reminder, Effective::PollNotification::UPCOMING_REMINDERS, label: false,
-      hint: "before the poll starts on #{f.object.poll&.start_at&.strftime('%F')}."
+    = f.show_if :category, category do
+      = render "/admin/poll_notifications/form_#{template}", f: f
 
-    .alert.alert-warning
-      %strong Upcoming Reminders
-      are sent to the entire audience before the poll starts.
-      %br
-      Use upcoming reminders to advertise, prepare, or communicate to your audience before the poll begins.
+      - if EffectivePolls.use_effective_email_templates
+        - email_template = Effective::EmailTemplate.where(template_name: template).first!
 
-  = f.show_if :category, 'When poll starts' do
-    .alert.alert-warning
-      %strong When poll starts
-      notifications will be sent within 10 minutes of the poll start time.
+        - f.object.body ||= email_template.body
+        - f.object.from ||= email_template.from
+        - f.object.subject ||= email_template.subject
+      - else
+        - f.object.from ||= EffectivePolls.mailer[:default_from]
 
-  = f.show_if :category, 'Reminder' do
+      = f.email_field :from, label: 'From'
+      = f.text_field :subject, label: 'Subject'
+      = f.text_area :body, label: 'Body', rows: 10
 
-    = f.select :reminder, Effective::PollNotification::REMINDERS, label: false,
-      hint: "after the poll starts on #{f.object.poll&.start_at&.strftime('%F')}."
+      - if EffectivePolls.use_effective_email_templates
+        %p The available variables are:
 
-    .alert.alert-warning
-      %strong Reminders
-      are sent to users in the audience who have not yet completed their ballot.
-      %br
-      Use reminders to boost your audience participation and remind people to vote.
+        %ul
+          - Effective::PollNotification::EMAIL_TEMPLATE_VARIABLES.each do |variable|
+            %li {{ #{variable} }}
 
-  = f.show_if :category, 'When poll ends' do
-    .alert.alert-warning
-      %strong When poll ends
-      notifications will be sent within 10 minutes of the poll end time.
+        %small.text-muted Only a developer can add additional variables
 
-  = f.text_field :subject, label: 'Email Subject'
-  = f.text_area :body, label: 'Email Body'
 
-  .alert.alert-warning
-    Email content must not contain any personal details.
-    %br
-    This content will be sent in a mass email with hundreds of bcc'd recipients.
-
-    - if poll_notification.poll.present?
-      %br
-      The url for this poll will be:
-      = effective_polls.poll_url(poll_notification.poll)
 
   = effective_submit(f)

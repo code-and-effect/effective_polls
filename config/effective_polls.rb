@@ -56,4 +56,9 @@ EffectivePolls.setup do |config|
     default_from: 'no-reply@example.com'
   }
 
+  # Will work with effective_email_templates gem:
+  # - The poll notifications email content will be preopulated based off the template
+  # - Uses a EmailTemplatesMailer mailer instead of ActionMailer::Base
+  config.use_effective_email_templates = false
+
 end

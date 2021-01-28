@@ -1,0 +1,8 @@
+= f.select :reminder, Effective::PollNotification::UPCOMING_REMINDERS, label: false,
+  hint: "before the poll starts on #{f.object.poll&.start_at&.strftime('%F')}."
+
+.alert.alert-warning
+  %strong Upcoming Reminders
+  are sent to the entire audience before the poll starts.
+  %br
+  Use upcoming reminders to advertise, prepare, or communicate to your audience before the poll begins.

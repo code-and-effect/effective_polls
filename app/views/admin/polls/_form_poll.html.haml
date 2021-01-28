@@ -1,11 +1,8 @@
 = effective_form_with(model: [:admin, poll], engine: true) do |f|
   = f.text_field :title, hint: 'The title of your poll.'
 
-  = f.datetime_field :start_at, input_js: { minDate: [f.object.start_at.presence, Time.zone.now].compact.min.strftime('%F') }
+  = f.datetime_field :start_at, input_js: { minDate: Time.zone.now.beginning_of_day.strftime('%F') }
   = f.datetime_field :end_at
-
-  .alert.alert-warning
-    Once the start date has passed, this poll will become read only and you will be unable to make changes.
 
   -# Audience
   = f.radios :audience, Effective::Poll::AUDIENCES

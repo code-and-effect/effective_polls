@@ -5,6 +5,7 @@ module Effective
 
     BATCHSIZE = (Rails.env.test? ? 3 : 250)
     CATEGORIES = ['Upcoming reminder', 'When poll starts', 'Reminder', 'When poll ends']
+    EMAIL_TEMPLATE_VARIABLES = ['url', 'title', 'available_date']
 
     UPCOMING_REMINDERS = {
       '1 hour before' => 1.hours.to_i,
@@ -45,6 +46,7 @@ module Effective
       reminder          :integer  # Number of seconds before poll.start_at
 
       # Email
+      from              :string
       subject           :string
       body              :text
 
@@ -66,14 +68,25 @@ module Effective
 
     validates :poll, presence: true
     validates :category, presence: true, inclusion: { in: CATEGORIES }
+
+    validates :from, presence: true
     validates :subject, presence: true
     validates :body, presence: true
+
+    if EffectivePolls.use_effective_email_templates
+      validates :body, liquid: true
+      validates :subject, liquid: true
+    end
 
     validates :reminder, if: -> { reminder? || upcoming_reminder? },
       presence: true, uniqueness: { scope: [:poll_id, :category], message: 'already exists' }
 
     def to_s
       'poll notification'
+    end
+
+    def email_template
+      'poll_' + category.to_s.parameterize.underscore
     end
 
     def upcoming_reminder?
@@ -122,20 +135,7 @@ module Effective
       update_column(:started_at, Time.zone.now)
 
       emails.in_groups_of(BATCHSIZE, false).each do |emails|
-        mail = case category
-        when 'When poll starts'
-          Effective::PollsMailer.poll_start(self, emails)
-        when 'When poll ends'
-          Effective::PollsMailer.poll_end(self, emails)
-        when 'Upcoming reminder'
-          Effective::PollsMailer.poll_upcoming_reminder(self, emails)
-        when 'Reminder'
-          Effective::PollsMailer.poll_reminder(self, emails)
-        else
-          raise('unexpected category')
-        end
-
-        mail.deliver_now
+        Effective::PollsMailer.public_send(email_template, self, emails).deliver_now
       end
 
       update_column(:completed_at, Time.zone.now)

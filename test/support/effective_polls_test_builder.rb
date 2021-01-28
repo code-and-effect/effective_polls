@@ -9,8 +9,7 @@ module EffectivePollsTestBuilder
       title: 'Effective Poll',
       start_at: Time.zone.now,
       end_at: Time.zone.now.end_of_day,
-      audience: 'All Users',
-      skip_started_validation: true
+      audience: 'All Users'
     )
 
     build_poll_question(poll, Effective::PollQuestion::CATEGORIES)
@@ -61,6 +60,7 @@ module EffectivePollsTestBuilder
       category: category,
       poll: poll,
       reminder: 1.day.to_i,
+      from: 'noreply@example.com',
       subject: "#{category} subject",
       body: "#{category} body"
     )

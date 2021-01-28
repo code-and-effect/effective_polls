@@ -16,6 +16,12 @@
         = pluralize(poll.users.count, 'users')
         in the audience.
 
+      %p Email content must not contain any personal details.
+
+      %p This content will be sent in a mass email with hundreds of bcc'd recipients.
+
+      %p The url for this poll will be #{effective_polls.poll_url(poll)}
+
       - datatable = Admin::EffectivePollNotificationsDatatable.new(poll_id: poll.id)
       = render_datatable(datatable, inline: true, simple: true)
 

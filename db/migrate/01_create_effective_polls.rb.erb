@@ -20,6 +20,7 @@ class CreateEffectivePolls < ActiveRecord::Migration[6.0]
       t.string :category
       t.integer :reminder
 
+      t.string :from
       t.string :subject
       t.text :body
 
