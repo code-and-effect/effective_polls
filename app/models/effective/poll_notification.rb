@@ -5,7 +5,7 @@ module Effective
 
     BATCHSIZE = (Rails.env.test? ? 3 : 250)
     CATEGORIES = ['Upcoming reminder', 'When poll starts', 'Reminder', 'When poll ends']
-    EMAIL_TEMPLATE_VARIABLES = ['url', 'title', 'available_date']
+    EMAIL_TEMPLATE_VARIABLES = [:url, :title, :available_date]
 
     UPCOMING_REMINDERS = {
       '1 hour before' => 1.hours.to_i,
