@@ -9,7 +9,7 @@ class Admin::EffectivePollsDatatable < Effective::Datatable
   datatable do
     order :start_at, :desc
 
-    col :id, visible: false
+    col :token, visible: false
     col :created_at, visible: false
     col :updated_at, visible: false
 

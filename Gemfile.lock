@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    effective_polls (0.0.1)
+    effective_polls (0.0.2)
       effective_bootstrap
       effective_datatables (>= 4.0.0)
       effective_resources
@@ -9,7 +9,7 @@ PATH
       sass
 
 GEM
-  remote: http://rubygems.org/
+  remote: https://rubygems.org/
   specs:
     actioncable (6.0.3.4)
       actionpack (= 6.0.3.4)
@@ -91,20 +91,21 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
-    effective_bootstrap (0.9.10)
+    effective_bootstrap (0.9.11)
       bootstrap (>= 4.0.0)
       coffee-rails
+      haml
       inline_svg
       jquery-rails
       rails (>= 4.0.0)
       sass
-    effective_datatables (4.8.13)
+    effective_datatables (4.8.15)
       coffee-rails
       effective_bootstrap
       effective_resources
       rails (>= 3.2.0)
       sass
-    effective_resources (1.7.1)
+    effective_resources (1.7.2)
       rails (>= 4.0.0)
     erubi (1.10.0)
     erubis (2.7.0)
