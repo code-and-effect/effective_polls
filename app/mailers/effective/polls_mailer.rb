@@ -7,8 +7,8 @@ module Effective
 
       mail(
         to: user.email,
-        body: poll_notification.body,
         from: poll_notification.from,
+        body: poll_notification.body,
         subject: poll_notification.subject
       )
     end
@@ -18,8 +18,8 @@ module Effective
 
       mail(
         to: user.email,
-        body: poll_notification.body,
         from: poll_notification.from,
+        body: poll_notification.body,
         subject: poll_notification.subject
       )
     end
@@ -29,8 +29,8 @@ module Effective
 
       mail(
         to: user.email,
-        body: poll_notification.body,
         from: poll_notification.from,
+        body: poll_notification.body,
         subject: poll_notification.subject
       )
     end
@@ -40,8 +40,8 @@ module Effective
 
       mail(
         to: user.email,
-        body: poll_notification.body,
         from: poll_notification.from,
+        body: poll_notification.body,
         subject: poll_notification.subject
       )
     end

@@ -75,14 +75,8 @@ if user.admin?
 
   can :manage, Effective::Poll
   can :manage, Effective::PollNotification
-
-  can :index, Effective::PollQuestion
+  can :manage, Effective::PollQuestion
   can :index, Admin::EffectivePollResultsDatatable
-
-  can([:new, :create, :edit, :update, :destroy], Effective::PollQuestion) do |pq|
-    pq.poll.present? && !pq.poll.started?
-  end
-
 end
 ```
 
