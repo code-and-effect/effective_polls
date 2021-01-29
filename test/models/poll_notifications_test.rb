@@ -99,11 +99,13 @@ class PollNotificationsTest < ActiveSupport::TestCase
   end
 
   test 'notification validates liquid body' do
-    notification = Effective::PollNotification.new
-    refute notification.update(body: "Something {{ busted }", subject: "Also {{ busted }")
+    with_effective_email_templates do
+      notification = Effective::PollNotification.new
+      refute notification.update(body: "Something {{ busted }", subject: "Also {{ busted }")
 
-    assert notification.errors[:body].present?
-    assert notification.errors[:subject].present?
+      assert notification.errors[:body].present?
+      assert notification.errors[:subject].present?
+    end
   end
 
 end
