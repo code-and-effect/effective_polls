@@ -1,5 +1,5 @@
 = render_wizard_sidebar(resource) do
-  %h1 Review: #{resource.poll}
+  %h1= resource.poll
 
   - if resource.poll.all_steps_content.present?
     .mb-2= resource.poll.all_steps_content

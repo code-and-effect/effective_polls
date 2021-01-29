@@ -1,5 +1,5 @@
 = effective_form_with(model: [:admin, poll], engine: true) do |f|
-  = f.text_field :title, hint: 'The title of your poll.'
+  = f.text_field :title, hint: 'The title of your poll or election.'
 
   = f.datetime_field :start_at, input_js: { minDate: Time.zone.now.beginning_of_day.strftime('%F') }
   = f.datetime_field :end_at

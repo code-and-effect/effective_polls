@@ -6,4 +6,9 @@ class User < ApplicationRecord
 
   scope :first_name_test, -> { where(first_name: 'Test') }
   scope :first_name_nil, -> { where(first_name: nil) }
+
+  def to_s
+    "#{first_name} #{last_name}"
+  end
+
 end

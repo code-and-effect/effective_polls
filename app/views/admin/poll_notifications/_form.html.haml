@@ -2,31 +2,35 @@
   - if inline_datatable?
     = f.hidden_field :poll_id
   - else
-    = f.select :poll_id, Effective::Poll.sorted.editable.all
+    = f.select :poll_id, Effective::Poll.sorted.all
 
   = f.select :category, Effective::PollNotification::CATEGORIES,
     label: 'Send an email notification'
 
+  - # Render email templates
   - Effective::PollNotification::CATEGORIES.each do |category|
     - template = 'poll_' + category.parameterize.underscore
 
     = f.show_if :category, category do
       = render "/admin/poll_notifications/form_#{template}", f: f
 
-      - if EffectivePolls.use_effective_email_templates
+      - if f.object.category == category
+        = f.email_field :from
+        = f.text_field :subject
+        = f.text_area :body, rows: 10
+
+      - elsif EffectivePolls.use_effective_email_templates == false
+        = f.email_field :from, value: EffectivePolls.mailer[:default_from]
+        = f.text_field :subject, value: ''
+        = f.text_area :body, rows: 10, value: ''
+
+      - else
         - email_template = Effective::EmailTemplate.where(template_name: template).first!
 
-        - f.object.body ||= email_template.body
-        - f.object.from ||= email_template.from
-        - f.object.subject ||= email_template.subject
-      - else
-        - f.object.from ||= EffectivePolls.mailer[:default_from]
+        = f.email_field :from, value: email_template.from
+        = f.text_field :subject, value: email_template.subject
+        = f.text_area :body, rows: 10, value: email_template.body
 
-      = f.email_field :from, label: 'From'
-      = f.text_field :subject, label: 'Subject'
-      = f.text_area :body, label: 'Body', rows: 10
-
-      - if EffectivePolls.use_effective_email_templates
         %p The available variables are:
 
         %ul
