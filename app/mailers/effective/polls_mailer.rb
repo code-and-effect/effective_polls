@@ -56,7 +56,7 @@ module Effective
       {
         available_date: poll.available_date,
         title: poll.title,
-        url: effective_polls.new_poll_ballot_path(poll)
+        url: effective_polls.new_poll_ballot_url(poll)
       }
     end
 

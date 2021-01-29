@@ -16,4 +16,24 @@ module EffectivePollsTestHelper
     assert (after - before == count), "expected one email to have been delivered"
   end
 
+  def with_email_templates(&block)
+    Rails.autoloaders.main.reload
+
+    before = EffectivePolls.use_effective_email_templates
+
+    EffectivePolls.use_effective_email_templates = true
+    yield
+    EffectivePolls.use_effective_email_templates = before
+  end
+
+  def without_email_templates(&block)
+    Rails.autoloaders.main.reload
+
+    before = EffectivePolls.use_effective_email_templates
+
+    EffectivePolls.use_effective_email_templates = false
+    yield
+    EffectivePolls.use_effective_email_templates = before
+  end
+
 end

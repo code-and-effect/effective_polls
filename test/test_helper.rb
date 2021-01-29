@@ -29,3 +29,6 @@ class ActiveSupport::TestCase
   include EffectivePollsTestBuilder
   include EffectivePollsTestHelper
 end
+
+require 'effective_email_templates/importer'
+EffectiveEmailTemplates::Importer.import(quiet: true)

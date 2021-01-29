@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 3) do
+ActiveRecord::Schema.define(version: 4) do
 
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
@@ -57,6 +57,18 @@ ActiveRecord::Schema.define(version: 3) do
     t.datetime "created_at"
     t.index ["poll_id"], name: "index_ballots_on_poll_id"
     t.index ["user_id"], name: "index_ballots_on_user_id"
+  end
+
+  create_table "email_templates", force: :cascade do |t|
+    t.string "template_name"
+    t.string "subject"
+    t.string "from"
+    t.string "bcc"
+    t.string "cc"
+    t.string "content_type"
+    t.text "body"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "poll_notifications", force: :cascade do |t|
