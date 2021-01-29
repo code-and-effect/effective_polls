@@ -3,9 +3,8 @@ module Effective
     belongs_to :poll
     log_changes(to: :poll) if respond_to?(:log_changes)
 
-    BATCHSIZE = (Rails.env.test? ? 3 : 250)
     CATEGORIES = ['Upcoming reminder', 'When poll starts', 'Reminder', 'When poll ends']
-    EMAIL_TEMPLATE_VARIABLES = [:url, :title, :available_date]
+    EMAIL_TEMPLATE_VARIABLES = ['available_date', 'title', 'url', 'user.name', 'user.email']
 
     UPCOMING_REMINDERS = {
       '1 hour before' => 1.hours.to_i,
@@ -129,13 +128,13 @@ module Effective
     def notify!
       return false unless notify_now?
 
-      # We send to all email addresses, except for the 'Reminder' that exclude completed users
-      emails = poll.emails(exclude_completed: (category == 'Reminder'))
+      # We send to all users, except for the 'Reminder' that exclude completed users
+      users = poll.users(except_completed: (category == 'Reminder'))
 
       update_column(:started_at, Time.zone.now)
 
-      emails.in_groups_of(BATCHSIZE, false).each do |emails|
-        Effective::PollsMailer.public_send(email_template, self, emails).deliver_now
+      users.find_each do |user|
+        Effective::PollsMailer.public_send(email_template, self, user).deliver_now
       end
 
       update_column(:completed_at, Time.zone.now)

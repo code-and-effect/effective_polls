@@ -83,8 +83,8 @@ module Effective
       available? && users.include?(user)
     end
 
-    def users
-      case audience
+    def users(except_completed: false)
+      users = case audience
       when 'All Users'
         User.all
       when 'Individual Users'
@@ -96,13 +96,11 @@ module Effective
       else
         raise('unexpected audience')
       end
-    end
 
-    def emails(exclude_completed: false)
-      if exclude_completed
-        users.where.not(id: completed_ballots.select('user_id as id')).pluck(:email)
+      if except_completed
+        users.where.not(id: completed_ballots.select('user_id as id'))
       else
-        users.pluck(:email)
+        users
       end
     end
 

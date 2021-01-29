@@ -70,16 +70,16 @@ class PollsTest < ActiveSupport::TestCase
   test 'audience emails' do
     poll = create_effective_poll!
     users = [create_user!, create_user!, create_user!]
-    assert_equal users.map(&:email), poll.emails(exclude_completed: false)
-    assert_equal users.map(&:email), poll.emails(exclude_completed: true)
+    assert_equal users.map(&:email), poll.users(except_completed: false).pluck(:email)
+    assert_equal users.map(&:email), poll.users(except_completed: true).pluck(:email)
 
     ballot = create_effective_ballot!(poll: poll, user: users.first)
-    assert_equal users.map(&:email), poll.emails(exclude_completed: false)
-    assert_equal users.map(&:email), poll.emails(exclude_completed: true)
+    assert_equal users.map(&:email), poll.users(except_completed: false).pluck(:email)
+    assert_equal users.map(&:email), poll.users(except_completed: true).pluck(:email)
 
     ballot.submit!
-    assert_equal users.map(&:email), poll.emails(exclude_completed: false)
-    assert_equal users.last(2).map(&:email), poll.emails(exclude_completed: true)
+    assert_equal users.map(&:email), poll.users(except_completed: false).pluck(:email)
+    assert_equal users.last(2).map(&:email), poll.users(except_completed: true).pluck(:email)
   end
 
 end

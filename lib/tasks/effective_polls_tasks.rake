@@ -5,17 +5,16 @@ namespace :effective_polls do
   task notify: :environment do
     poll_notifications = Effective::PollNotification.all.deep.notifiable
 
-    poll_notifications.find_each do |poll_notification|
+    poll_notifications.find_each do |notification|
       begin
-        notified = poll_notification.notify!
-        puts "Sent #{poll_notification.category} for #{poll_notification.poll}" if notified
+        notified = notification.notify!
+        puts "Sent #{notification.category} for #{notification.poll}" if notified
       rescue => e
         if defined?(ExceptionNotifier)
-          data = { poll_notification_id: poll_notification.id, poll_id: poll_notification.poll_id }
-          ExceptionNotifier.notify_exception(e, data: data)
+          ExceptionNotifier.notify_exception(e, data: { poll_notification_id: notification.id, poll_id: notification.poll_id })
         end
 
-        puts "Error with effective poll_notification #{poll_notification.id}: #{e.errors.inspect}"
+        puts "Error with effective poll_notification #{notification.id}: #{e.errors.inspect}"
       end
     end
 
