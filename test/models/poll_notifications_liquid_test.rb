@@ -12,7 +12,7 @@ class PollNotificationsEmailTest < ActiveSupport::TestCase
     notification.update!(body: template.body, subject: template.subject, from: template.from)
     assert notification.subject.include?("{{ title }}")
 
-    with_email_templates do
+    with_effective_email_templates do
       assert_email(count: 2) { assert notification.notify! }
     end
 
@@ -38,7 +38,7 @@ class PollNotificationsEmailTest < ActiveSupport::TestCase
     notification.update!(body: template.body, subject: template.subject, from: template.from)
     assert notification.subject.include?("{{ title }}")
 
-    with_email_templates do
+    with_effective_email_templates do
       assert_email(count: 2) { assert notification.notify! }
     end
 
@@ -64,7 +64,7 @@ class PollNotificationsEmailTest < ActiveSupport::TestCase
     notification.update!(body: template.body, subject: template.subject, from: template.from)
     assert notification.subject.include?("{{ title }}")
 
-    with_email_templates do
+    with_effective_email_templates do
       assert_email(count: 2) { assert notification.notify! }
     end
 
@@ -90,7 +90,7 @@ class PollNotificationsEmailTest < ActiveSupport::TestCase
     notification.update!(body: template.body, subject: template.subject, from: template.from)
     assert notification.subject.include?("{{ title }}")
 
-    with_email_templates do
+    with_effective_email_templates do
       assert_email(count: 2) { assert notification.notify! }
     end
 

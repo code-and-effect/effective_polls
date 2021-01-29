@@ -7,7 +7,7 @@ class PollNotificationsEmailTest < ActiveSupport::TestCase
 
     notification = create_effective_poll_notification!(poll: poll, category: 'When poll starts')
 
-    without_email_templates do
+    without_effective_email_templates do
       assert_email(count: 2) { assert notification.notify! }
     end
 
@@ -29,7 +29,7 @@ class PollNotificationsEmailTest < ActiveSupport::TestCase
 
     notification = create_effective_poll_notification!(poll: poll, category: 'When poll ends')
 
-    without_email_templates do
+    without_effective_email_templates do
       assert_email(count: 2) { assert notification.notify! }
     end
 
@@ -50,7 +50,7 @@ class PollNotificationsEmailTest < ActiveSupport::TestCase
 
     notification = create_effective_poll_notification!(poll: poll, category: 'Upcoming reminder')
 
-    without_email_templates do
+    without_effective_email_templates do
       assert_email(count: 2) { assert notification.notify! }
     end
 
@@ -71,7 +71,7 @@ class PollNotificationsEmailTest < ActiveSupport::TestCase
 
     notification = create_effective_poll_notification!(poll: poll, category: 'Reminder')
 
-    without_email_templates do
+    without_effective_email_templates do
       assert_email(count: 2) { assert notification.notify! }
     end
 
@@ -96,7 +96,7 @@ class PollNotificationsEmailTest < ActiveSupport::TestCase
 
     notification = create_effective_poll_notification!(poll: poll, category: 'Reminder')
 
-    without_email_templates do
+    without_effective_email_templates do
       assert_email(count: 1) { assert notification.notify! }
     end
 
