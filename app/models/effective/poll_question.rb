@@ -11,11 +11,11 @@ module Effective
     CATEGORIES = [
       'Choose one',   # Radios
       'Select all that apply', # Checks
-      'Select upto 1',
-      'Select upto 2',
-      'Select upto 3',
-      'Select upto 4',
-      'Select upto 5',
+      'Select up to 1',
+      'Select up to 2',
+      'Select up to 3',
+      'Select up to 4',
+      'Select up to 5',
       'Date',         # Date Field
       'Email',        # Email Field
       'Number',       # Numeric Field
@@ -27,11 +27,11 @@ module Effective
     WITH_OPTIONS_CATEGORIES = [
       'Choose one',   # Radios
       'Select all that apply', # Checks
-      'Select upto 1',
-      'Select upto 2',
-      'Select upto 3',
-      'Select upto 4',
-      'Select upto 5'
+      'Select up to 1',
+      'Select up to 2',
+      'Select up to 3',
+      'Select up to 4',
+      'Select up to 5'
     ]
 
     effective_resource do

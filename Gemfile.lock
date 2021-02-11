@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    effective_polls (0.0.2)
+    effective_polls (0.1.0)
       effective_bootstrap
       effective_datatables (>= 4.0.0)
       effective_resources
