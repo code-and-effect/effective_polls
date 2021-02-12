@@ -10,7 +10,7 @@ class Admin::EffectivePollResultsDatatable < Effective::Datatable
   end
 
   collection do
-    ballot_responses = Effective::BallotResponse.completed.deep.where(poll: poll)
+    ballot_responses = Effective::BallotResponse.completed.deep.where(poll: poll, poll_question: poll.poll_questions)
 
     ballot_responses.flat_map do |br|
       rows = if br.poll_question.poll_question_option?
