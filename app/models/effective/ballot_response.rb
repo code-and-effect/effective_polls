@@ -48,19 +48,19 @@ module Effective
     validates :poll_question_option_ids, if: -> { poll_question&.choose_one? },
       length: { maximum: 1, message: 'please choose 1 option only' }
 
-    validates :poll_question_option_ids, if: -> { poll_question&.select_upto_1? },
+    validates :poll_question_option_ids, if: -> { poll_question&.select_up_to_1? },
       length: { maximum: 1, message: 'please select 1 option or fewer' }
 
-    validates :poll_question_option_ids, if: -> { poll_question&.select_upto_2? },
+    validates :poll_question_option_ids, if: -> { poll_question&.select_up_to_2? },
       length: { maximum: 2, message: 'please select 2 options or fewer' }
 
-    validates :poll_question_option_ids, if: -> { poll_question&.select_upto_3? },
+    validates :poll_question_option_ids, if: -> { poll_question&.select_up_to_3? },
       length: { maximum: 3, message: 'please select 3 options or fewer' }
 
-    validates :poll_question_option_ids, if: -> { poll_question&.select_upto_4? },
+    validates :poll_question_option_ids, if: -> { poll_question&.select_up_to_4? },
       length: { maximum: 4, message: 'please select 4 options or fewer' }
 
-    validates :poll_question_option_ids, if: -> { poll_question&.select_upto_5? },
+    validates :poll_question_option_ids, if: -> { poll_question&.select_up_to_5? },
       length: { maximum: 5, message: 'please select 5 options or fewer' }
 
     def to_s
@@ -78,7 +78,7 @@ module Effective
       return upload_file if poll_question.upload_file?
 
       return poll_question_options.first if poll_question.choose_one?
-      return poll_question_options.first if poll_question.select_upto_1?
+      return poll_question_options.first if poll_question.select_up_to_1?
       return poll_question_options if poll_question.poll_question_option?
 
       raise('unknown response for unexpected poll question category')
