@@ -97,4 +97,28 @@ class PollNotificationsEmailTest < ActiveSupport::TestCase
     end
   end
 
+  test 'notify! when before poll ends liquid template' do
+    with_effective_email_templates do
+      poll = create_effective_poll!
+      poll.update!(start_at: Time.zone.now - 1.day, end_at: Time.zone.now + 1.day)
+      users = [create_user!, create_user!]
+
+      notification = create_effective_poll_notification!(poll: poll, category: 'Before poll ends')
+
+      template = Effective::EmailTemplate.where(template_name: notification.email_template).first!
+      notification.update!(body: template.body, subject: template.subject, from: template.from)
+      assert notification.subject.include?("{{ title }}")
+
+      assert_email(count: 2) { assert notification.notify! }
+
+      assert notification.started_at.present?
+      assert notification.completed_at.present?
+
+      email = ActionMailer::Base.deliveries.last
+      assert_equal "Please submit your ballot for #{poll.title}", email.subject
+      assert email.body.include?("The #{poll.title} poll is almost complete")
+      assert email.body.include?("Hello #{users.last}")
+    end
+  end
+
 end

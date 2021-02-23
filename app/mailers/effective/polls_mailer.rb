@@ -35,6 +35,17 @@ module Effective
       )
     end
 
+    def poll_before_poll_ends(poll_notification, user)
+      @assigns = effective_email_templates_assigns(poll_notification, user)
+
+      mail(
+        to: user.email,
+        from: poll_notification.from,
+        body: poll_notification.body,
+        subject: poll_notification.subject
+      )
+    end
+
     def poll_when_poll_ends(poll_notification, user)
       @assigns = effective_email_templates_assigns(poll_notification, user)
 
@@ -59,7 +70,7 @@ module Effective
       {
         available_date: poll.available_date,
         title: poll.title,
-        url: effective_polls.new_poll_ballot_url(poll),
+        url: effective_polls.poll_url(poll),
         user: {
           name: user.to_s,
           email: user.email
