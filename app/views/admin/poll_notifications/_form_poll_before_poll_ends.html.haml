@@ -1,0 +1,8 @@
+= f.select :reminder, Effective::PollNotification::UPCOMING_REMINDERS, label: false,
+  hint: "before the poll ends on #{f.object.poll&.end_at&.strftime('%F') || 'never'}."
+
+.alert.alert-warning
+  %strong Before Poll Ends
+  reminders are sent to users in the audience who have not yet completed their ballot.
+  %br
+  Use before poll ends notifications to remind people to vote.

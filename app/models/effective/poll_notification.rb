@@ -3,7 +3,7 @@ module Effective
     belongs_to :poll
     log_changes(to: :poll) if respond_to?(:log_changes)
 
-    CATEGORIES = ['Upcoming reminder', 'When poll starts', 'Reminder', 'When poll ends']
+    CATEGORIES = ['Upcoming reminder', 'When poll starts', 'Reminder', 'Before poll ends', 'When poll ends']
     EMAIL_TEMPLATE_VARIABLES = ['available_date', 'title', 'url', 'user.name', 'user.email']
 
     UPCOMING_REMINDERS = {
@@ -77,7 +77,7 @@ module Effective
       validates :subject, liquid: true
     end
 
-    validates :reminder, if: -> { reminder? || upcoming_reminder? },
+    validates :reminder, if: -> { reminder? || upcoming_reminder? || before_poll_ends? },
       presence: true, uniqueness: { scope: [:poll_id, :category], message: 'already exists' }
 
     def to_s
@@ -100,6 +100,10 @@ module Effective
       category == 'Reminder'
     end
 
+    def before_poll_ends?
+      category == 'Before poll ends'
+    end
+
     def poll_end?
       category == 'When poll ends'
     end
@@ -120,16 +124,18 @@ module Effective
         !poll.started? && poll.start_at < (Time.zone.now + reminder)
       when 'Reminder'
         !poll.ended? && poll.start_at < (Time.zone.now - reminder)
+      when 'Before poll ends'
+        !poll.ended? && poll.end_at.present? && poll.end_at < (Time.zone.now + reminder)
       else
         raise('unexpected category')
       end
     end
 
-    def notify!
-      return false unless notify_now?
+    def notify!(force: false)
+      return false unless (notify_now? || force)
 
       # We send to all users, except for the 'Reminder' that exclude completed users
-      users = poll.users(except_completed: (category == 'Reminder'))
+      users = poll.users(except_completed: (category == 'Reminder' || category == 'Before poll ends'))
 
       update_column(:started_at, Time.zone.now)
 

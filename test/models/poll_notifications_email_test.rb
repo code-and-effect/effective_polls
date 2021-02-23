@@ -88,5 +88,25 @@ class PollNotificationsEmailTest < ActiveSupport::TestCase
     end
   end
 
+  test 'notify! when before poll ends with ballots' do
+    without_effective_email_templates do
+      poll = create_effective_poll!
+      poll.update!(start_at: Time.zone.now - 1.day, end_at: Time.zone.now + 1.days)
+      users = [create_user!, create_user!]
+
+      create_effective_ballot!(poll: poll, user: users.first).submit!
+
+      notification = create_effective_poll_notification!(poll: poll, category: 'Before poll ends')
+      assert_email(count: 1) { assert notification.notify! }
+
+      assert notification.started_at.present?
+      assert notification.completed_at.present?
+
+      email = ActionMailer::Base.deliveries.last
+      assert_equal "Before poll ends subject", email.subject
+      assert_equal [users.last.email], email.to
+    end
+  end
+
 
 end

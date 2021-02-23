@@ -23,6 +23,8 @@ class Admin::EffectivePollNotificationsDatatable < Effective::Datatable
         Effective::PollNotification::UPCOMING_REMINDERS.invert[poll_notification.reminder]
       when 'Reminder'
         Effective::PollNotification::REMINDERS.invert[poll_notification.reminder]
+      when 'Before poll ends'
+        Effective::PollNotification::UPCOMING_REMINDERS.invert[poll_notification.reminder]
       else
         raise('unexpected category')
       end
