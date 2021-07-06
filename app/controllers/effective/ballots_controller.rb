@@ -19,7 +19,7 @@ module Effective
         flash[:danger] = 'You have already completed a ballot for this poll.'
         redirect_to(root_path)
       elsif existing.present?
-        flash[:success] = "You have been redirected to the #{resource_wizard_step_title(existing.next_step)} step."
+        flash[:success] = "You have been redirected to the #{resource_wizard_step_title(existing, existing.next_step)} step."
         redirect_to effective_polls.poll_ballot_build_path(existing.poll, existing, existing.next_step)
       end
     end

@@ -69,7 +69,7 @@ module Effective
       assert_equal Effective::Ballot::WIZARD_STEPS.keys, @controller.resource_wizard_steps
 
       assert_equal Effective::Ballot::WIZARD_STEPS[:start], @controller.view_context.assigns['page_title']
-      assert_equal Effective::Ballot::WIZARD_STEPS[:start], @controller.resource_wizard_step_title(:start)
+      assert_equal Effective::Ballot::WIZARD_STEPS[:start], @controller.resource_wizard_step_title(@controller.view_context.assigns['ballot'], :start)
 
       assert @controller.resource.kind_of?(Effective::Ballot)
       assert @controller.view_context.assigns['ballot'].kind_of?(Effective::Ballot)
