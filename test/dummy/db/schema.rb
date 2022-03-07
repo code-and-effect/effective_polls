@@ -2,8 +2,8 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# This file is the source Rails uses to define your schema when running `rails
-# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
 # be faster and is potentially less error prone than running all of your
 # migrations from scratch. Old migrations may fail to apply correctly if those
 # migrations use external dependencies or application code.
@@ -16,15 +16,15 @@ ActiveRecord::Schema.define(version: 4) do
     t.string "name", null: false
     t.text "body"
     t.string "record_type", null: false
-    t.integer "record_id", null: false
+    t.bigint "record_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["record_type", "record_id", "name"], name: "index_action_text_rich_texts_uniqueness", unique: true
   end
 
   create_table "ballot_response_options", force: :cascade do |t|
-    t.integer "ballot_response_id"
-    t.integer "poll_question_option_id"
+    t.bigint "ballot_response_id"
+    t.bigint "poll_question_option_id"
     t.datetime "updated_at"
     t.datetime "created_at"
     t.index ["ballot_response_id"], name: "index_ballot_response_options_on_ballot_response_id"
@@ -32,9 +32,9 @@ ActiveRecord::Schema.define(version: 4) do
   end
 
   create_table "ballot_responses", force: :cascade do |t|
-    t.integer "ballot_id"
-    t.integer "poll_id"
-    t.integer "poll_question_id"
+    t.bigint "ballot_id"
+    t.bigint "poll_id"
+    t.bigint "poll_question_id"
     t.date "date"
     t.string "email"
     t.integer "number"
@@ -48,8 +48,8 @@ ActiveRecord::Schema.define(version: 4) do
   end
 
   create_table "ballots", force: :cascade do |t|
-    t.integer "poll_id"
-    t.integer "user_id"
+    t.bigint "poll_id"
+    t.bigint "user_id"
     t.string "token"
     t.text "wizard_steps"
     t.datetime "completed_at"
@@ -72,7 +72,7 @@ ActiveRecord::Schema.define(version: 4) do
   end
 
   create_table "poll_notifications", force: :cascade do |t|
-    t.integer "poll_id"
+    t.bigint "poll_id"
     t.string "category"
     t.integer "reminder"
     t.string "from"
@@ -86,7 +86,7 @@ ActiveRecord::Schema.define(version: 4) do
   end
 
   create_table "poll_question_options", force: :cascade do |t|
-    t.integer "poll_question_id"
+    t.bigint "poll_question_id"
     t.string "title"
     t.integer "position"
     t.datetime "updated_at"
@@ -95,7 +95,7 @@ ActiveRecord::Schema.define(version: 4) do
   end
 
   create_table "poll_questions", force: :cascade do |t|
-    t.integer "poll_id"
+    t.bigint "poll_id"
     t.string "title"
     t.string "category"
     t.boolean "required"

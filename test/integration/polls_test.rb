@@ -25,7 +25,7 @@ module Effective
       ballot.submit!
 
       get effective_polls.poll_path(poll)
-      assert_redirected_to effective_polls.poll_ballot_build_path(poll, ballot, :complete)
+      assert_redirected_to effective_polls.poll_ballot_build_path(poll, ballot, :start)
     end
   end
 end

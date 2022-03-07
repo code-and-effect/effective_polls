@@ -4,7 +4,8 @@ module Effective
 
     def show
       poll = Effective::Poll.find(params[:id])
-      EffectivePolls.authorize!(self, :show, poll)
+
+      EffectiveResources.authorize!(self, :show, poll)
 
       ballot = Effective::Ballot.where(poll: poll, user: current_user).first
 

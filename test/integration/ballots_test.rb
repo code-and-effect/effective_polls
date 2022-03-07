@@ -89,7 +89,6 @@ module Effective
       put effective_polls.poll_ballot_build_path(poll, :new, :start), params: { effective_ballot: { current_step: 'start'} }
 
       assert_redirected_to effective_polls.poll_ballot_build_path(poll, Effective::Ballot.last, :vote)
-      assert_equal 'Successfully saved ballot', flash[:success]
 
       assert @controller.resource.kind_of?(Effective::Ballot)
       assert @controller.resource.persisted?
@@ -105,7 +104,6 @@ module Effective
       put effective_polls.poll_ballot_build_path(poll, :new, :start), params: { effective_ballot: { current_step: 'start'} }
 
       assert_response :success
-      assert_equal "Unable to save ballot: user ballot already exists for this poll", flash[:danger]
       assert_match "<form", @response.body
 
       assert @controller.resource.kind_of?(Effective::Ballot)

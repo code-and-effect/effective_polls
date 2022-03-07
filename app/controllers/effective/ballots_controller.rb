@@ -1,8 +1,7 @@
 module Effective
   class BallotsController < ApplicationController
-    layout EffectivePolls.layout[:polls]
-
     before_action(:authenticate_user!) if defined?(Devise)
+
     include Effective::WizardController
 
     resource_scope do

@@ -7,34 +7,9 @@ EffectivePolls.setup do |config|
   config.ballot_responses_table_name = :ballot_responses
   config.ballot_response_options_table_name = :ballot_response_options
 
-  # Authorization Method
-  #
-  # This method is called by all controller actions with the appropriate action and resource
-  # If it raises an exception or returns false, an Effective::AccessDenied Error will be raised
-  #
-  # Use via Proc:
-  # Proc.new { |controller, action, resource| authorize!(action, resource) }       # CanCan
-  # Proc.new { |controller, action, resource| can?(action, resource) }             # CanCan with skip_authorization_check
-  # Proc.new { |controller, action, resource| authorize "#{action}?", resource }   # Pundit
-  # Proc.new { |controller, action, resource| current_user.is?(:admin) }           # Custom logic
-  #
-  # Use via Boolean:
-  # config.authorization_method = true  # Always authorized
-  # config.authorization_method = false # Always unauthorized
-  #
-  # Use via Method (probably in your application_controller.rb):
-  # config.authorization_method = :my_authorization_method
-  # def my_authorization_method(resource, action)
-  #   true
-  # end
-  config.authorization_method = Proc.new { |controller, action, resource| authorize!(action, resource) }
-
   # Layout Settings
   # Configure the Layout per controller, or all at once
-  config.layout = {
-    polls: 'application',
-    admin: 'admin'
-  }
+  # config.layout = { application: 'application', admin: 'admin' }
 
   # Audience Scope Collection
   #
@@ -51,14 +26,19 @@ EffectivePolls.setup do |config|
   # Schedule rake effective_polls:notify to run every 10 minutes
   # to send out email poll notifications
   #
-  config.mailer = {
-    layout: 'effective_polls_mailer_layout',
-    default_from: 'no-reply@example.com'
-  }
+  # Please see config/initializers/effective_resources.rb for default effective_* gem mailer settings
+  #
+  # Configure the class responsible to send e-mails.
+  # config.mailer = 'Effective::EventsMailer'
+  #
+  # Override effective_resource mailer defaults
+  #
+  # config.parent_mailer = nil      # The parent class responsible for sending emails
+  # config.deliver_method = nil     # The deliver method, deliver_later or deliver_now
+  # config.mailer_layout = nil      # Default mailer layout
+  # config.mailer_sender = nil      # Default From value
+  # config.mailer_admin = nil       # Default To value for Admin correspondence
 
-  # Will work with effective_email_templates gem:
-  # - The poll notifications email content will be preopulated based off the template
-  # - Uses a EmailTemplatesMailer mailer instead of ActionMailer::Base
-  config.use_effective_email_templates = false
-
+  # Use effective email templates for event notifications
+  config.use_effective_email_templates = true
 end
