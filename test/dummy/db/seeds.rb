@@ -1,4 +1,5 @@
 Effective::Poll.all.each { |poll| poll.destroy! }
+
 Effective::Ballot.delete_all
 
 def build_effective_poll

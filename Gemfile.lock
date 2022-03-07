@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    effective_polls (0.1.5)
+    effective_polls (0.1.6)
       effective_bootstrap
       effective_datatables (>= 4.0.0)
       effective_resources
@@ -201,7 +201,7 @@ GEM
       rake (>= 0.13)
       thor (~> 1.0)
     rake (13.0.4)
-    rb-fsevent (0.11.0)
+    rb-fsevent (0.11.1)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     responders (3.0.1)
