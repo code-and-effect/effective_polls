@@ -1,6 +1,4 @@
 EffectivePolls.setup do |config|
-  config.polls_table_name = :polls
-
   # Layout Settings
   # Configure the Layout per controller, or all at once
   config.layout = {

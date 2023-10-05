@@ -10,7 +10,7 @@ Works with action_text for content bodies, and active_storage for file uploads.
 
 ## Getting Started
 
-This requires Rails 6+ and Twitter Bootstrap 4 and just works with Devise.
+This requires Rails 6 and Twitter Bootstrap 4 and just works with Devise.
 
 Please first install the [effective_datatables](https://github.com/code-and-effect/effective_datatables) gem.
 
@@ -19,7 +19,7 @@ Please download and install the [Twitter Bootstrap4](http://getbootstrap.com)
 Add to your Gemfile:
 
 ```ruby
-gem 'haml-rails' # or try using gem 'hamlit-rails'
+gem 'haml'
 gem 'effective_polls'
 ```
 

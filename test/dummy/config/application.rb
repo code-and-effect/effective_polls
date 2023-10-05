@@ -4,10 +4,10 @@ require 'rails/all'
 
 Bundler.require(*Rails.groups)
 
+require 'haml'
 require 'devise'
-require 'haml-rails'
 require 'wicked'
-require 'effective_polls'
+require 'effective_email_templates'
 
 module Dummy
   class Application < Rails::Application
