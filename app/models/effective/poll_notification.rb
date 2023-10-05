@@ -65,6 +65,7 @@ module Effective
     # Called by the poll_notifier rake task
     scope :notifiable, -> { where(started_at: nil, completed_at: nil) }
 
+    validates :poll, presence: true
     validates :category, presence: true, inclusion: { in: CATEGORIES }
 
     validates :from, presence: true

@@ -24,6 +24,10 @@ module Effective
     scope :completed, -> { where(ballot: Effective::Ballot.completed) }
     scope :deep, -> { includes(:ballot, :poll, :poll_question, :poll_question_options) }
 
+    validates :poll, presence: true
+    validates :ballot, presence: true
+    validates :poll_question, presence: true
+
     # Sanity check. These shouldn't happen.
     validate(if: -> { poll.present? && ballot.present? }) do
       self.errors.add(:ballot, 'must match poll') unless ballot.poll_id == poll.id
