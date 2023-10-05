@@ -19,7 +19,7 @@ Please download and install the [Twitter Bootstrap4](http://getbootstrap.com)
 Add to your Gemfile:
 
 ```ruby
-gem 'haml-rails' # or try using gem 'hamlit-rails'
+gem 'haml'
 gem 'effective_polls'
 ```
 

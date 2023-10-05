@@ -5,8 +5,8 @@ require 'rails/all'
 Bundler.require(*Rails.groups)
 
 require 'devise'
-require 'haml-rails'
 require 'wicked'
+require 'effective_email_templates'
 require 'effective_polls'
 
 module Dummy

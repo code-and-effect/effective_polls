@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class EffectivePolls::Test < ActiveSupport::TestCase
-  test "truth" do
-    assert_kind_of Module, EffectivePolls
+  test "it has a version number" do
+    assert EffectivePolls::VERSION
   end
 end

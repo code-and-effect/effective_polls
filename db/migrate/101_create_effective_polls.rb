@@ -2,8 +2,8 @@ class CreateEffectivePolls < ActiveRecord::Migration[6.0]
   def change
     create_table :polls do |t|
       t.string :title
-      t.string :token
 
+      t.string :token
       t.datetime :start_at
       t.datetime :end_at
 
@@ -36,7 +36,7 @@ class CreateEffectivePolls < ActiveRecord::Migration[6.0]
 
       t.string :title
       t.string :category
-      t.boolean :required
+      t.boolean :required, default: true
 
       t.integer :position
 
