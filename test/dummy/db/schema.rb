@@ -51,18 +51,16 @@ ActiveRecord::Schema.define(version: 101) do
   end
 
   create_table "ballot_response_options", force: :cascade do |t|
-    t.bigint "ballot_response_id"
-    t.bigint "poll_question_option_id"
+    t.integer "ballot_response_id"
+    t.integer "poll_question_option_id"
     t.datetime "updated_at"
     t.datetime "created_at"
-    t.index ["ballot_response_id"], name: "index_ballot_response_options_on_ballot_response_id"
-    t.index ["poll_question_option_id"], name: "index_ballot_response_options_on_poll_question_option_id"
   end
 
   create_table "ballot_responses", force: :cascade do |t|
-    t.bigint "ballot_id"
-    t.bigint "poll_id"
-    t.bigint "poll_question_id"
+    t.integer "ballot_id"
+    t.integer "poll_id"
+    t.integer "poll_question_id"
     t.date "date"
     t.string "email"
     t.integer "number"
@@ -70,21 +68,16 @@ ActiveRecord::Schema.define(version: 101) do
     t.text "short_answer"
     t.datetime "updated_at"
     t.datetime "created_at"
-    t.index ["ballot_id"], name: "index_ballot_responses_on_ballot_id"
-    t.index ["poll_id"], name: "index_ballot_responses_on_poll_id"
-    t.index ["poll_question_id"], name: "index_ballot_responses_on_poll_question_id"
   end
 
   create_table "ballots", force: :cascade do |t|
-    t.bigint "poll_id"
-    t.bigint "user_id"
+    t.integer "poll_id"
+    t.integer "user_id"
     t.string "token"
     t.text "wizard_steps"
     t.datetime "completed_at"
     t.datetime "updated_at"
     t.datetime "created_at"
-    t.index ["poll_id"], name: "index_ballots_on_poll_id"
-    t.index ["user_id"], name: "index_ballots_on_user_id"
   end
 
   create_table "email_templates", force: :cascade do |t|
@@ -100,7 +93,7 @@ ActiveRecord::Schema.define(version: 101) do
   end
 
   create_table "poll_notifications", force: :cascade do |t|
-    t.bigint "poll_id"
+    t.integer "poll_id"
     t.string "category"
     t.integer "reminder"
     t.string "from"
@@ -110,27 +103,24 @@ ActiveRecord::Schema.define(version: 101) do
     t.datetime "completed_at"
     t.datetime "updated_at"
     t.datetime "created_at"
-    t.index ["poll_id"], name: "index_poll_notifications_on_poll_id"
   end
 
   create_table "poll_question_options", force: :cascade do |t|
-    t.bigint "poll_question_id"
+    t.integer "poll_question_id"
     t.string "title"
     t.integer "position"
     t.datetime "updated_at"
     t.datetime "created_at"
-    t.index ["poll_question_id"], name: "index_poll_question_options_on_poll_question_id"
   end
 
   create_table "poll_questions", force: :cascade do |t|
-    t.bigint "poll_id"
+    t.integer "poll_id"
     t.string "title"
     t.string "category"
     t.boolean "required", default: true
     t.integer "position"
     t.datetime "updated_at"
     t.datetime "created_at"
-    t.index ["poll_id"], name: "index_poll_questions_on_poll_id"
   end
 
   create_table "polls", force: :cascade do |t|

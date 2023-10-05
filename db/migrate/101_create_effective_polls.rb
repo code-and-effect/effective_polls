@@ -15,7 +15,7 @@ class CreateEffectivePolls < ActiveRecord::Migration[6.0]
     end
 
     create_table :poll_notifications do |t|
-      t.references :poll
+      t.integer :poll_id
 
       t.string :category
       t.integer :reminder
@@ -32,7 +32,7 @@ class CreateEffectivePolls < ActiveRecord::Migration[6.0]
     end
 
     create_table :poll_questions do |t|
-      t.references :poll
+      t.integer :poll_id
 
       t.string :title
       t.string :category
@@ -45,7 +45,7 @@ class CreateEffectivePolls < ActiveRecord::Migration[6.0]
     end
 
     create_table :poll_question_options do |t|
-      t.references :poll_question
+      t.integer :poll_question_id
 
       t.string :title
       t.integer :position
@@ -55,8 +55,8 @@ class CreateEffectivePolls < ActiveRecord::Migration[6.0]
     end
 
     create_table :ballots do |t|
-      t.references :poll
-      t.references :user
+      t.integer :poll_id
+      t.integer :user_id
 
       t.string :token
       t.text :wizard_steps
@@ -67,9 +67,9 @@ class CreateEffectivePolls < ActiveRecord::Migration[6.0]
     end
 
     create_table :ballot_responses do |t|
-      t.references :ballot
-      t.references :poll
-      t.references :poll_question
+      t.integer :ballot_id
+      t.integer :poll_id
+      t.integer :poll_question_id
 
       t.date :date
       t.string :email
@@ -82,8 +82,8 @@ class CreateEffectivePolls < ActiveRecord::Migration[6.0]
     end
 
     create_table :ballot_response_options do |t|
-      t.references :ballot_response
-      t.references :poll_question_option
+      t.integer  :ballot_response_id
+      t.integer :poll_question_option_id
 
       t.datetime :updated_at
       t.datetime :created_at
