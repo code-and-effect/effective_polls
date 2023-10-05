@@ -4,9 +4,9 @@ PATH
     effective_polls (0.2.0)
       effective_bootstrap
       effective_datatables (>= 4.0.0)
-      effective_email_templates
       effective_resources
       rails (>= 6.0.0)
+      sassc
       wicked
 
 GEM
@@ -296,6 +296,7 @@ PLATFORMS
 DEPENDENCIES
   devise
   effective_developer
+  effective_email_templates
   effective_polls!
   effective_test_bot
   haml
