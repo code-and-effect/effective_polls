@@ -1,17 +1,14 @@
-= render_wizard_sidebar(resource) do
-  %h1= resource.poll
+= render 'layout' do
+  = render 'effective/ballots/content', resource: resource
 
-  - if resource.poll.all_steps_content.present?
-    .mb-2= resource.poll.all_steps_content
+  = card do
+    %p= resource.poll
 
-  - if resource.poll.submit_content.present?
-    .mb-2= resource.poll.submit_content
+    = effective_form_with(model: resource, url: wizard_path(step), method: :put) do |f|
+      = f.hidden_field :current_step
 
-  = effective_form_with(model: resource, url: wizard_path(step), method: :put) do |f|
-    = f.hidden_field :current_step
+      = render(resource)
 
-    = render(resource)
-
-    = f.submit(center: true) do
-      = link_to 'Change Ballot', wizard_path(:vote), class: 'btn btn-secondary'
-      = f.save 'Submit Ballot'
+      = f.submit(center: true) do
+        = link_to 'Change Ballot', wizard_path(:vote), class: 'btn btn-secondary'
+        = f.save 'Submit Ballot'

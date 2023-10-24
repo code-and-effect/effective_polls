@@ -1,11 +1,16 @@
-= render_wizard_sidebar(resource) do
-  %h1= @page_title
+= render 'layout' do
+  = render 'effective/ballots/content', resource: resource
 
-  - if resource.poll.all_steps_content.present?
-    .mb-2= resource.poll.all_steps_content
+  - raise('expected a completed? poll') unless resource.completed?
 
-  - if resource.poll.complete_content.present?
-    .mb-2= resource.poll.complete_content
+  .alert.alert-warning.mb-4
+    Successfully completed on #{resource.completed_at.strftime('%F')}.
 
-  .text-center
-    %p= link_to 'Home', root_path, class: 'btn btn-primary'
+  .mb-4
+    = link_to "Return to Dashboard", return_to_dashboard_path, class: 'btn btn-lg btn-primary btn-block'
+
+  = card do
+    %p= resource.poll
+    = render 'effective/ballots/ballot', ballot: resource
+
+  = link_to "Return to Dashboard", return_to_dashboard_path, class: 'btn btn-lg btn-primary btn-block'

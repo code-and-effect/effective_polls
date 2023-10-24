@@ -140,6 +140,7 @@ ActiveRecord::Schema.define(version: 101) do
     t.datetime "start_at"
     t.datetime "end_at"
     t.string "audience"
+    t.string "audience_class_name"
     t.text "audience_scope"
     t.datetime "updated_at"
     t.datetime "created_at"

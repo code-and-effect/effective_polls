@@ -1,6 +1,6 @@
 en:
   effective_polls:
-    name: 'Effective Polls'
+    name: 'Elections and Polls'
     acronym: 'Polls'
 
   activerecord:

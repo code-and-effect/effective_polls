@@ -9,7 +9,8 @@ module EffectivePollsTestBuilder
       title: 'Effective Poll',
       start_at: Time.zone.now,
       end_at: Time.zone.now.end_of_day,
-      audience: 'All Users'
+      audience: 'All Users',
+      audience_class_name: 'User'
     )
 
     build_poll_question(poll, Effective::PollQuestion::CATEGORIES)

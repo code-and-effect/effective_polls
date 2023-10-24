@@ -75,7 +75,9 @@ module Effective
         title: poll.title,
         url: effective_polls.poll_url(poll),
         user: {
-          name: user.to_s,
+          name: (user.try(:email_to_s) || user.to_s),
+          first_name: user.try(:first_name).to_s,
+          last_name: user.try(:last_name).to_s,
           email: user.email
         }
       }

@@ -16,7 +16,6 @@ module Effective
     has_many :completed_ballot_responses, -> { where(ballot: Effective::Ballot.completed) }, class_name: 'Effective::BallotResponse'
 
     has_many_rich_texts
-
     # rich_text_all_steps_content
     # rich_text_start_content
     # rich_text_vote_content
@@ -47,14 +46,7 @@ module Effective
 
     serialize :audience_scope, Array
 
-    scope :deep, -> {
-      includes(poll_questions: :poll_question_options)
-      .with_rich_text_all_steps_content
-      .with_rich_text_start_content
-      .with_rich_text_vote_content
-      .with_rich_text_submit_content
-      .with_rich_text_complete_content
-    }
+    scope :deep, -> { includes(poll_questions: :poll_question_options) }
 
     scope :deep_results, -> {
       includes(poll_questions: :poll_question_options)
@@ -103,7 +95,7 @@ module Effective
       when 'Individual Users'
         klass.where(id: audience_scope)
       when 'Selected Users'
-        collection = audience.none
+        collection = klass.none
         audience_scope.each { |scope| collection = collection.or(klass.send(scope)) }
         collection
       else
