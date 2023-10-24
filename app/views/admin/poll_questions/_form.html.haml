@@ -5,16 +5,23 @@
     = f.select :poll_id, Effective::Poll.sorted.editable.all
 
   = f.text_field :title, label: 'Question Title'
-  = f.rich_text_area :body, label: 'Body (optional)'
+
+  - if defined?(EffectiveArticleEditor)
+    = f.article_editor :body, label: 'Body (optional)'
+  - else
+    = f.rich_text_area :body, label: 'Body (optional)'
 
   = f.check_box :required, hint: 'A response to this question will be required'
   = f.select :category, Effective::PollQuestion::CATEGORIES
 
   = f.show_if :category, 'Choose one' do
-    .card
+    .mt-3.card
       .card-body
-        %h5 Choose one
-        %p Display radio buttons to choose one option
+        %h5 Options
+        %p Display the following options:
+
+        = f.has_many :poll_question_options, build: true do |fa|
+          = fa.text_field :title, label: false
 
   = f.show_if :category, 'Select all that apply' do
     .card
