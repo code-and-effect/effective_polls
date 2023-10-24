@@ -72,7 +72,7 @@ module Effective
     validates :subject, presence: true
     validates :body, presence: true
 
-    if EffectivePolls.use_effective_email_templates
+    with_options(if: -> { EffectivePolls.use_effective_email_templates }) do
       validates :body, liquid: true
       validates :subject, liquid: true
     end

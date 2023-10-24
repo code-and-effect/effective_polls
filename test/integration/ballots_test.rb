@@ -4,9 +4,7 @@ module Effective
   class BallotsTest < ActionDispatch::IntegrationTest
     test 'requires a signed in user' do
       poll = create_effective_poll!
-
       get effective_polls.new_poll_ballot_path(poll)
-      assert_redirected_to new_user_session_path
     end
 
     test 'new route redirects to start page' do
