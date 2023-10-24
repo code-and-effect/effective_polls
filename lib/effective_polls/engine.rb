@@ -7,5 +7,12 @@ module EffectivePolls
       eval File.read("#{config.root}/config/effective_polls.rb")
     end
 
+    # Include effective_polls_user concern and allow any ActiveRecord object to call it
+    initializer 'effective_polls.active_record' do |app|
+      app.config.to_prepare do
+        ActiveRecord::Base.extend(EffectivePollsUser::Base)
+      end
+    end
+
   end
 end

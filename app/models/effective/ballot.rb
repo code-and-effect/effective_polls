@@ -3,8 +3,11 @@ module Effective
     attr_accessor :current_user
     attr_accessor :current_step
 
+    # Application namespace
+    belongs_to :user, polymorphic: true
+
+    # Effective namespace
     belongs_to :poll
-    belongs_to :user
 
     has_many :ballot_responses, dependent: :destroy
     accepts_nested_attributes_for :ballot_responses

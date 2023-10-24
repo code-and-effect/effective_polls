@@ -5,6 +5,8 @@
   = f.datetime_field :end_at
 
   -# Audience
+  = f.hidden_field :audience_class_name, value: current_user.class.name
+
   = f.radios :audience, Effective::Poll::AUDIENCES
 
   = f.show_if :audience, 'All Users' do
@@ -19,14 +21,15 @@
         %h5 Individual Users
         %p Only the following individual users may complete this poll
 
-        - user_ids = User.respond_to?(:sorted) ? User.sorted : User.all
-        = f.select :audience_scope, user_ids, multiple: true, label: false
+        -# Audience Users
+        - ajax_url = (@select2_users_ajax_path || effective_resources.users_admin_select2_ajax_index_path) unless Rails.env.test?
+        = f.select :audience_scope, current_user.class.all, ajax_url: ajax_url, multiple: true
 
-  = f.show_if :audience, 'Selected Users' do
-    .card
-      .card-body
-        %h5 Selected Users
-        %p Users within any of the following groups may complete this poll
-        = f.checks :audience_scope, effective_polls_audience_scope_collection(), multiple: true, label: false
+  -# = f.show_if :audience, 'Selected Users' do
+  -#   .card
+  -#     .card-body
+  -#       %h5 Selected Users
+  -#       %p Users within any of the following groups may complete this poll
+  -#       = f.checks :audience_scope, effective_polls_audience_scope_collection(), multiple: true, label: false
 
   = effective_submit(f)

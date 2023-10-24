@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    effective_polls (0.2.0)
+    effective_polls (0.3.0)
       effective_bootstrap
       effective_datatables (>= 4.0.0)
       effective_resources
@@ -125,7 +125,7 @@ GEM
       effective_resources
       rails (>= 3.2.0)
       sassc
-    effective_developer (0.6.8)
+    effective_developer (0.7.8)
       effective_resources
       rails (>= 3.2.0)
     effective_email_templates (1.4.1)

@@ -1,0 +1,13 @@
+en:
+  effective_polls:
+    name: 'Effective Polls'
+    acronym: 'Polls'
+
+  activerecord:
+    models:
+      effective/poll: 'Poll'
+      effective/poll_question: 'Poll Question'
+      effective/poll_question_option: 'Poll Question Option'
+      effective/poll_notification: 'Poll Notification'
+      effective/ballot_response: 'Ballot Response'
+      effective/ballot_response_option: 'Ballot Response Option'
