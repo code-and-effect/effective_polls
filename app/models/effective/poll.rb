@@ -88,6 +88,7 @@ module Effective
 
     def users(except_completed: false)
       klass = audience_class()
+      resource = klass.new
 
       users = case audience
       when 'All Users'
@@ -96,7 +97,14 @@ module Effective
         klass.where(id: audience_scope)
       when 'Selected Users'
         collection = klass.none
-        audience_scope.each { |scope| collection = collection.or(klass.send(scope)) }
+
+        audience_scope.each do |scope| 
+          relation = resource.poll_audience_scope(scope)
+          raise("invalid poll_audience_scope for #{scope}") unless relation.kind_of?(ActiveRecord::Relation)
+
+          collection = collection.or(relation)
+        end
+
         collection
       else
         raise('unexpected audience')

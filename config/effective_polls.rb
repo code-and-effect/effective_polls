@@ -3,16 +3,6 @@ EffectivePolls.setup do |config|
   # Configure the Layout per controller, or all at once
   # config.layout = { application: 'application', admin: 'admin' }
 
-  # Audience Scope Collection
-  #
-  # When creating a new poll, an Array of User scopes can be provided
-  # The User model must respond to these
-  #
-  # config.audience_user_scopes = [:all, :registered]
-  # config.audience_user_scopes = [['All Users', :all], ['Registered Users', :registered]]
-  #
-  config.audience_user_scopes = [['All Users', :all]]
-
   # Notifications Mailer Settings
   #
   # Schedule rake effective_polls:notify to run every 10 minutes

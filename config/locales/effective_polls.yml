@@ -9,5 +9,6 @@ en:
       effective/poll_question: 'Poll Question'
       effective/poll_question_option: 'Poll Question Option'
       effective/poll_notification: 'Poll Notification'
+      effective/ballot: 'Ballot'
       effective/ballot_response: 'Ballot Response'
       effective/ballot_response_option: 'Ballot Response Option'

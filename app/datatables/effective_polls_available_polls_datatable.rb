@@ -26,8 +26,7 @@ class EffectivePollsAvailablePollsDatatable < Effective::Datatable
   end
 
   collection do
-    raise('expected a current_user') unless current_user.present?
-    Effective::Poll.available.select { |poll| poll.available_for?(current_user) }
+    Effective::Poll.where(id: current_user.available_polls)
   end
 
 end
