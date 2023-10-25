@@ -5,7 +5,7 @@ EffectivePolls.setup do |config|
 
   # Notifications Mailer Settings
   #
-  # Schedule rake effective_polls:notify to run every 10 minutes
+  # Schedule rake effective_polls:send_notifications to run every 10 minutes
   # to send out email poll notifications
   #
   # Please see config/initializers/effective_resources.rb for default effective_* gem mailer settings
@@ -19,6 +19,7 @@ EffectivePolls.setup do |config|
   # config.deliver_method = nil     # The deliver method, deliver_later or deliver_now
   # config.mailer_layout = nil      # Default mailer layout
   # config.mailer_sender = nil      # Default From value
+  # config.mailer_froms = nil       # Default Froms collection
   # config.mailer_admin = nil       # Default To value for Admin correspondence
 
   # Use effective email templates for event notifications

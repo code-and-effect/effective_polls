@@ -57,7 +57,7 @@ module Effective
     validates :ballot_responses, associated: true
 
     def to_s
-      'ballot'
+      model_name.human
     end
 
     # Find or build

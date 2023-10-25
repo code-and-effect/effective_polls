@@ -2,7 +2,7 @@
   - if inline_datatable?
     = f.hidden_field :poll_id
   - else
-    = f.select :poll_id, Effective::Poll.sorted.editable.all
+    = f.select :poll_id, Effective::Poll.all
 
   = f.text_field :title, label: 'Question Title'
 

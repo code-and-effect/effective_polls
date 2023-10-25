@@ -72,7 +72,7 @@ module Effective
     end
 
     def to_s
-      title.presence || 'New Poll'
+      title.presence || model_name.human
     end
 
     def available_for?(user)

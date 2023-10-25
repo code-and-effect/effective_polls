@@ -1,8 +1,13 @@
 = effective_form_with(model: [:admin, poll], engine: true) do |f|
 
   = f.text_field :title, hint: 'The title of your poll or election.'
-  = f.datetime_field :start_at, input_js: { minDate: Time.zone.now.beginning_of_day.strftime('%F') }
+
+  = f.datetime_field :start_at
   = f.datetime_field :end_at
+
+  - if f.object.poll_notifications.present?
+    .alert.alert-info
+      Please be aware of the existing #{ets(f.object.poll_notifications)} when changing the start or end availability date.
 
   -# Audience
   - f.object.audience_class_name ||= current_user.class.name

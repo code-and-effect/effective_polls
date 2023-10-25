@@ -5,6 +5,8 @@ module Admin
 
     include Effective::CrudController
 
+    on :save, only: :create, redirect: :edit
+
     def permitted_params
       params.require(:effective_poll).permit!
     end

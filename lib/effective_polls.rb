@@ -7,10 +7,8 @@ module EffectivePolls
 
   def self.config_keys
     [
-      :polls_table_name, :poll_notifications_table_name, :poll_questions_table_name, :poll_question_options_table_name,
-      :ballots_table_name, :ballot_responses_table_name, :ballot_response_options_table_name,
       :layout,
-      :mailer, :parent_mailer, :deliver_method, :mailer_layout, :mailer_sender, :mailer_admin, :mailer_subject, :use_effective_email_templates
+      :mailer, :parent_mailer, :deliver_method, :mailer_layout, :mailer_sender, :mailer_froms, :mailer_admin, :mailer_subject, :use_effective_email_templates
     ]
   end
 

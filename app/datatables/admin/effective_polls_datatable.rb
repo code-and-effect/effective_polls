@@ -18,6 +18,7 @@ class Admin::EffectivePollsDatatable < Effective::Datatable
     col :end_at
     col :audience
 
+    col :poll_notifications
     col :poll_questions, visible: false
 
     actions_col

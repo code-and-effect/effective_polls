@@ -19,7 +19,7 @@ module Effective
     validates :position, presence: true
 
     def to_s
-      title.presence || 'New Poll Question Option'
+      title.presence || model_name.human
     end
 
   end

@@ -81,7 +81,7 @@ module Effective
       presence: true, uniqueness: { scope: [:poll_id, :category], message: 'already exists' }
 
     def to_s
-      'poll notification'
+      [category.presence, subject.presence].compact.join(' - ') || model_name.human
     end
 
     def email_template

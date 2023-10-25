@@ -64,7 +64,7 @@ module Effective
       length: { maximum: 5, message: 'please select 5 options or fewer' }
 
     def to_s
-      'ballot reponse'
+      model_name.human
     end
 
     def response
