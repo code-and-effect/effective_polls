@@ -64,7 +64,7 @@ module Effective
     # Only relevant if the effective_email_templates gem is present
     def effective_email_templates_assigns(poll_notification, user)
       raise('expected an Effective::PollNotification') unless poll_notification.kind_of?(Effective::PollNotification)
-      raise('expected a User') unless user.kind_of?(User)
+      raise('expected a User') unless user.class.try(:effective_polls_user?)
 
       poll = poll_notification.poll
       raise('expected poll to be persisted') unless poll&.persisted?
