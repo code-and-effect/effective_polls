@@ -44,17 +44,17 @@ module EffectivePollsUser
 
   # Turns the given audience_scope value into the actual ActiveRecord::Relation scope
   def poll_audience_scope(value)
-    klass = self.class
+    collection = self.class.respond_to?(:unarchived) ? self.class.unarchived : self.class
 
     # If we respond to the fill value, call it
-    return klass.send(value) if klass.respond_to?(value)
+    return collection.send(value) if collection.respond_to?(value)
 
     # Parse the value
     name, id = value.to_s.split('_id_')
 
     case name.try(:to_sym)
     when :members_with_category
-      klass.members_with_category(EffectiveMemberships.Category.find(id))
+      collection.members_with_category(EffectiveMemberships.Category.find(id))
     else
       raise("unknown poll_audience_scope for #{value}")
     end

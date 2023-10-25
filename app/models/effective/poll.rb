@@ -92,9 +92,9 @@ module Effective
 
       users = case audience
       when 'All Users'
-        klass.all
+        klass.try(:unarchived) || klass.all
       when 'Individual Users'
-        klass.where(id: audience_scope)
+        (klass.try(:unarchived) || klass.all).where(id: audience_scope)
       when 'Selected Users'
         collection = klass.none
 
@@ -111,10 +111,10 @@ module Effective
       end
 
       if except_completed
-        users.where.not(id: completed_ballots.select('user_id as id'))
-      else
-        users
+        users = users.where.not(id: completed_ballots.select('user_id as id'))
       end
+
+      users
     end
 
     def available?
