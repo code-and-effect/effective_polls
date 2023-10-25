@@ -9,7 +9,8 @@ def build_effective_poll
     title: 'Effective Poll',
     start_at: (Time.zone.now + 1.day).beginning_of_day,
     end_at: (Time.zone.now + 1.day).end_of_day,
-    audience: 'All Users'
+    audience: 'All Users',
+    audience_class_name: 'User'
   )
 
   build_poll_question(poll, Effective::PollQuestion::CATEGORIES)

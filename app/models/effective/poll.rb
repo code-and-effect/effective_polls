@@ -1,10 +1,6 @@
 module Effective
   class Poll < ActiveRecord::Base
-    has_rich_text :all_steps_content
-    has_rich_text :start_content
-    has_rich_text :vote_content
-    has_rich_text :submit_content
-    has_rich_text :complete_content
+    acts_as_tokened
 
     has_many :poll_notifications, -> { order(:id) }, inverse_of: :poll, dependent: :destroy
     accepts_nested_attributes_for :poll_notifications, allow_destroy: true
@@ -19,7 +15,12 @@ module Effective
     has_many :completed_ballots, -> { Effective::Ballot.completed }, class_name: 'Effective::Ballot'
     has_many :completed_ballot_responses, -> { where(ballot: Effective::Ballot.completed) }, class_name: 'Effective::BallotResponse'
 
-    acts_as_tokened
+    has_many_rich_texts
+    # rich_text_all_steps_content
+    # rich_text_start_content
+    # rich_text_vote_content
+    # rich_text_submit_content
+    # rich_text_complete_content
 
     if respond_to?(:log_changes)
       log_changes(except: [:ballots, :ballot_responses, :completed_ballots, :completed_ballot_responses])
@@ -29,29 +30,23 @@ module Effective
 
     effective_resource do
       # Acts as tokened
-      token                  :string, permitted: false
+      token         :string, permitted: false
 
       title         :string
 
       start_at      :datetime
       end_at        :datetime
 
-      audience            :string
-      audience_scope      :text       # An Array of user_ids or named scopes on the User model
+      audience              :string
+      audience_class_name   :string
+      audience_scope        :text       # An Array of user_ids or named scopes on the User model
 
       timestamps
     end
 
     serialize :audience_scope, Array
 
-    scope :deep, -> {
-      includes(poll_questions: :poll_question_options)
-      .with_rich_text_all_steps_content
-      .with_rich_text_start_content
-      .with_rich_text_vote_content
-      .with_rich_text_submit_content
-      .with_rich_text_complete_content
-    }
+    scope :deep, -> { includes(poll_questions: :poll_question_options) }
 
     scope :deep_results, -> {
       includes(poll_questions: :poll_question_options)
@@ -68,6 +63,8 @@ module Effective
     validates :start_at, presence: true
 
     validates :audience, inclusion: { in: AUDIENCES }
+    validates :audience_class_name, presence: true
+
     validates :audience_scope, presence: true, unless: -> { audience == 'All Users' }
 
     validate(if: -> { start_at.present? && end_at.present? }) do
@@ -75,33 +72,49 @@ module Effective
     end
 
     def to_s
-      title.presence || 'New Poll'
+      title.presence || model_name.human
     end
 
     def available_for?(user)
-      raise('expected a user') unless user.kind_of?(User)
+      raise('expected an effective_polls_user') unless user.class.try(:effective_polls_user?)
       available? && users.include?(user)
     end
 
+    def audience_class
+      klass = audience_class_name.safe_constantize
+      raise('expected an effective_polls_user klass') unless klass.try(:effective_polls_user?)
+      klass
+    end
+
     def users(except_completed: false)
+      klass = audience_class()
+      resource = klass.new
+
       users = case audience
       when 'All Users'
-        User.all
+        klass.try(:unarchived) || klass.all
       when 'Individual Users'
-        User.where(id: audience_scope)
+        (klass.try(:unarchived) || klass.all).where(id: audience_scope)
       when 'Selected Users'
-        collection = User.none
-        audience_scope.each { |scope| collection = collection.or(User.send(scope)) }
+        collection = klass.none
+
+        audience_scope.each do |scope| 
+          relation = resource.poll_audience_scope(scope)
+          raise("invalid poll_audience_scope for #{scope}") unless relation.kind_of?(ActiveRecord::Relation)
+
+          collection = collection.or(relation)
+        end
+
         collection
       else
         raise('unexpected audience')
       end
 
       if except_completed
-        users.where.not(id: completed_ballots.select('user_id as id'))
-      else
-        users
+        users = users.where.not(id: completed_ballots.select('user_id as id'))
       end
+
+      users
     end
 
     def available?

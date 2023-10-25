@@ -1,32 +1,41 @@
 = effective_form_with(model: [:admin, poll], engine: true) do |f|
+
   = f.text_field :title, hint: 'The title of your poll or election.'
 
-  = f.datetime_field :start_at, input_js: { minDate: Time.zone.now.beginning_of_day.strftime('%F') }
+  = f.datetime_field :start_at
   = f.datetime_field :end_at
 
+  - if f.object.poll_notifications.present?
+    .alert.alert-info
+      Please be aware of the existing #{ets(f.object.poll_notifications)} when changing the start or end availability date.
+
   -# Audience
+  - f.object.audience_class_name ||= current_user.class.name
+
+  = f.hidden_field :audience_class_name
   = f.radios :audience, Effective::Poll::AUDIENCES
 
   = f.show_if :audience, 'All Users' do
     .card
       .card-body
         %h5 All Users
-        %p All users may complete this poll
+        %p All users may complete this #{etd(poll)} 
 
   = f.show_if :audience, 'Individual Users' do
     .card
       .card-body
         %h5 Individual Users
-        %p Only the following individual users may complete this poll
+        %p Only the following individual users may complete this #{etd(poll)} 
 
-        - user_ids = User.respond_to?(:sorted) ? User.sorted : User.all
-        = f.select :audience_scope, user_ids, multiple: true, label: false
+        -# Audience Users
+        - ajax_url = (@select2_users_ajax_path || effective_resources.users_admin_select2_ajax_index_path) unless Rails.env.test?
+        = f.select :audience_scope, current_user.class.all, ajax_url: ajax_url, multiple: true
 
   = f.show_if :audience, 'Selected Users' do
     .card
       .card-body
         %h5 Selected Users
-        %p Users within any of the following groups may complete this poll
-        = f.checks :audience_scope, effective_polls_audience_scope_collection(), multiple: true, label: false
+        %p Users within any of the following groups may complete this #{etd(poll)} 
+        = f.checks :audience_scope, effective_polls_audience_scope_collection(f.object), multiple: true, label: false
 
   = effective_submit(f)

@@ -1,19 +1,14 @@
-= render_wizard_sidebar(resource) do
-  %h1= resource.poll
+= render 'layout' do
+  = render 'effective/ballots/content', resource: resource
 
-  - if resource.poll.all_steps_content.present?
-    .mb-2= resource.poll.all_steps_content
+  = card do
+    = effective_form_with(model: resource, url: wizard_path(step), method: :put) do |f|
+      = f.hidden_field :current_step
 
-  - if resource.poll.vote_content.present?
-    .mb-2= resource.poll.vote_content
+      - resource.poll.poll_questions.deep.all.each_with_index do |poll_question, index|
+        - ballot_response = resource.ballot_response(poll_question)
 
-  = effective_form_with(model: resource, url: wizard_path(step), method: :put) do |f|
-    = f.hidden_field :current_step
+        = f.fields_for :ballot_responses, ballot_response do |fbr|
+          = render('/effective/ballot_responses/fields', f: fbr, poll_question: poll_question)
 
-    - resource.poll.poll_questions.deep.all.each_with_index do |poll_question, index|
-      - ballot_response = resource.ballot_response(poll_question)
-
-      = f.fields_for :ballot_responses, ballot_response do |fbr|
-        = render('/effective/ballot_responses/fields', f: fbr, poll_question: poll_question)
-
-    = f.submit 'Save and Continue', center: true
+      = f.submit 'Save and Continue', center: true

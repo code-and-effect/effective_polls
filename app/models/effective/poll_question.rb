@@ -62,7 +62,7 @@ module Effective
     end
 
     def to_s
-      title.presence || 'New Poll Question'
+      title.presence || model_name.human
     end
 
     def poll_question_option?

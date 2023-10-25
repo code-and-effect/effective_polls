@@ -1,0 +1,5 @@
+= render 'effective/poll_results/results', poll: @poll
+
+= card('Raw Data') do
+  - datatable = Admin::EffectivePollResultsDatatable.new(poll: @poll)
+  = render_datatable(datatable)

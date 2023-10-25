@@ -12,22 +12,20 @@
     - template = 'poll_' + category.parameterize.underscore
 
     = f.show_if :category, category do
-      = render "/admin/poll_notifications/form_#{template}", f: f
+      .my-3= render "/admin/poll_notifications/form_#{template}", f: f
+      
+      = f.select :from, EffectivePolls.mailer_froms
 
       - if f.object.category == category
-        = f.email_field :from
         = f.text_field :subject
         = f.text_area :body, rows: 10
 
       - elsif EffectivePolls.use_effective_email_templates == false
-        = f.email_field :from, value: EffectivePolls.mailer[:default_from]
         = f.text_field :subject, value: ''
         = f.text_area :body, rows: 10, value: ''
 
       - else
         - email_template = Effective::EmailTemplate.where(template_name: template).first!
-
-        = f.email_field :from, value: email_template.from
         = f.text_field :subject, value: email_template.subject
         = f.text_area :body, rows: 10, value: email_template.body
 

@@ -3,13 +3,18 @@ module Effective
     attr_accessor :current_user
     attr_accessor :current_step
 
+    # Application namespace
+    belongs_to :user, polymorphic: true
+
+    # Effective namespace
     belongs_to :poll
-    belongs_to :user
 
     has_many :ballot_responses, dependent: :destroy
     accepts_nested_attributes_for :ballot_responses
 
     acts_as_tokened
+
+    log_changes(to: :poll) if respond_to?(:log_changes)
 
     acts_as_wizard(
       start: 'Start',
@@ -34,6 +39,10 @@ module Effective
 
     scope :deep, -> { includes(:poll, :user, ballot_responses: [:poll, :poll_question, :poll_question_options]) }
     scope :sorted, -> { order(:id) }
+
+    scope :in_progress, -> { where(completed_at: nil) }
+    scope :done, -> { where.not(completed_at: nil) }
+
     scope :completed, -> { where.not(completed_at: nil) }
 
     before_validation(if: -> { new_record? }) do
@@ -48,7 +57,7 @@ module Effective
     validates :ballot_responses, associated: true
 
     def to_s
-      'ballot'
+      model_name.human
     end
 
     # Find or build

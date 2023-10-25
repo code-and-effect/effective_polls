@@ -1,0 +1,25 @@
+-# In progress ballot
+- ballot = Effective::Ballot.in_progress.where(user: current_user).first
+- datatable = EffectiveResources.best('EffectivePollsAvailablePollsDatatable').new(self, namespace: :effective)
+
+- if ballot.present?
+  %h2 In Progress #{et(Effective::Ballot)}
+
+  %p Your submission for #{ballot.poll} is incomplete
+
+  %p
+    Please
+    = link_to("Continue #{ballot.poll}", effective_polls.poll_ballot_build_path(ballot.poll, ballot, ballot.next_step), 'data-turbolinks' => false, class: 'btn btn-primary')
+    or you can
+    = link_to('Abandon', effective_polls.poll_ballot_path(ballot.poll, ballot), 'data-confirm': "Really delete #{ballot}?", 'data-method': :delete, class: 'btn btn-danger')
+    to begin again.
+
+  %hr
+
+%h2 #{polls_name_label}
+
+- if datatable.present?
+  %p The following #{etsd(Effective::Poll)} are available:
+  = render_datatable(datatable, simple: true)
+- else
+  %p There are no available #{etsd(Effective::Poll)}. When there are, we'll show them here.

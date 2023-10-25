@@ -6,11 +6,11 @@
 
     %p
       %strong
-        = pluralize(poll.completed_ballots.count, 'users')
+        = pluralize(poll.completed_ballots.count, 'user')
         completed
       ballots from an audience of
       = succeed('.') do
-        %strong= pluralize(poll.users.count, 'total users')
+        %strong= pluralize(poll.users.count, 'total user')
 
 .card.mb-3
   .card-body

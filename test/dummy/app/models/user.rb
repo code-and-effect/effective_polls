@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable
 
+  effective_polls_user
+
   scope :last_name_user, -> { where(last_name: 'User') }
   scope :last_name_nil, -> { where(last_name: nil) }
 

@@ -5,17 +5,14 @@ end
 EffectivePolls::Engine.routes.draw do
   scope module: 'effective' do
     resources :polls, only: [:show] do
-      resources :ballots, only: [:new, :show] do
+      resources :ballots, only: [:new, :show, :destroy] do
         resources :build, controller: :ballots, only: [:show, :update]
       end
     end
   end
 
   namespace :admin do
-    resources :polls, except: [:show] do
-      get :results, on: :member
-    end
-
+    resources :polls
     resources :poll_notifications, except: [:show]
     resources :poll_questions, except: [:show]
   end

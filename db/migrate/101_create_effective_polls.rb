@@ -8,6 +8,8 @@ class CreateEffectivePolls < ActiveRecord::Migration[6.0]
       t.datetime :end_at
 
       t.string :audience
+
+      t.string :audience_class_name
       t.text :audience_scope
 
       t.datetime :updated_at
@@ -15,7 +17,7 @@ class CreateEffectivePolls < ActiveRecord::Migration[6.0]
     end
 
     create_table :poll_notifications do |t|
-      t.integer :poll_id
+      t.references :poll, polymorphic: false
 
       t.string :category
       t.integer :reminder
@@ -32,7 +34,7 @@ class CreateEffectivePolls < ActiveRecord::Migration[6.0]
     end
 
     create_table :poll_questions do |t|
-      t.integer :poll_id
+      t.references :poll, polymorphic: false
 
       t.string :title
       t.string :category
@@ -45,7 +47,7 @@ class CreateEffectivePolls < ActiveRecord::Migration[6.0]
     end
 
     create_table :poll_question_options do |t|
-      t.integer :poll_question_id
+      t.references :poll_question, polymorphic: false
 
       t.string :title
       t.integer :position
@@ -55,8 +57,8 @@ class CreateEffectivePolls < ActiveRecord::Migration[6.0]
     end
 
     create_table :ballots do |t|
-      t.integer :poll_id
-      t.integer :user_id
+      t.references :poll, polymorphic: false
+      t.references :user, polymorphic: true
 
       t.string :token
       t.text :wizard_steps
@@ -67,9 +69,9 @@ class CreateEffectivePolls < ActiveRecord::Migration[6.0]
     end
 
     create_table :ballot_responses do |t|
-      t.integer :ballot_id
-      t.integer :poll_id
-      t.integer :poll_question_id
+      t.references :ballot, polymorphic: false
+      t.references :poll, polymorphic: false
+      t.references :poll_question, polymorphic: false
 
       t.date :date
       t.string :email
@@ -82,8 +84,8 @@ class CreateEffectivePolls < ActiveRecord::Migration[6.0]
     end
 
     create_table :ballot_response_options do |t|
-      t.integer  :ballot_response_id
-      t.integer :poll_question_option_id
+      t.references :ballot_response, polymorphic: false
+      t.references :poll_question_option, polymorphic: false
 
       t.datetime :updated_at
       t.datetime :created_at

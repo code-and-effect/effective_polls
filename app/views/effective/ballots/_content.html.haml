@@ -1,0 +1,10 @@
+- all_steps_content = resource.poll&.rich_text_all_steps_content
+- step_content = resource.poll&.send("rich_text_#{step}_content")
+
+- if all_steps_content.present?
+  .card.mb-4
+    .card-body= all_steps_content.to_s
+
+- if step_content.present?
+  .card.mb-4
+    .card-body= step_content.to_s

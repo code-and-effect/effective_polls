@@ -7,18 +7,23 @@
       = render 'admin/polls/form_content', poll: poll
 
     = tab 'Questions' do
-      - datatable = Admin::EffectivePollQuestionsDatatable.new(poll_id: poll.id)
+      - datatable = Admin::EffectivePollQuestionsDatatable.new(poll: poll)
       = render_datatable(datatable, inline: true, simple: true)
 
     = tab 'Notifications' do
       %p
         The following email notifications will be sent to
-        = pluralize(poll.users.count, 'users')
+        = pluralize(poll.users.count, 'user')
         in the audience.
 
-      - datatable = Admin::EffectivePollNotificationsDatatable.new(poll_id: poll.id)
+      %p 
+        The url for this #{et(poll)} is:
+        - url = effective_polls.poll_url(poll)
+        = link_to(url, url, target: '_blank')
+
+      - datatable = Admin::EffectivePollNotificationsDatatable.new(poll: poll)
       = render_datatable(datatable, inline: true, simple: true)
 
-    - if poll.respond_to?(:log_changes_datatable)
+    - if poll.respond_to?(:logs_datatable)
       = tab 'Logs' do
-        = render_datatable(poll.log_changes_datatable)
+        = render_datatable(poll.logs_datatable)

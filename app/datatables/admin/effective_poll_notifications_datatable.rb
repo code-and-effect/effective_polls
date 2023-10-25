@@ -31,7 +31,10 @@ class Admin::EffectivePollNotificationsDatatable < Effective::Datatable
     end
 
     col :subject
-    col :body
+
+    col :body do |notification|
+      simple_format(notification.body.to_s)
+    end
 
     col :started_at, visible: false
     col :completed_at

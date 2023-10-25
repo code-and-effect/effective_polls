@@ -3,19 +3,9 @@ EffectivePolls.setup do |config|
   # Configure the Layout per controller, or all at once
   # config.layout = { application: 'application', admin: 'admin' }
 
-  # Audience Scope Collection
-  #
-  # When creating a new poll, an Array of User scopes can be provided
-  # The User model must respond to these
-  #
-  # config.audience_user_scopes = [:all, :registered]
-  # config.audience_user_scopes = [['All Users', :all], ['Registered Users', :registered]]
-  #
-  config.audience_user_scopes = [['All Users', :all]]
-
   # Notifications Mailer Settings
   #
-  # Schedule rake effective_polls:notify to run every 10 minutes
+  # Schedule rake effective_polls:send_notifications to run every 10 minutes
   # to send out email poll notifications
   #
   # Please see config/initializers/effective_resources.rb for default effective_* gem mailer settings
@@ -29,6 +19,7 @@ EffectivePolls.setup do |config|
   # config.deliver_method = nil     # The deliver method, deliver_later or deliver_now
   # config.mailer_layout = nil      # Default mailer layout
   # config.mailer_sender = nil      # Default From value
+  # config.mailer_froms = nil       # Default Froms collection
   # config.mailer_admin = nil       # Default To value for Admin correspondence
 
   # Use effective email templates for event notifications
