@@ -128,13 +128,13 @@ GEM
     effective_developer (0.7.8)
       effective_resources
       rails (>= 3.2.0)
-    effective_email_templates (1.4.1)
+    effective_email_templates (1.5.1)
       effective_bootstrap
       effective_datatables (>= 4.0.0)
       effective_resources
       liquid
       rails
-    effective_resources (2.11.3)
+    effective_resources (2.12.0)
       rails (>= 4.0.0)
     effective_test_bot (1.2.9)
       capybara (>= 2.15)
