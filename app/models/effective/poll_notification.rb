@@ -72,10 +72,8 @@ module Effective
     validates :subject, presence: true
     validates :body, presence: true
 
-    with_options(if: -> { EffectivePolls.use_effective_email_templates }) do
-      validates :body, liquid: true
-      validates :subject, liquid: true
-    end
+    validates :body, liquid: true
+    validates :subject, liquid: true
 
     validates :reminder, if: -> { reminder? || upcoming_reminder? || before_poll_ends? },
       presence: true, uniqueness: { scope: [:poll_id, :category], message: 'already exists' }
