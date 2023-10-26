@@ -36,6 +36,6 @@
       .card-body
         %h5 Selected Users
         %p Users within any of the following groups may complete this #{etd(poll)} 
-        = f.checks :audience_scope, effective_polls_audience_scope_collection(f.object), multiple: true, label: false
+        = f.checks :audience_scope, effective_polls_audience_scope_collection(f.object), multiple: true
 
   = effective_submit(f)

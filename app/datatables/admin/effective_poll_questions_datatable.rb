@@ -13,7 +13,7 @@ class Admin::EffectivePollQuestionsDatatable < Effective::Datatable
     end
 
     col :title
-    col :body
+    col :body, as: :text
     col :required
 
     col :category, label: 'Type'

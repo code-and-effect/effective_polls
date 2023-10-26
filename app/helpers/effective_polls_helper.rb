@@ -1,10 +1,5 @@
 module EffectivePollsHelper
 
-  # Used on dashboard
-  def polls_name_label
-    et('effective_polls.name')
-  end
-
   # Used by admin/polls form
   def effective_polls_audience_scope_collection(poll)
     klass = poll.try(:audience_class)
