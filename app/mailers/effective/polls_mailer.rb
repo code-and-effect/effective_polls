@@ -2,7 +2,7 @@ module Effective
   class PollsMailer < EffectivePolls.parent_mailer_class
 
     include EffectiveMailer
-    include EffectiveEmailTemplatesMailer if EffectivePolls.use_effective_email_templates
+    include EffectiveEmailTemplatesMailer
 
     def poll_upcoming_reminder(poll_notification, user)
       @assigns = effective_email_templates_assigns(poll_notification, user)
@@ -70,7 +70,6 @@ module Effective
       raise('expected poll to be persisted') unless poll&.persisted?
 
       {
-        subject: poll_notification.subject,
         available_date: poll.available_date,
         title: poll.title,
         url: effective_polls.poll_url(poll),

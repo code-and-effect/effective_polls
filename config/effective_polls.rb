@@ -21,7 +21,7 @@ EffectivePolls.setup do |config|
   # config.mailer_sender = nil      # Default From value
   # config.mailer_froms = nil       # Default Froms collection
   # config.mailer_admin = nil       # Default To value for Admin correspondence
+  #
+  # We always use effective_email_templates
 
-  # Use effective email templates for event notifications
-  config.use_effective_email_templates = true
 end
