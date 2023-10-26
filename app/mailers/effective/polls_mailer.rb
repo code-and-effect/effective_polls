@@ -70,7 +70,6 @@ module Effective
       raise('expected poll to be persisted') unless poll&.persisted?
 
       {
-        subject: poll_notification.subject,
         available_date: poll.available_date,
         title: poll.title,
         url: effective_polls.poll_url(poll),
