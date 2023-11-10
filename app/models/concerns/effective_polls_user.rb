@@ -42,6 +42,12 @@ module EffectivePollsUser
       end
     end
 
+    if self.class.try(:effective_committees_user?)
+      scopes += Effective::Committee.sorted.map do |committee|
+        ["All #{committee} committee members", "with_committee_id_#{committee.id}"]
+      end
+    end
+
     if self.class.try(:acts_as_role_restricted?)
       scopes += EffectiveRoles.roles.map do |role|
         ["All #{role} role users", "with_role_id_#{role}"]
@@ -60,7 +66,9 @@ module EffectivePollsUser
 
     case name.try(:to_sym)
     when :members_with_category
-      return collection.members_with_category(EffectiveMemberships.Category.find(id))
+      return collection.members_with_category(EffectiveMemberships.Category.find_by_id(id))
+    when :with_committee
+      return collection.with_committee(Effective::Committee.find_by_id(id))
     when :with_role
       return collection.with_role(id)
     end
