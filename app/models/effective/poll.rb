@@ -44,7 +44,12 @@ module Effective
       timestamps
     end
 
-    serialize :audience_scope, Array
+
+    if EffectiveResources.serialize_with_coder?
+      serialize :audience_scope, type: Array, coder: YAML
+    else
+      serialize :audience_scope, Array
+    end
 
     scope :deep, -> { includes(poll_questions: :poll_question_options) }
 
