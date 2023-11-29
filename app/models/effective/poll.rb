@@ -44,7 +44,6 @@ module Effective
       timestamps
     end
 
-
     if EffectiveResources.serialize_with_coder?
       serialize :audience_scope, type: Array, coder: YAML
     else
@@ -145,7 +144,7 @@ module Effective
     end
 
     def audience_scope
-      Array(super) - [nil, '']
+      Array(self[:audience_scope]) - [nil, '']
     end
 
     # Returns all completed_ballot_responses
