@@ -8,9 +8,13 @@
       %strong
         = pluralize(poll.completed_ballots.count, 'user')
         completed
-      ballots from an audience of
-      = succeed('.') do
-        %strong= pluralize(poll.users.count, 'total user')
+      ballots
+
+      - users_count = (poll.users.count rescue nil)
+      - if users_count.present?
+        from an audience of
+        = succeed('.') do
+          %strong= pluralize(users_count, 'total user')
 
 .card.mb-3
   .card-body
