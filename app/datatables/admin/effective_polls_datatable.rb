@@ -21,6 +21,9 @@ class Admin::EffectivePollsDatatable < Effective::Datatable
     col :poll_notifications
     col :poll_questions, visible: false
 
+    col :hide_results, visible: false
+    col :skip_logging, visible: false
+
     actions_col
   end
 

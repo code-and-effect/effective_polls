@@ -142,6 +142,8 @@ ActiveRecord::Schema.define(version: 101) do
     t.string "audience"
     t.string "audience_class_name"
     t.text "audience_scope"
+    t.boolean "hide_results", default: false
+    t.boolean "skip_logging", default: false
     t.datetime "updated_at"
     t.datetime "created_at"
   end

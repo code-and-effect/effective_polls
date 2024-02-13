@@ -9,6 +9,14 @@
     .alert.alert-info
       Please be aware of the existing #{ets(f.object.poll_notifications)} when changing the start or end availability date.
 
+  = f.check_box :hide_results, 
+    label: 'Hide results until the poll has ended',
+    hint: 'If checked, admin users will be unable to view the poll results until the poll has ended.'
+
+  = f.check_box :skip_logging,
+    label: 'Skip logging of ballots',
+    hint: 'If checked, no logs of who has submitted or completed ballots will be kept.'
+
   -# Audience
   - f.object.audience_class_name ||= current_user.class.name
 

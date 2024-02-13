@@ -37,6 +37,9 @@ module Effective
       start_at      :datetime
       end_at        :datetime
 
+      hide_results          :boolean, default: false
+      skip_logging          :boolean, default: false
+
       audience              :string
       audience_class_name   :string
       audience_scope        :text       # An Array of user_ids or named scopes on the User model
