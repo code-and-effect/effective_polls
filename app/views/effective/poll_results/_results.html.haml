@@ -20,23 +20,26 @@
   .card-body
     %h5.card-title Question Results
 
-    .effective-ballot
-      %table.table.table-hover
-        %thead
-          %tr
-            %th Question
-            %th Results
-
-        %tbody
-          - ballots = poll.ballots
-
-          - poll.poll_questions.each_with_index do |poll_question, index|
-            - ballot_responses = poll.poll_results(poll_question: poll_question)
-
+    - if poll.hide_results? && !poll.ended?
+      %p The results of this poll will be displayed once it has ended.
+    - else
+      .effective-ballot
+        %table.table.table-hover
+          %thead
             %tr
-              %td
-                #{poll_question.position + 1}. #{poll_question}
-                %br
-                %small.text-muted= poll_question.category
+              %th Question
+              %th Results
 
-              %td= render('effective/poll_results/poll_result', poll_question: poll_question, ballot_responses: ballot_responses)
+          %tbody
+            - ballots = poll.ballots
+
+            - poll.poll_questions.each_with_index do |poll_question, index|
+              - ballot_responses = poll.poll_results(poll_question: poll_question)
+
+              %tr
+                %td
+                  #{poll_question.position + 1}. #{poll_question}
+                  %br
+                  %small.text-muted= poll_question.category
+
+                %td= render('effective/poll_results/poll_result', poll_question: poll_question, ballot_responses: ballot_responses)

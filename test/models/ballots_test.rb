@@ -56,4 +56,12 @@ class BallotsTest < ActiveSupport::TestCase
     assert ballot.can_visit_step?(:complete)
   end
 
+  test 'log_changes? is false when poll skips logging' do
+    ballot = create_effective_ballot!
+    assert ballot.log_changes?
+
+    ballot.poll.update!(skip_logging: true)
+    refute ballot.log_changes?
+  end
+
 end

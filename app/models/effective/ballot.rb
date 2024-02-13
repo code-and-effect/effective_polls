@@ -60,6 +60,12 @@ module Effective
       model_name.human
     end
 
+    # Disable effective_logging log_changes for this resource
+    def log_changes?
+      return false if poll&.skip_logging?
+      true
+    end
+
     # Find or build
     def ballot_response(poll_question)
       ballot_response = ballot_responses.find { |br| br.poll_question_id == poll_question.id }
