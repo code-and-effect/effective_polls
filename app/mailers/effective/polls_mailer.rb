@@ -11,7 +11,8 @@ module Effective
         to: user.email,
         from: poll_notification.from,
         body: poll_notification.body,
-        subject: poll_notification.subject
+        subject: poll_notification.subject,
+        message_stream: 'broadcast-stream'
       )
     end
 
@@ -22,7 +23,8 @@ module Effective
         to: user.email,
         from: poll_notification.from,
         body: poll_notification.body,
-        subject: poll_notification.subject
+        subject: poll_notification.subject,
+        message_stream: 'broadcast-stream'
       )
     end
 
@@ -33,7 +35,8 @@ module Effective
         to: user.email,
         from: poll_notification.from,
         body: poll_notification.body,
-        subject: poll_notification.subject
+        subject: poll_notification.subject,
+        message_stream: 'broadcast-stream'
       )
     end
 
@@ -44,7 +47,8 @@ module Effective
         to: user.email,
         from: poll_notification.from,
         body: poll_notification.body,
-        subject: poll_notification.subject
+        subject: poll_notification.subject,
+        message_stream: 'broadcast-stream'
       )
     end
 
@@ -55,7 +59,8 @@ module Effective
         to: user.email,
         from: poll_notification.from,
         body: poll_notification.body,
-        subject: poll_notification.subject
+        subject: poll_notification.subject,
+        message_stream: 'broadcast-stream'
       )
     end
 
