@@ -129,7 +129,7 @@ module Effective
       end
     end
 
-    def notify!(force: false, except: nil)
+    def notify!(force: false, except: [])
       raise('expected an Array of user IDs') if except.present? && !except.kind_of?(Array)
 
       return false unless (notify_now? || force)
