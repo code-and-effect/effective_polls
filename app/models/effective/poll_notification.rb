@@ -129,7 +129,9 @@ module Effective
       end
     end
 
-    def notify!(force: false)
+    def notify!(force: false, except: [])
+      raise('expected an Array of user IDs') if except.present? && !except.kind_of?(Array)
+
       return false unless (notify_now? || force)
 
       # We send to all users, except for the 'Reminder' that exclude completed users
@@ -138,7 +140,17 @@ module Effective
       update_column(:started_at, Time.zone.now)
 
       users.find_each do |user|
-        Effective::PollsMailer.public_send(email_template, self, user).deliver_now
+        print '.'
+
+        next if except.include?(user.id)
+
+        begin
+          Effective::PollsMailer.public_send(email_template, self, user).deliver_now
+        rescue => e
+          EffectiveLogger.error(e.message, associated: self) if defined?(EffectiveLogger)
+          ExceptionNotifier.notify_exception(e, data: { user_id: user.id }) if defined?(ExceptionNotifier)
+        end
+
       end
 
       update_column(:completed_at, Time.zone.now)
