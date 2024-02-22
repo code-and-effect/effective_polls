@@ -1,5 +1,5 @@
 -# In progress ballot
-- ballot = Effective::Ballot.in_progress.where(user: current_user).first
+- ballot = Effective::Ballot.in_progress.where(user: current_user).select { |ballot| ballot.poll.present? }.first
 - datatable = EffectiveResources.best('EffectivePollsAvailablePollsDatatable').new(self, namespace: :effective)
 
 - if ballot.present?
