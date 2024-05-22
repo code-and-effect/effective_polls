@@ -21,7 +21,12 @@
   - f.object.audience_class_name ||= current_user.class.name
 
   = f.hidden_field :audience_class_name
-  = f.radios :audience, Effective::Poll::AUDIENCES
+
+  - # We don't want any future polls to include 'All Users'
+  - if f.object.audience == 'All Users'
+    = f.radios :audience, Effective::Poll::AUDIENCES
+  - else
+    = f.radios :audience, (Effective::Poll::AUDIENCES - ['All Users'])
 
   = f.show_if :audience, 'All Users' do
     .card
