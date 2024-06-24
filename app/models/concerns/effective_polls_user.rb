@@ -21,6 +21,7 @@ module EffectivePollsUser
 
   # The list of all available audience scopes for the Poll Selected Users
   def poll_audience_scopes
+    default_poll_audience_scopes()
   end
 
   def default_poll_audience_scopes

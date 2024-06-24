@@ -8,6 +8,7 @@ require 'haml'
 require 'devise'
 require 'wicked'
 require 'effective_email_templates'
+require 'effective_test_bot'
 
 module Dummy
   class Application < Rails::Application

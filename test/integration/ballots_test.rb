@@ -9,7 +9,9 @@ module Effective
 
     test 'new route redirects to start page' do
       poll = create_effective_poll!
-      user = sign_in()
+
+      user = create_user!
+      sign_in(user)
 
       get effective_polls.new_poll_ballot_path(poll)
 
@@ -21,7 +23,9 @@ module Effective
       poll = create_effective_poll!
       poll.update_column(:end_at, Time.zone.now - 1.minute)
 
-      user = sign_in()
+      user = create_user!
+      sign_in(user)
+
       refute poll.available_for?(user)
 
       get effective_polls.poll_ballot_build_path(poll, :new, :start)
@@ -31,7 +35,9 @@ module Effective
 
     test 'existing ballot redirects' do
       poll = create_effective_poll!
-      user = sign_in()
+
+      user = create_user!
+      sign_in(user)
 
       ballot = create_effective_ballot!(poll: poll, user: user)
       ballot.wizard_steps[:start] = Time.zone.now
@@ -43,7 +49,9 @@ module Effective
 
     test 'completed ballot redirects' do
       poll = create_effective_poll!
-      user = sign_in()
+
+      user = create_user!
+      sign_in(user)
 
       ballot = create_effective_ballot!(poll: poll, user: user)
       ballot.submit!
@@ -54,7 +62,9 @@ module Effective
 
     test 'start step' do
       poll = create_effective_poll!
-      user = sign_in()
+
+      user = create_user!
+      sign_in(user)
 
       assert poll.available_for?(user)
 
@@ -81,7 +91,9 @@ module Effective
 
     test 'save step valid' do
       poll = create_effective_poll!
-      user = sign_in()
+
+      user = create_user!
+      sign_in(user)
 
       assert poll.available_for?(user)
       put effective_polls.poll_ballot_build_path(poll, :new, :start), params: { effective_ballot: { current_step: 'start'} }
@@ -94,7 +106,10 @@ module Effective
 
     test 'save step invalid' do
       poll = create_effective_poll!
-      user = sign_in()
+
+      user = create_user!
+      sign_in(user)
+
       assert poll.available_for?(user)
 
       # Create a duplicate

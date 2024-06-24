@@ -6,7 +6,7 @@
   = f.datetime_field :end_at
 
   - if f.object.poll_notifications.present?
-    .alert.alert-info
+    .alert.alert-info.mb-3
       Please be aware of the existing #{ets(f.object.poll_notifications)} when changing the start or end availability date.
 
   = f.check_box :hide_results, 
