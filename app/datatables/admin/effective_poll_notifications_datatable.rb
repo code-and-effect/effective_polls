@@ -13,6 +13,10 @@ class Admin::EffectivePollNotificationsDatatable < Effective::Datatable
     col :poll
     col :category
 
+    col :from, visible: false do |notification|
+      ERB::Util.html_escape_once(notification.from)
+    end
+
     col :reminder do |poll_notification|
       case poll_notification.category
       when 'When poll starts'
@@ -35,6 +39,10 @@ class Admin::EffectivePollNotificationsDatatable < Effective::Datatable
     col :body do |notification|
       simple_format(notification.body.to_s)
     end
+
+    col :cc, visible: false
+    col :bcc, visible: false
+    col :content_type, visible: false
 
     col :started_at, visible: false
     col :completed_at

@@ -1,7 +1,9 @@
 module Effective
   class PollNotification < ActiveRecord::Base
-    belongs_to :poll
+    acts_as_email_notification # effective_resources
     log_changes(to: :poll) if respond_to?(:log_changes)
+
+    belongs_to :poll
 
     CATEGORIES = ['Upcoming reminder', 'When poll starts', 'Reminder', 'Before poll ends', 'When poll ends']
     EMAIL_TEMPLATE_VARIABLES = ['available_date', 'title', 'url', 'user.name', 'user.email']
@@ -49,6 +51,10 @@ module Effective
       subject           :string
       body              :text
 
+      cc                :string
+      bcc               :string
+      content_type      :string
+
       # Tracking background jobs email send out
       started_at        :datetime
       completed_at      :datetime
@@ -67,13 +73,6 @@ module Effective
 
     validates :poll, presence: true
     validates :category, presence: true, inclusion: { in: CATEGORIES }
-
-    validates :from, presence: true
-    validates :subject, presence: true
-    validates :body, presence: true
-
-    validates :body, liquid: true
-    validates :subject, liquid: true
 
     validates :reminder, if: -> { reminder? || upcoming_reminder? || before_poll_ends? },
       presence: true, uniqueness: { scope: [:poll_id, :category], message: 'already exists' }
@@ -148,7 +147,8 @@ module Effective
           Effective::PollsMailer.public_send(email_template, self, user).deliver_now
         rescue => e
           EffectiveLogger.error(e.message, associated: self) if defined?(EffectiveLogger)
-          ExceptionNotifier.notify_exception(e, data: { user_id: user.id }) if defined?(ExceptionNotifier)
+          ExceptionNotifier.notify_exception(e, data: { user_id: user.id, poll_notification_id: id }) if defined?(ExceptionNotifier)
+          raise(e) if Rails.env.test? || Rails.env.development?
         end
 
       end

@@ -106,4 +106,21 @@ class PollNotificationsTest < ActiveSupport::TestCase
     assert notification.errors[:subject].present?
   end
 
+  test 'notify! with html content' do
+    poll = create_effective_poll!
+    poll.update!(start_at: Time.zone.now - 1.minute, end_at: Time.zone.now)
+    user = create_user!
+
+    notification = create_effective_poll_notification!(poll: poll, category: 'When poll ends')
+
+    template = Effective::EmailTemplate.where(template_name: notification.email_template).first!
+    template.save_as_html!
+
+    notification.update!(body: "<p>Cool {{ title }}</p>", subject: template.subject, from: template.from, content_type: 'text/html')
+
+    assert_email(body: "<p>Cool #{poll}</p>", html_layout: true) do
+      notification.notify!
+    end
+  end
+
 end
