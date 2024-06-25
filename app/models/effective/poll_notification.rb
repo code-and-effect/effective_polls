@@ -85,6 +85,10 @@ module Effective
       'poll_' + category.to_s.parameterize.underscore
     end
 
+    def email_template_variables
+      EMAIL_TEMPLATE_VARIABLES
+    end
+
     def upcoming_reminder?
       category == 'Upcoming reminder'
     end
