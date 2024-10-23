@@ -41,7 +41,7 @@
         %p Only the following individual users may complete this #{etd(poll)} 
 
         -# Audience Users
-        - ajax_url = (@select2_users_ajax_path || effective_resources.users_admin_select2_ajax_index_path) unless Rails.env.test?
+        - ajax_url = (effective_resources.users_effective_ajax_index_path unless Rails.env.test?)
         = f.select :audience_scope, current_user.class.all, ajax_url: ajax_url, multiple: true
 
   = f.show_if :audience, 'Selected Users' do
