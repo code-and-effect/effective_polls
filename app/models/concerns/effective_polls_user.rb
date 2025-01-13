@@ -55,6 +55,16 @@ module EffectivePollsUser
       end
     end
 
+    if self.class.try(:effective_mentorships_user?)
+      Effective::MentorshipCycle.sorted.each do |cycle|
+        scopes += [
+          ["All grouped participants in #{cycle}", "mentorships_with_groups_id_#{cycle.id}"],
+          ["All grouped mentors in #{cycle}", "mentorships_mentors_with_groups_id_#{cycle.id}"],
+          ["All grouped mentees in #{cycle}", "mentorships_mentees_with_groups_id_#{cycle.id}"],
+        ]
+      end
+    end
+
     scopes
   end
 
@@ -72,6 +82,12 @@ module EffectivePollsUser
       return collection.with_committee(Effective::Committee.find_by_id(id))
     when :with_role
       return collection.with_role(id)
+    when :mentorships_with_groups
+      return collection.mentorships_with_groups(Effective::MentorshipCycle.find_by_id(id))
+    when :mentorships_mentors_with_groups
+      return collection.mentorships_mentors_with_groups(Effective::MentorshipCycle.find_by_id(id))
+    when :mentorships_mentees_with_groups
+      return collection.mentorships_mentees_with_groups(Effective::MentorshipCycle.find_by_id(id))
     end
 
     # Otherwise we don't know what this scope is
