@@ -5,7 +5,7 @@
     = effective_form_with(model: resource, url: wizard_path(step), method: :put) do |f|
       = f.hidden_field :current_step
 
-      - resource.poll.poll_questions.top_level.deep.all.each_with_index do |poll_question, index|
+      - resource.poll.poll_questions.top_level.deep.each_with_index do |poll_question, index|
         - ballot_response = resource.ballot_response(poll_question)
 
         = f.fields_for :ballot_responses, ballot_response do |fbr|
@@ -14,8 +14,12 @@
           - poll_question.follow_up_poll_questions.each do |follow_up_poll_question|
             - ballot_response = resource.ballot_response(follow_up_poll_question)
 
-            = fbr.show_if_any(:poll_question_option_ids, [follow_up_poll_question.show_if_value]) do
+            = f.fields_for :ballot_responses, ballot_response do |fbr|
+              = fbr.hidden_field :_destroy, value: true
+
+            = fbr.show_if(:poll_question_option_ids, follow_up_poll_question.show_if_value) do
               = f.fields_for :ballot_responses, ballot_response do |fbr|
+                = fbr.hidden_field :_destroy, value: false
                 = render('/effective/ballot_responses/fields', f: fbr, poll_question: follow_up_poll_question)
 
       = f.submit 'Save and Continue', center: true

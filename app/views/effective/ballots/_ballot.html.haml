@@ -6,9 +6,17 @@
         %th Response
 
     %tbody
-      - ballot.poll.poll_questions.each_with_index do |poll_question, index|
+      - ballot.poll.poll_questions.top_level.deep.each_with_index do |poll_question, index|
         - ballot_response = ballot.ballot_response(poll_question)
 
         %tr
           %td= poll_question
           %td= render(ballot_response)
+
+        - poll_question.follow_up_poll_questions.deep.each do |follow_up_poll_question|
+          - ballot_response = ballot.ballot_response(follow_up_poll_question)
+
+          - if ballot_response.persisted?
+            %tr
+              %td= follow_up_poll_question
+              %td= render(ballot_response)
