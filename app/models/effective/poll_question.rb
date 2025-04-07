@@ -88,7 +88,7 @@ module Effective
 
     def show_if_value
       if poll_question.try(:poll_question_option?)
-        poll_question_option.to_s
+        poll_question_option_id
       else
         follow_up_value
       end
