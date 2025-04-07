@@ -8,7 +8,7 @@ module Effective
     has_many :poll_question_options, -> { order(:position) }, inverse_of: :poll_question, dependent: :delete_all
     accepts_nested_attributes_for :poll_question_options, reject_if: :all_blank, allow_destroy: true
 
-    has_many :follow_up_poll_questions, class_name: 'Effective::PollQuestion', foreign_key: :poll_question_id, dependent: :destroy
+    has_many :follow_up_poll_questions, -> { order(:position) }, class_name: 'Effective::PollQuestion', foreign_key: :poll_question_id, dependent: :destroy
 
     has_rich_text :body
     log_changes(to: :poll) if respond_to?(:log_changes)
@@ -38,6 +38,8 @@ module Effective
       'Select up to 4',
       'Select up to 5'
     ]
+
+    UNSUPPORTED_FOLLOW_UP_QUESTION_CATEGORIES = ['Upload File']
 
     effective_resource do
       title         :string
@@ -86,12 +88,26 @@ module Effective
       title.presence || model_name.human
     end
 
-    def show_if_value
-      if poll_question.try(:poll_question_option?)
-        poll_question_option_id
-      else
-        follow_up_value
+    def show_if_attribute
+      return :poll_question_option_ids if poll_question_option?
+
+      case category
+      when 'Date' then :date
+      when 'Email' then :email
+      when 'Number' then :number
+      when 'Long Answer' then :long_answer
+      when 'Short Answer' then :short_answer
+      when 'Upload File' then :upload_file
+      else :unknown
       end
+    end
+
+    def show_if_value
+      poll_question.try(:poll_question_option?) ? poll_question_option_id : follow_up_value
+    end
+
+    def show_if_value_to_s
+      (poll_question.try(:poll_question_option?) ? poll_question_option : follow_up_value).to_s
     end
 
     def poll_question_option?

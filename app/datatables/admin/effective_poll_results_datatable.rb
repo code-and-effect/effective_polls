@@ -5,7 +5,7 @@ class Admin::EffectivePollResultsDatatable < Effective::Datatable
     col :position, visible: false
     col :category, search: Effective::PollQuestion::CATEGORIES, visible: false
 
-    col :question, search: poll.poll_questions.pluck(:title)
+    col :question, search: poll.poll_questions.pluck(:title).sort
     col :responses
   end
 

@@ -11,15 +11,15 @@
         = f.fields_for :ballot_responses, ballot_response do |fbr|
           = render('/effective/ballot_responses/fields', f: fbr, poll_question: poll_question)
 
-          - poll_question.follow_up_poll_questions.each do |follow_up_poll_question|
-            - ballot_response = resource.ballot_response(follow_up_poll_question)
+          - poll_question.follow_up_poll_questions.each do |follow_up|
+            - ballot_response = resource.ballot_response(follow_up)
 
-            = f.fields_for :ballot_responses, ballot_response do |fbr|
-              = fbr.hidden_field :_destroy, value: true
-
-            = fbr.show_if(:poll_question_option_ids, follow_up_poll_question.show_if_value) do
+            = fbr.show_if(poll_question.show_if_attribute, follow_up.show_if_value) do
               = f.fields_for :ballot_responses, ballot_response do |fbr|
-                = fbr.hidden_field :_destroy, value: false
-                = render('/effective/ballot_responses/fields', f: fbr, poll_question: follow_up_poll_question)
+                = render('/effective/ballot_responses/fields', f: fbr, poll_question: follow_up)
+
+            = fbr.hide_if(poll_question.show_if_attribute, follow_up.show_if_value) do
+              = f.fields_for :ballot_responses, ballot_response do |fbr|
+                = fbr.hidden_field :_destroy, value: true
 
       = f.submit 'Save and Continue', center: true

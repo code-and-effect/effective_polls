@@ -7,7 +7,7 @@ class Admin::EffectivePollQuestionsDatatable < Effective::Datatable
     col :id, visible: false
 
     if attributes[:follow_up]
-      col :show_if_value, label: 'When answered with'
+      col :show_if_value_to_s, label: 'When answered with'
     else
       col :poll
     end

@@ -121,9 +121,12 @@
 - unless poll_question.follow_up?
   %h2 Follow up questions
 
-  - if poll_question.persisted?
-    %p Display follow up question(s) based on the answer to this question:
-    = render_inline_datatable Admin::EffectivePollQuestionsDatatable.new(follow_up: true, poll_question: poll_question)
-  - else
+  - if Effective::PollQuestion::UNSUPPORTED_FOLLOW_UP_QUESTION_CATEGORIES.include?(poll_question.category)
+    %p.text-muted 
+      %em Follow up questions are not supported for the #{poll_question.category} question category
+  - elsif poll_question.new_record?
     %p.text-muted 
       %em Please save this question to add follow up questions
+  - else
+    %p Display follow up question(s) based on the answer to this question:
+    = render_inline_datatable Admin::EffectivePollQuestionsDatatable.new(follow_up: true, poll_question: poll_question)
