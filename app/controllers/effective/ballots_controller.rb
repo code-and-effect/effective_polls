@@ -56,7 +56,7 @@ module Effective
       when :vote
         params.require(:effective_ballot).permit(:current_step, ballot_responses_attributes: [
           :id, :poll_id, :poll_question_id,
-          :date, :email, :number, :long_answer, :short_answer, :upload_file,
+          :date, :email, :number, :long_answer, :short_answer, :upload_file, :_destroy,
           :poll_question_option_ids, poll_question_option_ids: []
         ])
       when :submit

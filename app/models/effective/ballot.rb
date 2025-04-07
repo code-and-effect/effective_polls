@@ -10,7 +10,7 @@ module Effective
     belongs_to :poll
 
     has_many :ballot_responses, dependent: :destroy
-    accepts_nested_attributes_for :ballot_responses
+    accepts_nested_attributes_for :ballot_responses, allow_destroy: true
 
     acts_as_tokened
 

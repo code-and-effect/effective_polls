@@ -132,6 +132,10 @@ ActiveRecord::Schema.define(version: 101) do
     t.string "category"
     t.boolean "required", default: true
     t.integer "position"
+    t.boolean "follow_up", default: false
+    t.string "follow_up_value"
+    t.integer "poll_question_id"
+    t.integer "poll_question_option_id"
     t.datetime "updated_at"
     t.datetime "created_at"
     t.index ["poll_id"], name: "index_poll_questions_on_poll_id"

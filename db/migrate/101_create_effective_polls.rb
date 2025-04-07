@@ -49,6 +49,12 @@ class CreateEffectivePolls < ActiveRecord::Migration[6.0]
 
       t.integer :position
 
+      t.boolean :follow_up, default: false
+      t.string :follow_up_value
+
+      t.integer :poll_question_id
+      t.integer :poll_question_option_id
+
       t.datetime :updated_at
       t.datetime :created_at
     end

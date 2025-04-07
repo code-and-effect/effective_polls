@@ -4,6 +4,21 @@
   - else
     = f.select :poll_id, Effective::Poll.all
 
+  -# Follow up
+  - if inline_datatable? && (original = f.object.poll_question).present?
+    = f.hidden_field :follow_up, value: true
+    = f.hidden_field :poll_question_id
+
+    .mb-3.card
+      .card-body
+        %h5 Follow up Question
+        %p.text-muted This question will only appear when they answer the above question with the following value:
+
+        - if original.poll_question_option?
+          = f.select :poll_question_option_id, original.poll_question_options, label: 'Answer required to display this question'
+        - else
+          = f.text_field :follow_up_value, label: 'Answer required to display this question', required: true, hint: 'Enter the exact answer value that should trigger this question to appear'
+
   = f.text_field :title, label: 'Question Title'
 
   - if defined?(EffectiveArticleEditor)
@@ -17,11 +32,8 @@
   = f.show_if :category, 'Choose one' do
     .mt-3.card
       .card-body
-        %h5 Options
-        %p Display the following options:
-
-        = f.has_many :poll_question_options, build: true do |fa|
-          = fa.text_field :title, label: false
+        %h5 Choose one
+        %p Display radio buttons to select one option
 
   = f.show_if :category, 'Select all that apply' do
     .card
@@ -105,3 +117,16 @@
           = fa.text_field :title, label: false
 
   = effective_submit(f)
+
+- unless poll_question.follow_up?
+  %h2 Follow up questions
+
+  - if Effective::PollQuestion::UNSUPPORTED_FOLLOW_UP_QUESTION_CATEGORIES.include?(poll_question.category)
+    %p.text-muted 
+      %em Follow up questions are not supported for the #{poll_question.category} question category
+  - elsif poll_question.new_record?
+    %p.text-muted 
+      %em Please save this question to add follow up questions
+  - else
+    %p Display follow up question(s) based on the answer to this question:
+    = render_inline_datatable Admin::EffectivePollQuestionsDatatable.new(follow_up: true, poll_question: poll_question)
