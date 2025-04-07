@@ -5,7 +5,7 @@
     = effective_form_with(model: resource, url: wizard_path(step), method: :put) do |f|
       = f.hidden_field :current_step
 
-      - resource.poll.poll_questions.top_level.deep.each_with_index do |poll_question, index|
+      - resource.poll.poll_questions.top_level.deep.each do |poll_question|
         - ballot_response = resource.ballot_response(poll_question)
 
         = f.fields_for :ballot_responses, ballot_response do |fbr|

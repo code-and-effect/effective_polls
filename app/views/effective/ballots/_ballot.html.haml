@@ -6,7 +6,7 @@
         %th Response
 
     %tbody
-      - ballot.poll.poll_questions.top_level.deep.each_with_index do |poll_question, index|
+      - ballot.poll.poll_questions.top_level.deep.each do |poll_question|
         - ballot_response = ballot.ballot_response(poll_question)
 
         %tr
