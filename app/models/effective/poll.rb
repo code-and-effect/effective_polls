@@ -53,7 +53,7 @@ module Effective
       serialize :audience_scope, Array
     end
 
-    scope :deep, -> { includes(poll_questions: :poll_question_options) }
+    scope :deep, -> { includes(:poll_notifications, poll_questions: :poll_question_options) }
 
     scope :deep_results, -> {
       includes(poll_questions: :poll_question_options)
