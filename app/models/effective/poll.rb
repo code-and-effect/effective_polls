@@ -3,8 +3,8 @@ module Effective
     acts_as_tokened
     acts_as_questionable
 
-    # has_many :poll_notifications, -> { order(:id) }, inverse_of: :poll, dependent: :destroy
-    # accepts_nested_attributes_for :poll_notifications, allow_destroy: true
+    has_many :poll_notifications, -> { order(:id) }, inverse_of: :poll, dependent: :destroy
+    accepts_nested_attributes_for :poll_notifications, allow_destroy: true
 
     # has_many :poll_questions, -> { order(:position) }, inverse_of: :poll, dependent: :destroy
     # accepts_nested_attributes_for :poll_questions, allow_destroy: true
@@ -13,7 +13,7 @@ module Effective
     # has_many :ballot_responses
 
     # # For the poll_results screens
-    # has_many :completed_ballots, -> { Effective::Ballot.completed }, class_name: 'Effective::Ballot'
+    has_many :completed_ballots, -> { Effective::Ballot.completed }, class_name: 'Effective::Ballot'
     # has_many :completed_ballot_responses, -> { where(ballot: Effective::Ballot.completed) }, class_name: 'Effective::BallotResponse'
 
     has_many_rich_texts
@@ -57,7 +57,7 @@ module Effective
     scope :deep, -> { includes(:poll_notifications, questions: :question_options) }
 
     scope :deep_results, -> {
-      includes(poll_questions: :poll_question_options)
+      includes(questions: :question_options)
       .includes(ballots: [responses: [:questionable, :question, :question_options]])
     }
 

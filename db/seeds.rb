@@ -1,9 +1,5 @@
 puts "Running effective_polls seeds"
 
-Effective::Poll.all.each { |poll| poll.destroy! }
-
-Effective::Ballot.delete_all
-
 def build_effective_poll
   poll = Effective::Poll.new(
     title: 'Effective Poll',
@@ -21,12 +17,17 @@ end
 
 def build_question(poll, category)
   questions = Array(category).map.with_index do |category, index|
-    question = poll.questions.build(title: "#{category} Question ##{index+1}", category: category)
+    question = Effective::Question.new(
+      questionable: poll,
+      title: "#{category} Question ##{index+1}",
+      category: category
+    )
+    poll.questions << question
 
-    if question.poll_question_option?
-      question.poll_question_options.build(title: 'Option A')
-      question.poll_question_options.build(title: 'Option B')
-      question.poll_question_options.build(title: 'Option C')
+    if question.question_option?
+      question.question_options.build(title: 'Option A')
+      question.question_options.build(title: 'Option B')
+      question.question_options.build(title: 'Option C')
     end
   end
 
