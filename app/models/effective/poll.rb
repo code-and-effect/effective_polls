@@ -1,19 +1,20 @@
 module Effective
   class Poll < ActiveRecord::Base
     acts_as_tokened
+    acts_as_questionable
 
-    has_many :poll_notifications, -> { order(:id) }, inverse_of: :poll, dependent: :destroy
-    accepts_nested_attributes_for :poll_notifications, allow_destroy: true
+    # has_many :poll_notifications, -> { order(:id) }, inverse_of: :poll, dependent: :destroy
+    # accepts_nested_attributes_for :poll_notifications, allow_destroy: true
 
-    has_many :poll_questions, -> { order(:position) }, inverse_of: :poll, dependent: :destroy
-    accepts_nested_attributes_for :poll_questions, allow_destroy: true
+    # has_many :poll_questions, -> { order(:position) }, inverse_of: :poll, dependent: :destroy
+    # accepts_nested_attributes_for :poll_questions, allow_destroy: true
 
     has_many :ballots
-    has_many :ballot_responses
+    # has_many :ballot_responses
 
-    # For the poll_results screens
-    has_many :completed_ballots, -> { Effective::Ballot.completed }, class_name: 'Effective::Ballot'
-    has_many :completed_ballot_responses, -> { where(ballot: Effective::Ballot.completed) }, class_name: 'Effective::BallotResponse'
+    # # For the poll_results screens
+    # has_many :completed_ballots, -> { Effective::Ballot.completed }, class_name: 'Effective::Ballot'
+    # has_many :completed_ballot_responses, -> { where(ballot: Effective::Ballot.completed) }, class_name: 'Effective::BallotResponse'
 
     has_many_rich_texts
     # rich_text_all_steps_content
@@ -23,7 +24,7 @@ module Effective
     # rich_text_complete_content
 
     if respond_to?(:log_changes)
-      log_changes(except: [:ballots, :ballot_responses, :completed_ballots, :completed_ballot_responses])
+      log_changes(except: [:ballots, :responses])
     end
 
     AUDIENCES = ['All Users', 'Individual Users', 'Selected Users']
@@ -53,11 +54,11 @@ module Effective
       serialize :audience_scope, Array
     end
 
-    scope :deep, -> { includes(:poll_notifications, poll_questions: :poll_question_options) }
+    scope :deep, -> { includes(:poll_notifications, questions: :question_options) }
 
     scope :deep_results, -> {
       includes(poll_questions: :poll_question_options)
-      .includes(ballots: [ballot_responses: [:poll, :poll_question, :poll_question_options]])
+      .includes(ballots: [responses: [:questionable, :question, :question_options]])
     }
 
     scope :sorted, -> { order(:start_at) }
@@ -148,12 +149,6 @@ module Effective
 
     def audience_scope
       Array(self[:audience_scope]) - [nil, '']
-    end
-
-    # Returns all completed_ballot_responses
-    def poll_results(poll_question: nil)
-      return completed_ballot_responses if poll_question.nil?
-      completed_ballot_responses.select { |br| br.poll_question_id == poll_question.id }
     end
 
   end

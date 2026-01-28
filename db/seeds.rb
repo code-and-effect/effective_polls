@@ -13,15 +13,15 @@ def build_effective_poll
     audience_class_name: 'User'
   )
 
-  build_poll_question(poll, Effective::PollQuestion::CATEGORIES)
+  build_question(poll, Effective::Question::CATEGORIES)
 
   poll.save!
   poll
 end
 
-def build_poll_question(poll, category)
+def build_question(poll, category)
   questions = Array(category).map.with_index do |category, index|
-    question = poll.poll_questions.build(title: "#{category} Question ##{index+1}", category: category)
+    question = poll.questions.build(title: "#{category} Question ##{index+1}", category: category)
 
     if question.poll_question_option?
       question.poll_question_options.build(title: 'Option A')

@@ -5,7 +5,7 @@ class PollsTest < ActiveSupport::TestCase
     poll = build_effective_poll()
 
     assert poll.valid?
-    assert_equal Effective::PollQuestion::CATEGORIES, poll.poll_questions.map(&:category)
+    assert_equal Effective::Question::CATEGORIES, poll.questions.map(&:category)
   end
 
   test 'a poll is started? once the start date has passed' do

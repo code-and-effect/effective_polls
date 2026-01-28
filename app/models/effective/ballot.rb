@@ -9,10 +9,11 @@ module Effective
     # Effective namespace
     belongs_to :poll
 
-    has_many :ballot_responses, dependent: :destroy
-    accepts_nested_attributes_for :ballot_responses, allow_destroy: true
+    # has_many :ballot_responses, dependent: :destroy
+    # accepts_nested_attributes_for :ballot_responses, allow_destroy: true
 
     acts_as_tokened
+    acts_as_responsable
 
     log_changes(to: :poll) if respond_to?(:log_changes)
 
@@ -37,7 +38,7 @@ module Effective
       timestamps
     end
 
-    scope :deep, -> { includes(:poll, :user, ballot_responses: [:poll, :poll_question, :poll_question_options]) }
+    scope :deep, -> { includes(:poll, :user, responses: [:questionable, :question, :question_options]) }
     scope :sorted, -> { order(:id) }
 
     scope :in_progress, -> { where(completed_at: nil) }
@@ -54,7 +55,7 @@ module Effective
     }
 
     # I seem to need this even tho I accept_nested_attributes
-    validates :ballot_responses, associated: true
+    # validates :ballot_responses, associated: true
 
     def to_s
       model_name.human
@@ -67,10 +68,10 @@ module Effective
     end
 
     # Find or build
-    def ballot_response(poll_question)
-      ballot_response = ballot_responses.find { |br| br.poll_question_id == poll_question.id }
-      ballot_response ||= ballot_responses.build(poll: poll_question.poll, poll_question: poll_question)
-    end
+    # def ballot_response(poll_question)
+    #   ballot_response = ballot_responses.find { |br| br.poll_question_id == poll_question.id }
+    #   ballot_response ||= ballot_responses.build(poll: poll_question.poll, poll_question: poll_question)
+    # end
 
     # This is the review step where they click Submit Ballot
     def submit!

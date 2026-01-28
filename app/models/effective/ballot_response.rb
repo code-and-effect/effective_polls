@@ -1,3 +1,5 @@
+# TO BE DELETED
+
 module Effective
   class BallotResponse < ActiveRecord::Base
     belongs_to :ballot

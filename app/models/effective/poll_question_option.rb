@@ -1,3 +1,5 @@
+# TO BE DELETED
+
 module Effective
   class PollQuestionOption < ActiveRecord::Base
     belongs_to :poll_question

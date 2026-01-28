@@ -1,3 +1,0 @@
-- ballot_responses.select { |br| br.response&.attached? }.each do |ballot_response|
-  .poll-result-upload-file
-    = link_to(ballot_response.response.filename, url_for(ballot_response.response), target: '_blank')

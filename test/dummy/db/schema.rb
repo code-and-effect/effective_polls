@@ -50,31 +50,6 @@ ActiveRecord::Schema.define(version: 101) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "ballot_response_options", force: :cascade do |t|
-    t.bigint "ballot_response_id"
-    t.bigint "poll_question_option_id"
-    t.datetime "updated_at"
-    t.datetime "created_at"
-    t.index ["ballot_response_id"], name: "index_ballot_response_options_on_ballot_response_id"
-    t.index ["poll_question_option_id"], name: "index_ballot_response_options_on_poll_question_option_id"
-  end
-
-  create_table "ballot_responses", force: :cascade do |t|
-    t.bigint "ballot_id"
-    t.bigint "poll_id"
-    t.bigint "poll_question_id"
-    t.date "date"
-    t.string "email"
-    t.integer "number"
-    t.text "long_answer"
-    t.text "short_answer"
-    t.datetime "updated_at"
-    t.datetime "created_at"
-    t.index ["ballot_id"], name: "index_ballot_responses_on_ballot_id"
-    t.index ["poll_id"], name: "index_ballot_responses_on_poll_id"
-    t.index ["poll_question_id"], name: "index_ballot_responses_on_poll_question_id"
-  end
-
   create_table "ballots", force: :cascade do |t|
     t.bigint "poll_id"
     t.string "user_type"
@@ -117,30 +92,6 @@ ActiveRecord::Schema.define(version: 101) do
     t.index ["poll_id"], name: "index_poll_notifications_on_poll_id"
   end
 
-  create_table "poll_question_options", force: :cascade do |t|
-    t.bigint "poll_question_id"
-    t.string "title"
-    t.integer "position"
-    t.datetime "updated_at"
-    t.datetime "created_at"
-    t.index ["poll_question_id"], name: "index_poll_question_options_on_poll_question_id"
-  end
-
-  create_table "poll_questions", force: :cascade do |t|
-    t.bigint "poll_id"
-    t.string "title"
-    t.string "category"
-    t.boolean "required", default: true
-    t.integer "position"
-    t.boolean "follow_up", default: false
-    t.string "follow_up_value"
-    t.integer "poll_question_id"
-    t.integer "poll_question_option_id"
-    t.datetime "updated_at"
-    t.datetime "created_at"
-    t.index ["poll_id"], name: "index_poll_questions_on_poll_id"
-  end
-
   create_table "polls", force: :cascade do |t|
     t.string "title"
     t.string "token"
@@ -151,6 +102,52 @@ ActiveRecord::Schema.define(version: 101) do
     t.text "audience_scope"
     t.boolean "hide_results", default: false
     t.boolean "skip_logging", default: false
+    t.datetime "updated_at"
+    t.datetime "created_at"
+  end
+
+  create_table "question_options", force: :cascade do |t|
+    t.bigint "question_id"
+    t.string "title"
+    t.integer "position"
+    t.datetime "updated_at"
+    t.datetime "created_at"
+    t.index ["question_id"], name: "index_question_options_on_question_id"
+  end
+
+  create_table "questions", force: :cascade do |t|
+    t.integer "questionable_id"
+    t.string "questionable_type"
+    t.string "title"
+    t.string "category"
+    t.boolean "required", default: true
+    t.integer "position"
+    t.boolean "follow_up", default: false
+    t.string "follow_up_value"
+    t.integer "question_id"
+    t.integer "question_option_id"
+    t.datetime "updated_at"
+    t.datetime "created_at"
+  end
+
+  create_table "response_options", force: :cascade do |t|
+    t.integer "response_id"
+    t.integer "question_option_id"
+    t.datetime "updated_at"
+    t.datetime "created_at"
+  end
+
+  create_table "responses", force: :cascade do |t|
+    t.integer "questionable_id"
+    t.string "questionable_type"
+    t.integer "responsable_id"
+    t.string "responsable_type"
+    t.integer "question_id"
+    t.date "date"
+    t.string "email"
+    t.integer "number"
+    t.text "long_answer"
+    t.text "short_answer"
     t.datetime "updated_at"
     t.datetime "created_at"
   end

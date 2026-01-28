@@ -9,6 +9,7 @@ require 'devise'
 require 'wicked'
 require 'effective_email_templates'
 require 'effective_test_bot'
+require 'effective_questions'
 
 module Dummy
   class Application < Rails::Application
