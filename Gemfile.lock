@@ -1,19 +1,11 @@
 PATH
-  remote: ../effective_questions
-  specs:
-    effective_questions (0.0.1)
-      effective_bootstrap
-      effective_datatables (>= 4.0.0)
-      effective_resources
-      rails (>= 6.0.0)
-
-PATH
   remote: .
   specs:
     effective_polls (0.8.1)
       effective_bootstrap
       effective_datatables (>= 4.0.0)
       effective_email_templates
+      effective_questions
       effective_resources
       rails (>= 6.0.0)
       sassc
@@ -146,6 +138,11 @@ GEM
       effective_resources
       liquid
       rails
+    effective_questions (0.0.2)
+      effective_bootstrap
+      effective_datatables (>= 4.0.0)
+      effective_resources
+      rails (>= 6.0.0)
     effective_resources (2.24.0)
       rails
       sprockets-rails
@@ -162,7 +159,7 @@ GEM
     execjs (2.10.0)
     faker (3.4.1)
       i18n (>= 1.8.11, < 2)
-    ffi (1.17.2-arm64-darwin)
+    ffi (1.17.2)
     globalid (1.0.0)
       activesupport (>= 5.0)
     haml (5.2.2)
@@ -305,7 +302,6 @@ DEPENDENCIES
   devise
   effective_developer
   effective_polls!
-  effective_questions!
   effective_test_bot
   haml
   pry-byebug
