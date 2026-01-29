@@ -54,10 +54,10 @@ module Effective
       when :start
         params.require(:effective_ballot).permit(:current_step)
       when :vote
-        params.require(:effective_ballot).permit(:current_step, ballot_responses_attributes: [
-          :id, :poll_id, :poll_question_id,
+        params.require(:effective_ballot).permit(:current_step, responses_attributes: [
+          :id, :questionable_type, :questionable_id, :question_id,
           :date, :email, :number, :long_answer, :short_answer, :upload_file, :_destroy,
-          :poll_question_option_ids, poll_question_option_ids: []
+          :question_option_ids, question_option_ids: []
         ])
       when :submit
         params.require(:effective_ballot).permit(:current_step)

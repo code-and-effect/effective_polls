@@ -1,0 +1,26 @@
+.card.mb-3
+  .card-body
+    %h5.card-title Results
+
+    %p #{poll} was available from #{poll.available_date}.
+
+    %p
+      %strong
+        = pluralize(poll.completed_ballots.count, 'user')
+        completed
+      ballots
+
+      - users_count = (poll.users.count rescue nil)
+      - if users_count.present?
+        from an audience of
+        = succeed('.') do
+          %strong= pluralize(users_count, 'total user')
+
+.card.mb-3
+  .card-body
+    %h5.card-title Question Results
+
+    - if poll.hide_results? && !poll.ended?
+      %p The results of this poll will be displayed once it has ended.
+    - else
+      = render 'effective/questionable/results', questionable: poll

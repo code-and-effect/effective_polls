@@ -1,5 +1,6 @@
 require 'effective_resources'
 require 'effective_datatables'
+require 'effective_questions'
 require 'effective_polls/engine'
 require 'effective_polls/version'
 

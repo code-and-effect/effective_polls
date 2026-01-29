@@ -7,7 +7,7 @@
       = render 'admin/polls/form_content', poll: poll
 
     = tab 'Questions' do
-      - datatable = Admin::EffectivePollQuestionsDatatable.new(poll: poll)
+      - datatable = Admin::EffectiveQuestionsDatatable.new(questionable: poll)
       = render_datatable(datatable, inline: true, simple: true)
 
     = tab 'Notifications' do

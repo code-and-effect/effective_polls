@@ -21,6 +21,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'effective_datatables', '>= 4.0.0'
   spec.add_dependency 'effective_email_templates'
   spec.add_dependency 'effective_resources'
+  spec.add_dependency 'effective_questions'
   spec.add_dependency 'wicked'
   spec.add_dependency 'sassc'
 

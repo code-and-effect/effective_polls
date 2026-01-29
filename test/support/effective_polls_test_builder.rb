@@ -13,18 +13,18 @@ module EffectivePollsTestBuilder
       audience_class_name: 'User'
     )
 
-    build_poll_question(poll, Effective::PollQuestion::CATEGORIES)
+    build_question(poll, Effective::Question::CATEGORIES)
     poll
   end
 
-  def build_poll_question(poll, category)
+  def build_question(questionable, category)
     questions = Array(category).map.with_index do |category, index|
-      question = poll.poll_questions.build(title: "#{category} Question ##{index+1}", category: category, required: false)
+      question = questionable.questions.build(questionable: questionable, title: "#{category} Question ##{index+1}", category: category, required: false)
 
-      if question.poll_question_option?
-        question.poll_question_options.build(title: 'Option A')
-        question.poll_question_options.build(title: 'Option B')
-        question.poll_question_options.build(title: 'Option C')
+      if question.question_option?
+        question.question_options.build(title: 'Option A')
+        question.question_options.build(title: 'Option B')
+        question.question_options.build(title: 'Option C')
       end
     end
 
@@ -41,9 +41,9 @@ module EffectivePollsTestBuilder
 
     ballot = Effective::Ballot.new(poll: poll, user: user)
 
-    # Build a response for each poll question
-    poll.poll_questions.each do |poll_question|
-      ballot.ballot_response(poll_question)
+    # Build a response for each question
+    poll.questions.each do |question|
+      ballot.response(question: question)
     end
 
     ballot
