@@ -32,7 +32,7 @@ class BallotsTest < ActiveSupport::TestCase
     ballot = build_effective_ballot(poll: poll)
     refute ballot.valid?
 
-    response = ballot.responsable_response(question)
+    response = ballot.response(question: question)
     assert response.errors.present?
   end
 

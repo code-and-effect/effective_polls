@@ -43,7 +43,7 @@ module EffectivePollsTestBuilder
 
     # Build a response for each question
     poll.questions.each do |question|
-      ballot.responsable_response(question)
+      ballot.response(question: question)
     end
 
     ballot

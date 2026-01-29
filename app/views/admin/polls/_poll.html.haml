@@ -1,4 +1,4 @@
-= render 'effective/questionable_results/results', questionable: @poll
+= render 'effective/polls/results', poll: @poll
 
 = card('Raw Data') do
   - datatable = Admin::EffectiveQuestionableResultsDatatable.new(questionable: @poll)

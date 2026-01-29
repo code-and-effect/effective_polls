@@ -1,22 +1,2 @@
 .effective-ballot
-  %table.table.table-hover
-    %thead
-      %tr
-        %th Question
-        %th Response
-
-    %tbody
-      - ballot.poll.poll_questions.top_level.deep.each do |poll_question|
-        - ballot_response = ballot.ballot_response(poll_question)
-
-        %tr
-          %td= poll_question
-          %td= render(ballot_response)
-
-        - poll_question.follow_up_poll_questions.deep.each do |follow_up_poll_question|
-          - ballot_response = ballot.ballot_response(follow_up_poll_question)
-
-          - if ballot_response.persisted?
-            %tr
-              %td= follow_up_poll_question
-              %td= render(ballot_response)
+  = render('effective/responsable/results', responsable: resource, questionable: resource.poll)
