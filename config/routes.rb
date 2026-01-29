@@ -14,7 +14,6 @@ EffectivePolls::Engine.routes.draw do
   namespace :admin do
     resources :polls
     resources :poll_notifications, except: [:show]
-    resources :poll_questions, except: [:show]
   end
 
 end

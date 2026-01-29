@@ -9,9 +9,6 @@ module Effective
     # Effective namespace
     belongs_to :poll
 
-    # has_many :ballot_responses, dependent: :destroy
-    # accepts_nested_attributes_for :ballot_responses, allow_destroy: true
-
     acts_as_tokened
     acts_as_responsable
 
@@ -54,9 +51,6 @@ module Effective
       scope: :poll_id, allow_blank: true, message: 'ballot already exists for this poll'
     }
 
-    # I seem to need this even tho I accept_nested_attributes
-    # validates :ballot_responses, associated: true
-
     def to_s
       model_name.human
     end
@@ -66,12 +60,6 @@ module Effective
       return false if poll&.skip_logging?
       true
     end
-
-    # Find or build
-    # def ballot_response(poll_question)
-    #   ballot_response = ballot_responses.find { |br| br.poll_question_id == poll_question.id }
-    #   ballot_response ||= ballot_responses.build(poll: poll_question.poll, poll_question: poll_question)
-    # end
 
     # This is the review step where they click Submit Ballot
     def submit!
