@@ -1,5 +1,8 @@
 = render 'effective/polls/results', poll: @poll
 
 = card('Raw Data') do
-  - datatable = Admin::EffectiveQuestionableResultsDatatable.new(questionable: @poll)
-  = render_datatable(datatable)
+ - if poll.hide_results? && !poll.ended?
+    %p The raw data for this poll will be displayed once it has ended.
+  - else
+    - datatable = Admin::EffectiveQuestionableResultsDatatable.new(questionable: @poll)
+    = render_datatable(datatable)

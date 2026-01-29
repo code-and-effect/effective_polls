@@ -6,15 +6,10 @@ module Effective
     has_many :poll_notifications, -> { order(:id) }, inverse_of: :poll, dependent: :destroy
     accepts_nested_attributes_for :poll_notifications, allow_destroy: true
 
-    # has_many :poll_questions, -> { order(:position) }, inverse_of: :poll, dependent: :destroy
-    # accepts_nested_attributes_for :poll_questions, allow_destroy: true
-
     has_many :ballots
-    # has_many :ballot_responses
 
-    # # For the poll_results screens
+    # For the poll_results screens
     has_many :completed_ballots, -> { Effective::Ballot.completed }, class_name: 'Effective::Ballot'
-    # has_many :completed_ballot_responses, -> { where(ballot: Effective::Ballot.completed) }, class_name: 'Effective::BallotResponse'
 
     has_many_rich_texts
     # rich_text_all_steps_content
