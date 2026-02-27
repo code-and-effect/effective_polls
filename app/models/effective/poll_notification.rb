@@ -151,7 +151,7 @@ module Effective
           Effective::PollsMailer.public_send(email_template, self, user).deliver_now
         rescue => e
           EffectiveLogger.error(e.message, associated: self) if defined?(EffectiveLogger)
-          ExceptionNotifier.notify_exception(e, data: { user_id: user.id, poll_notification_id: id }) if defined?(ExceptionNotifier)
+          EffectiveResources.send_error(e, user_id: user.id, poll_notification_id: id)
           raise(e) if Rails.env.test? || Rails.env.development?
         end
 
