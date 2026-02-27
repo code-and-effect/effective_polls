@@ -16,8 +16,7 @@ namespace :effective_polls do
           notified = notification.notify!
           puts "Sent #{notification.category} for #{notification.poll}" if notified
         rescue StandardError => e
-          data = { poll_notification_id: notification.id, poll_id: notification.poll_id }
-          ExceptionNotifier.notify_exception(e, data: data) if defined?(ExceptionNotifier)
+          EffectiveResources.send_error(e, poll_notification_id: notification.id, poll_id: notification.poll_id)
           puts "Error with effective poll_notification #{notification.id}: #{e.errors.inspect}"
         end
       end
