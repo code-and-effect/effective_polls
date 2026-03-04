@@ -118,9 +118,16 @@ class PollNotificationsTest < ActiveSupport::TestCase
 
     notification.update!(body: "<p>Cool {{ title }}</p>", subject: template.subject, from: template.from, content_type: 'text/html')
 
-    assert_email(body: "<p>Cool #{poll}</p>", html_layout: true) do
+    assert_email do
       notification.notify!
     end
+
+    message = ActionMailer::Base.deliveries.last
+    html_part = message.parts.find { |part| part.content_type.start_with?('text/html') }
+
+    assert html_part.present?, "Expected email to have HTML part"
+    assert html_part.body.to_s.include?("<p>Cool #{poll}</p>"), "Expected email body to include poll title"
+    assert html_part.body.to_s.include?('<meta'), "Expected email to have HTML layout"
   end
 
 end
