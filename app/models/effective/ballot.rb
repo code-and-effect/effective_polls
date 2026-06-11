@@ -38,10 +38,13 @@ module Effective
     scope :deep, -> { includes(:poll, :user, responses: [:questionable, :question, :question_options]) }
     scope :sorted, -> { order(:id) }
 
+    scope :draft, -> { where(completed_at: nil) }
     scope :in_progress, -> { where(completed_at: nil) }
-    scope :done, -> { where.not(completed_at: nil) }
 
+    scope :done, -> { where.not(completed_at: nil) }
     scope :completed, -> { where.not(completed_at: nil) }
+
+    scope :purgable, -> { draft.where(arel_table[:updated_at].lt(1.year.ago)) }
 
     before_validation(if: -> { new_record? }) do
       self.user ||= current_user
